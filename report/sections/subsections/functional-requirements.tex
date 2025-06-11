@@ -8,42 +8,68 @@ necessari affinché l'applicazione funzioni come previsto.
 \subsubsection{Utente} \label{sec:functional-requirements:user}
 Funzionalità accessibili dall'utente:
 \begin{itemize}
-    \item L'utente può iniziare una nuova partita.
-    \item L'utente può vedere la posizione attuale di ogni giocatore sulla plancia.
-    \item L'utente può lanciare un dado per muovere il proprio personaggio.
-    \item L'utente, durante il movimento, può scegliere la direzione da prendere.
-    \item L'utente può visualizzare la posizione delle tessere speciali sulla plancia che
-          assegnano un piolo o delle monadi.
-    \item L'utente può visualizzare il numero di pioli e monadi raccolti da ciascun giocatore.
-    \item L'utente può partecipare a un minigioco.
-    \item L'utente può visualizzare le regole di ogni minigioco.
-    \item L'utente può visualizzare i progressi di ogni giocatore durante un minigioco.
-    \item L'utente può visualizzare il vincitore di un minigioco.
+      \item L'utente può iniziare una nuova partita.
+      \item L'utente può lanciare un dado, all'inizio della partita, per determinare il 
+            primo giocatore del turno.
+      \item L'utente può in ogni momento visualizzare la posizione attuale di ogni giocatore
+            sulla plancia.
+      \item L'utente può lanciare un o più dadi, durante il proprio turno, per muovere il proprio
+            personaggio.
+      \item L'utente, durante il movimento, può scegliere la direzione da prendere.
+      \item L'utente può in ogni momento visualizzare la posizione delle tessere speciali sulla
+            plancia che possono assegnare un piolo o delle monadi.
+      \item L'utente può in ogni momento visualizzare il costo per ottenere il piolo.
+      \item L'utente può ottenere automaticamente una monade quando finisce sulla tessera 
+            corrispondente.
+      \item L'utente può ottenere automaticamente un piolo quando finisce sulla tessera 
+            corrispondente se possiede sufficienti monadi da scambiare.
+      \item L'utente può visualizzare in ogni momento il numero di pioli necessari per vincere il gioco.
+      \item L'utente può in ogni momento visualizzare il numero di pioli e monadi raccolti 
+            da ciascun giocatore.
+      \item L'utente può partecipare a un minigioco casuale alla fine di ogni ciclo di turni.
+      \item L'utente può visualizzare le regole di ogni minigioco prima dell'inizio di esso.
+      \item L'utente può visualizzare il progresso, dipendente dalle regole, di ogni giocatore
+            durante un minigioco.
+      \item L'utente può visualizzare il vincitore di un minigioco al termine di esso.
+      \item L'utente può visualizzare il vincitore del gioco al termine di una partita.
 \end{itemize}
 
 \subsubsection{Sistema} \label{sec:functional-requirements:system}
 Reazioni automatiche del sistema, che non richiedono l'intervento
 diretto dell'utente ma sono una risposta a esso o riguardano la logica interna del gioco.
 \begin{itemize}
-    \item Il sistema può creare una nuova partita.
-    \item Il sistema può gestire l'assegnazione dei turni ai giocatori in modo che possano
-          effettuare la loro mossa.
-    \item Il sistema può simulare il lancio di dadi a 6 facce per determinare il numero di
-          passi che un giocatore può compiere.
-    \item Il sistema può aggiornare la posizione di ciascun giocatore sulla plancia.
-    \item Il sistema può simulare il comportamento del giocatore avversario all'utente.
-    \item Il sistema può generare tessere speciali da posizionare su una plancia predefinita.
-    \item Il sistema può premiare un giocatore con delle monadi quando finisce sulla
-          tessera corrispondente.
-    \item Il sistema può premiare un giocatore, se possiede abbastanza monadi, con un
-          piolo quando finisce sulla tessera corrispondente.
-    \item Il sistema può aggiornare il numero di pioli e monadi raccolti da ciascun giocatore.
-    \item Il sistema può avviare un minigioco dopo che tutti i giocatori hanno concluso
-          il proprio turno.
-    \item Il sistema può gestire la logica di ogni minigioco.
-    \item Il sistema può aggiornare i progressi di ciascun giocatore durante un minigioco.
-    \item Il sistema può determinare il vincitore di un minigioco.
-    \item Il sistema può assegnare un dado aggiuntivo valido per il successivo turno al
-          vincitore di un minigioco.
-    \item Il sistema può determinare il vincitore del gioco in base al numero di pioli raccolti.
+      \item Il sistema può creare una nuova partita.
+      \item Il sistema può generare un numero casuale di pioli necessari per vincere il gioco.
+      \item Il sistema può simulare, all'inizio della partita, il lancio di un dado a 6 
+            facce per determinare il primo giocatore del turno.
+      \item Il sistema può gestire l'assegnazione dei turni ai giocatori in modo che possano
+            effettuare la loro mossa.
+      \item Il sistema può simulare il lancio di dadi a 6 facce per determinare il numero di
+            passi che un giocatore potrà compiere.
+      \item Il sistema può aggiornare la posizione di ciascun giocatore sulla plancia.
+      \item Il sistema può simulare un comportamento competitivo del giocatore avversario 
+            all'utente, muovendosi sulla plancia in modo da raccogliere sufficienti monadi
+            per vincere i pioli e il gioco.
+      \item Il sistema può generare un numero, inizialmente fisso che incrementa ogni turno, 
+            di tessere monadi e una sola per volta di piolo da posizionare sulla plancia.
+      \item Il sistema può mostrare una plancia con bivi predefinita caricata all'avvio. 
+      \item Il sistema può calcolare il numero di monadi, inferiore al totale sulla plancia, 
+            da pagare per ogni piolo.
+      \item Il sistema può premiare un giocatore con una monade quando passa sulla tessera 
+            corrispondente.
+      \item Il sistema può premiare un giocatore, se possiede abbastanza monadi, con un
+            piolo quando passa sulla tessera corrispondente, rimuovendo al giocatore il
+            numero di monadi necessario per ottenerlo.
+      \item Il sistema può aggiornare il numero di pioli e monadi raccolti da ciascun giocatore.
+      \item Il sistema può avviare un minigioco dopo che tutti i giocatori hanno concluso
+            il proprio turno.
+      \item Il sistema può gestire la logica di ogni semplice minigioco, per esempio 
+            basati su una griglia a scacchiera con regole predefinite di movimento e punteggio.
+      \item Il sistema può mostrare le regole di ogni minigioco prima dell'inizio di esso.
+      \item Il sistema può aggiornare i progressi, dipendenti dalle regole, di ciascun giocatore 
+            durante un minigioco.
+      \item Il sistema può determinare il vincitore di un minigioco.
+      \item Il sistema può assegnare un dado aggiuntivo valido per il successivo turno al
+            vincitore di un minigioco, che verrà selezionato come primo giocatore.
+      \item Il sistema può determinare il vincitore del gioco in base al numero di pioli raccolti.
 \end{itemize}
