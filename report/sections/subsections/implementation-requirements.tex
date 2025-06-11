@@ -4,10 +4,13 @@ utilizzati per realizzare il sistema. Questi requisiti sono fondamentali per gar
 efficiente, mantenibile e scalabile in modo tale da soddisfare i requisiti funzionali e non funzionali definiti in precedenza.
 I requisiti di implementazione del sistema sono:
 \begin{itemize}
-    \item \textbf{Tecnologie}, il sistema viene realizzato utilizzando come linguaggio principale Scala e come 
+    \item \textbf{Tecnologie}: il sistema viene realizzato utilizzando come linguaggio principale Scala e come 
     linguaggio "secondario" Prolog, per la gestione della logica di gioco e delle regole del gioco stesso; inoltre si utilizzano
     SBT come strumento di build e gestione delle dipendenze, IntelliJ IDEA come ambiente di sviluppo integrato (IDE) e Git come
     sistema di controllo versione (in particolare GitHub come repository remoto)
-    \item \textbf{Testing}, il sistema deve essere testato in modo tale da garantire che tutte le funzionalità siano implementate
-    correttamente e perciò si utilizzano test automatizzati come ScalaTest e JUnit.
+    \item \textbf{Testing}: il sistema deve essere testato in modo tale da garantire che tutte le funzionalità siano implementate
+    correttamente e perciò si utilizzano test automatizzati come ScalaTest e JUnit. Questo è fondamentale soprattutto per garantire
+    che le funzionalità siano implementate correttamente e per evitare regressioni durante lo sviluppo ed evitare perdite di tempo
+    per sistemare bug che potrebbero essere facilmente evitati; soprattutto saranno testate le porzioni di codice che interagiscono
+    con Prolog, in quanto la programmazione logica può introdurre complessità aggiuntive
 \end{itemize}
