@@ -1,2 +1,5 @@
 # Vs Code config files
 .vscode
+
+# MacOS system files
+.DS_Store
