@@ -1,0 +1,19 @@
++------------------------------+------------------------------+--------------------+----------------------------+-----+-----+-----+-----+-----+-----+
+|     Product Backlog Item     |         Sprint Task          |     Volunteer      | Initial Estimate of Effort |  1  |  2  |  3  |  4  |  5  |  6  |
++------------------------------+------------------------------+--------------------+----------------------------+-----+-----+-----+-----+-----+-----+
+| Repository initialization    | Create repo                  | Severi Tommaso     | 0.5                        | 0.1 |  0  |  0  |  0  |  0  |  0  |
+|                              | Latex report initialization  | Buda Francesco     | 0.5                        | 1.0 |  0  |  0  |  0  |  0  |  0  |
+|                              | Write README                 | Buda Francesco     | 1.0                        | 0.5 |  0  |  0  |  0  |  0  |  0  |
+|                              | Scala project initialization | Sanchi Emanuele    | 1.5                        | 1.5 |  0  |  0  |  0  |  0  |  0  |
+|                              | Integration with Prolog      | Sanchi Emanuele    | 0.5                        | 0.5 |  0  |  0  |  0  |  0  |  0  |
++------------------------------+------------------------------+--------------------+----------------------------+-----+-----+-----+-----+-----+-----+
+| Define requirements specs    | Business Requirements        | Buda Francesco     | 2.0                        | 1.0 | 1.0 |  0  |  0  |  0  |  0  |
+|                              | Domain Model                 | Buda Francesco     | 3.0                        | 0.0 | 2.5 | 2.5 | 1.0 |  0  |  0  |
+|                              | Functional Requirements      | Severi Tommaso     | 5.0                        | 2.0 | 2.0 | 0.5 | 0.5 |  0  |  0  |
+|                              | Non Functional Requirements  | Sanchi Emanuele    | 2.5                        | 0.0 | 1.0 |  0  |  0  |  0  |  0  |
+|                              | Implementation Requirements  | Sanchi Emanuele    | 2.5                        | 0.0 | 1.0 | 0.0 | 0.5 | 0.0 | 0.0 |
++------------------------------+------------------------------+--------------------+----------------------------+-----+-----+-----+-----+-----+-----+
+| Define architectural design  | Overall Architecture         | Severi Tommaso     | 3.0                        | 1.0 | 1.0 | 0.0 | 1.5 | 0.0 | 2.0 |
+|                              | Architectural Patterns       | Sanchi Emanuele    | 2.5                        | 0.0 | 0.0 | 0.0 | 0.5 | 0.5 | 0.5 |
+|                              | Tecnological Choices         | Buda Francesco     | 2.0                        | 0.0 | 0.0 | 0.0 | 1.0 | 0.0 | 0.0 |
++------------------------------+------------------------------+--------------------+----------------------------+-----+-----+-----+-----+-----+-----+
