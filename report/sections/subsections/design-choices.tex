@@ -29,3 +29,18 @@ Sono suddivisi nelle schermate principali del gioco:
 \subsubsection{Diagramma degli stati} \label{sec:design-choices:state-diagram}
 
 \subsubsection{Diagramma delle classi} \label{sec:design-choices:class-diagram}
+Il diagramma delle classi presentato a figura \ref{fig:class-diagram} è un ampliamento del diagramma presentato precedentemente
+(figura \ref{fig:domain-class-diagram}), a cui sono stati aggiunti alcuni dettagli e, soprattutto, le classi di Controller e View.
+In particolare la View espone solo il metodo di repaint in quanto il resto delle operazioni, come la gestione degli eventi e dell'input,
+viene gestito dal Controller. Quest'ultimo, a sua volta, si occupa di comunicare con il Model per ottenere le informazioni necessareie
+e aggiornarne lo stato, che successivamente verrà comunicato alla View. In più sono presenti alcune classi di utility che, nonstante
+non siano connesse direttamente ad altre classi, sono riportate per completezza di informazione. Direction e Turn sono due Enum che
+rappresentano rispettivamente le direzioni in cui può muoversi una pedina e il turno di gioco e le fasi del gioco. P2d è invece una classe
+che rappresenta un punto bidimensionale, utile per rappresentare le coordinate di una pedina o di un oggetto nel tabellone senza 
+dover utilizzare una coppia di variabili.
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{figures/ClassDiagram_ScalaParty.png}
+    \caption{Diagramma delle classi per il tabellone}
+    \label{fig:class-diagram}
+\end{figure}
