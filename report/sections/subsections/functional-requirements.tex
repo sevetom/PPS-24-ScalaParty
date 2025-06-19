@@ -33,6 +33,8 @@ Funzionalità accessibili dall'utente:
             un minigioco.
       \item L'utente può visualizzare il vincitore di un minigioco al termine di esso.
       \item L'utente può visualizzare il vincitore del gioco al termine di una partita.
+      \item L'utente può decidere la direzione consentita in cui muoversi nel minigioco Maze.
+      \item L'utente può scegliere le forme da rivelare nel minigioco Memory.
       \item L'utente può posizionare e spostare poligoni nel minigioco Puzzle.
 \end{itemize}
 
@@ -64,8 +66,6 @@ diretto dell'utente ma sono una risposta a esso o riguardano la logica interna d
       \item Il sistema può aggiornare il numero di pioli e monadi raccolti da ciascun giocatore.
       \item Il sistema può avviare un minigioco dopo che tutti i giocatori hanno concluso
             il proprio turno.
-      \item Il sistema può gestire la logica di ogni semplice minigioco, per esempio 
-            basati su una griglia a scacchiera con regole predefinite di movimento e punteggio.
       \item Il sistema può mostrare le regole di ogni minigioco prima dell'inizio di esso.
       \item Il sistema può aggiornare i progressi, dipendenti dalle regole, del giocatore 
             durante un minigioco.
@@ -73,22 +73,37 @@ diretto dell'utente ma sono una risposta a esso o riguardano la logica interna d
       \item Il sistema può assegnare un dado aggiuntivo valido solo per il turno successivo al
             vincitore di un minigioco, che verrà selezionato come primo giocatore.
       \item Il sistema può determinare il vincitore del gioco in base al numero di pioli raccolti.
-      \item Il sistema deve generare setup di gioco per il minigioco Puzzle.
 \end{itemize}
 
-\subsubsection{Memory Minigame} \label{sec:functional-requirements:memory}
-Il minigioco Memory ha i seguenti requisiti funzionali:
+\subsubsection{Minigiochi} \label{sec:functional-requirements:minigames}
+In particolare il sistema ha i seguenti requisiti per i minigiochi:
 \begin{itemize}
-      \item Il sistema può generare un insieme di forme casuali da posizionare sulla griglia che siano 
-            sufficientemente distanti tra loro e uguali a coppie.
-      \item Il sistema può visualizzare le forme sulla griglia per un tempo limitato, in modo che l'utente
-            possa memorizzarle.
-      \item Il sistema può nascondere le forme dopo il tempo limite, rendendole invisibili all'utente.
-      \item Il sistema può consentire all'utente di selezionare due forme alla volta
-            per cercare di trovare una coppia.
-      \item Il sistema può verificare se le due forme selezionate dall'utente sono uguali.
-      \item Il sistema può rivelare le forme selezionate se sono uguali, altrimenti le nasconde di nuovo.
-      \item Il sistema può tenere traccia del numero di tentativi effettuati dall'utente per trovare le coppie.
-      \item Il sistema può terminare il minigioco quando tutte le coppie sono state trovate o quando il numero massimo di tentativi
-            è stato raggiunto.
+      \item \textbf{Maze}\par
+            \begin{itemize}
+                  \item Il sistema può gestire la logica della generazione di un labirinto 
+                  casuale conforme alle regole del minigioco.
+                  \item Il sistema può riconoscere se il giocatore è riuscito a raggiungere 
+                  l'uscita in tempo.
+                  \item Il sistema può generare il percorso di partenza e di arrivo del 
+                  labirinto. 
+            \end{itemize}
+      \item \textbf{Memory}\par
+            \begin{itemize}
+                  \item Il sistema può generare un insieme di forme casuali da posizionare sulla griglia che siano 
+                        sufficientemente distanti tra loro e uguali a coppie.
+                  \item Il sistema può visualizzare le forme sulla griglia per un tempo limitato, in modo che l'utente
+                        possa memorizzarle.
+                  \item Il sistema può nascondere le forme dopo il tempo limite, rendendole invisibili all'utente.
+                  \item Il sistema può consentire all'utente di selezionare due forme alla volta
+                        per cercare di trovare una coppia.
+                  \item Il sistema può verificare se le due forme selezionate dall'utente sono uguali.
+                  \item Il sistema può rivelare le forme selezionate se sono uguali, altrimenti le nasconde di nuovo.
+                  \item Il sistema può tenere traccia del numero di tentativi effettuati dall'utente per trovare le coppie.
+                  \item Il sistema può terminare il minigioco quando tutte le coppie sono state trovate o quando il numero massimo di tentativi
+                        è stato raggiunto.
+            \end{itemize}
+      \item \textbf{Puzzle} \par
+            \begin{itemize}
+                  \item Il sistema può generare il setup di gioco per il minigioco Puzzle.
+            \end{itemize}
 \end{itemize}

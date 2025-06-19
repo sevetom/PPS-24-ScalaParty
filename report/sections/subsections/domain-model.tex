@@ -7,8 +7,9 @@ si muovono su un tabellone composto da caselle con l'obiettivo di
 raccogliere il maggior numero di pioli, ovvero elementi collezionabili
 che appariranno casualmente sul tabellone. Alla fine di ogni round,
 il giocatore dovrà affrontare un minigioco single-player che permetterà
-di ottenere dei vantaggi nel turno successivo.
-
+di ottenere dei vantaggi nel turno successivo; infatti, il giocatore
+deve affrontare e superare le sfide proposte dall'avversario, quindi 
+generate dal computer.
 
 Allo scopo di istruire il lettore sul funzionamento del sistema,
 in questa sezione approfondiremo i seguenti aspetti:
@@ -121,30 +122,63 @@ A questo punto, la partita può iniziare e si svolgerà seguendo le seguenti fas
     e verrà dichiarato vincitore.
 \end{enumerate}
 
-Ci sono 3 tipologie di minigiochi che possono essere giocati: Maze, Memory e Puzzle.
-\subsubsection{Memory}
-Il minigioco Memory è un gioco di memoria in cui il giocatore deve trovare coppie di forme identiche
-disposte casualmente su una griglia. Le regole sono le seguenti:
+\subsubsection{Regole dei Minigiochi} \label{sec:domain-model:minigames-rules}
+\begin{itemize}
+    \item \textbf{Maze}\par
+    Al giocatore viene presentato un labirinto generato casualmente con un punto
+    di partenza e uno di fine. L'obbiettivo è quello di trovare l'uscita entro
+    un tempo limite di 30 secondi. Il giocatore può muoversi in qualsiasi direzione, 
+    ma non può attraversare le pareti del labirinto.
+    
+    La dimensione base della plancia di gioco è di 12x12 caselle ma può variare, 
+    così come il tempo limite, in base al livello di difficoltà scelto. Nella figura 
+    \ref{fig:minigame-maze} è mostrato un esempio di labirinto generato 
+    casualmente in cui si può notare il punto di partenza in alto, dove si trova 
+    la pedina del giocatore, e il punto di arrivo in basso collegati da una 
+    linea rossa che rappresenta la soluzione. La soluzione sarà visibile al giocatore 
+    solo una volta che il minigioco sarà terminato.
 
-Il minigioco si svolge su una griglia di dimensione quadrata 4x4. Il sistema genera casualmente 8 forme, che vengono disposte
-sulla griglia in modo da formare coppie. Vengono Quindi mostrate all'utente per un breve periodo di tempo e poi coperte. Il
-giocatore può selezionare due caselle alla volta per cercare di trovare una coppia di forme identiche. Se il giocatore trova una
-coppia, le forme rimangono visibili e il giocatore guadagna un punto; altrimenti le forme vengono coperte di nuovo e il giocatore
-perde un tentativo. Il minigioco termina quando il giocatore trova tutte le coppie o esaurisce i tentativi disponibili. Il minigioco
-viene vinto se il giocatore trova tutte le coppie entro il numero massimo di tentativi consentiti. I tentativi sono limitati a 5.
+    \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=0.5\textwidth]{figures/minigame-maze.png}
+        \caption{Esempio di Minigioco Maze}
+        \label{fig:minigame-maze}
+    \end{figure}
 
+    \item \textbf{Memory}\par
+    Il minigioco Memory (fig \ref{fig:minigame-memory}) è un gioco di memoria in cui il giocatore deve trovare coppie di 
+    forme identiche disposte casualmente su una griglia. Le regole sono le seguenti:
 
+    Il minigioco si svolge su una griglia di dimensione quadrata 4x4. Il sistema genera 
+    casualmente 8 forme, che vengono disposte sulla griglia in modo da formare coppie. 
+    Vengono Quindi mostrate all'utente per un breve periodo di tempo e poi coperte. Il
+    giocatore può selezionare due caselle alla volta per cercare di trovare una coppia 
+    di forme identiche. Se il giocatore trova una coppia, le forme rimangono visibili e 
+    il giocatore guadagna un punto; altrimenti le forme vengono coperte di nuovo e il 
+    giocatore perde un tentativo. Il minigioco termina quando il giocatore trova tutte 
+    le coppie o esaurisce i tentativi disponibili. Il minigioco viene vinto se il 
+    giocatore trova tutte le coppie entro il numero massimo di tentativi consentiti. 
+    I tentativi sono limitati a 5.
 
-\subsubsection{Puzzle}
-\begin{figure}[h!]
-\centering
-\includegraphics[width=0.8\textwidth]{figures/puzzle.jpeg}
-\caption{Esempio di Minigioco Puzzle}
-\label{fig:puzzle}
-\end{figure}
-Puzzle (fig \ref{fig:puzzle}) è una delle sfide che si dovranno affrontare
-durante il gameplay di Scala Party. In questo Minigioco il giocatore avrà 
-a disposizione dei pezzi di forma poligonale che dovrà posizionare in una 
-griglia in modo tale da riempirla completamente. Se la sfida viene 
-superata entro un tempo limite, il giocatore vince.
+    \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=0.5\textwidth]{figures/minigame-memory.png}
+        \caption{Esempio di Minigioco Memory}
+        \label{fig:minigame-memory}
+    \end{figure}
 
+    \item \textbf{Puzzle}\par
+    Puzzle (fig \ref{fig:minigame-puzzle}) è una delle sfide che si dovranno affrontare
+    durante il gameplay di Scala Party. In questo Minigioco il giocatore avrà 
+    a disposizione dei pezzi di forma poligonale che dovrà posizionare in una 
+    griglia in modo tale da riempirla completamente. Se la sfida viene 
+    superata entro un tempo limite, il giocatore vince.
+
+    \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=0.5\textwidth]{figures/minigame-puzzle.png}
+        \caption{Esempio di Minigioco Puzzle}
+        \label{fig:minigame-puzzle}
+    \end{figure}
+
+\end{itemize}
