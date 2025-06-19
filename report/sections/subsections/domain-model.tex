@@ -16,6 +16,7 @@ in questa sezione approfondiremo i seguenti aspetti:
     \item Le entità principali del dominio e le loro relazioni
     \item Le regole del gioco
     \item Le regole dei minigiochi
+    \item Le regole dei minigiochi
 \end{enumerate}
 \subsubsection{Entità del Dominio}
 \begin{figure}[h!]
@@ -119,6 +120,20 @@ A questo punto, la partita può iniziare e si svolgerà seguendo le seguenti fas
     La partita termina quando uno dei due giocatori raccoglie 4 pioli,
     e verrà dichiarato vincitore.
 \end{enumerate}
+
+Ci sono 3 tipologie di minigiochi che possono essere giocati: Maze, Memory e Puzzle.
+\subsubsection{Memory}
+Il minigioco Memory è un gioco di memoria in cui il giocatore deve trovare coppie di forme identiche
+disposte casualmente su una griglia. Le regole sono le seguenti:
+
+Il minigioco si svolge su una griglia di dimensione quadrata 4x4. Il sistema genera casualmente 8 forme, che vengono disposte
+sulla griglia in modo da formare coppie. Vengono Quindi mostrate all'utente per un breve periodo di tempo e poi coperte. Il
+giocatore può selezionare due caselle alla volta per cercare di trovare una coppia di forme identiche. Se il giocatore trova una
+coppia, le forme rimangono visibili e il giocatore guadagna un punto; altrimenti le forme vengono coperte di nuovo e il giocatore
+perde un tentativo. Il minigioco termina quando il giocatore trova tutte le coppie o esaurisce i tentativi disponibili. Il minigioco
+viene vinto se il giocatore trova tutte le coppie entro il numero massimo di tentativi consentiti. I tentativi sono limitati a 5.
+
+
 
 \subsubsection{Puzzle}
 \begin{figure}[h!]
