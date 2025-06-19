@@ -23,6 +23,18 @@ Sono suddivisi nelle schermate principali del gioco:
 \end{figure}
 
 \subsubsection{Diagramma degli stati} \label{sec:design-choices:state-diagram}
+Il diagramma degli stati in figura \ref{fig:game-state-diagram} rappresenta le varie fasi e le transizioni che regolano il flusso del gioco.
+Come descritto nelle regole, all'inizio c'è la fase nella quale si tira un dado per determinare l'ordine dei turni, successivamente si entra
+nella fase di gioco vera e propria, in cui per ogni ciclo si alternano i turni dei giocatori e un minigioco. Nella fase corrispondente al proprio
+turno il giocatore per prima cosa lancia i dadi e successivamente entrerà nello stato di movimento il quale si concluderà quando il giocatore
+avrà terminato i suoi spostamenti. Alla fine di ogni turno, prima di passare al successivo o al minigioco, si verifica la condizione di vittoria,
+in caso sia verificata la partita termina.
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{figures/game-state-diagram.png}
+    \caption{Diagramma degli stati del gioco}
+    \label{fig:game-state-diagram}
+\end{figure}
 
 \subsubsection{Diagramma delle classi} \label{sec:design-choices:class-diagram}
 Il diagramma delle classi presentato a figura \ref{fig:class-diagram} è un ampliamento del diagramma presentato precedentemente
