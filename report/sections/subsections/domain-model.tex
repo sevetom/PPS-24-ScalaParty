@@ -16,6 +16,7 @@ in questa sezione approfondiremo i seguenti aspetti:
     \item Le entità principali del dominio e le loro relazioni
     \item Le regole del gioco
     \item Le regole dei minigiochi
+    \item Le regole dei minigiochi
 \end{enumerate}
 \subsubsection{Entità del Dominio}
 \begin{figure}[h!]
@@ -110,13 +111,14 @@ A questo punto, la partita può iniziare e si svolgerà seguendo le seguenti fas
         un nuovo piolo viene posizionato in una casella casuale del tabellone, le monadi
         rimaste nel tabellone vengono rimosse e ne vengono aggiunte dieci nuove.
     \end{enumerate}
-    Alla fine di ogni ciclo di turni, il giocatore partecipa a un \textbf{Minigioco}.
-    Se vince, potrà lanciare due volte il dado nel turno successivo, 
-    se invece perde, sarà l'avversario a lanciare due volte il dado.
+    Alla fine di ogni ciclo di turni, il computer proporrà una sfida al giocatore.
+    La sfida consiste in un \textbf{Minigioco} che il giocatore dovrà affrontare.
+    Se il giocatore vince, potrà lanciare due dadi nel turno successivo, 
+    se invece perde, sarà l'avversario a lanciare due dadi. Durante la partita,
+    con l'avanzare dei turni, la difficoltà dei minigiochi aumenterà.
     \item \textbf{Fine della partita}\par
     La partita termina quando uno dei due giocatori raccoglie 4 pioli,
     e verrà dichiarato vincitore.
-    
 \end{enumerate}
 
 Ci sono 3 tipologie di minigiochi che possono essere giocati: Maze, Memory e Puzzle.
@@ -131,4 +133,18 @@ coppia, le forme rimangono visibili e il giocatore guadagna un punto; altrimenti
 perde un tentativo. Il minigioco termina quando il giocatore trova tutte le coppie o esaurisce i tentativi disponibili. Il minigioco
 viene vinto se il giocatore trova tutte le coppie entro il numero massimo di tentativi consentiti. I tentativi sono limitati a 5.
 
+
+
+\subsubsection{Puzzle}
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{figures/puzzle.jpeg}
+\caption{Esempio di Minigioco Puzzle}
+\label{fig:puzzle}
+\end{figure}
+Puzzle (fig \ref{fig:puzzle}) è una delle sfide che si dovranno affrontare
+durante il gameplay di Scala Party. In questo Minigioco il giocatore avrà 
+a disposizione dei pezzi di forma poligonale che dovrà posizionare in una 
+griglia in modo tale da riempirla completamente. Se la sfida viene 
+superata entro un tempo limite, il giocatore vince.
 
