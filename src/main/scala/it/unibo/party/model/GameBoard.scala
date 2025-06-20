@@ -3,7 +3,7 @@ package it.unibo.party.model
 import it.unibo.party.model.GameBoard.BoardBox.EmptyBox
 
 object GameBoard {
-  type Collectable
+  type Collectable = Int
   
   enum BoardBox:
     case EmptyBox
