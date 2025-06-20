@@ -1,40 +1,36 @@
 package it.unibo.party.geometry
 
-trait Point2D:
-  def x: Int
-  def y: Int
+trait Point2D[N](using num: Numeric[N]):
+  def x: N
+  def y: N
 
-  def +(other: Point2D): Point2D
+  def +(other: Point2D[N]): Point2D[N]
 
-  def -(other: Point2D): Point2D
+  def -(other: Point2D[N]): Point2D[N]
 
-  def >=(other: Point2D): Boolean
+  def isZero: Boolean
 
-  def <=(other: Point2D): Boolean
-
-  def <(other: Point2D): Boolean
-
-  def >(other: Point2D): Boolean
-  
-  def distanceFrom(other: Point2D): Double
+  def distanceFrom(other: Point2D[N]): Double
 
 object Point2D:
-  def apply(x: Int, y: Int): Point2D = Point2DImpl(x, y)
+  def apply[N](x: N, y: N)(using num: Numeric[N]): Point2D[N] = Point2DImpl(x, y)
 
-  private case class Point2DImpl(override val x: Int, override val y: Int) extends Point2D:
-    override def +(other: Point2D): Point2D = Point2D(x + other.x, y + other.y)
+  given [N](using num: Numeric[N]): Conversion[(N, N), Point2D[N]] with
+    def apply(t: (N, N)): Point2D[N] =
+      Point2D(t._1, t._2)
 
-    override def -(other: Point2D): Point2D = Point2D(x - other.x, y - other.y)
+  private case class Point2DImpl[N](x: N, y: N)(using num: Numeric[N]) extends Point2D[N]:
+    import num.*
 
-    override def >=(other: Point2D): Boolean = x >= other.x && y >= other.y
+    override def +(other: Point2D[N]): Point2D[N] = Point2D(plus(x, other.x), plus(y, other.y))
 
-    override def <=(other: Point2D): Boolean = x <= other.x && y <= other.y
+    override def -(other: Point2D[N]): Point2D[N] = Point2D(minus(x, other.x), minus(y, other.y))
 
-    override def <(other: Point2D): Boolean = !(this >= other)
+    override def isZero: Boolean = num.equiv(x, num.zero) && num.equiv(y, num.zero)
 
-    override def >(other: Point2D): Boolean = !(this <= other)
+    override def distanceFrom(other: Point2D[N]): Double =
+      val dx = toDouble(minus(x, other.x))
+      val dy = toDouble(minus(y, other.y))
+      math.sqrt(dx * dx + dy * dy)
 
-    override def distanceFrom(other: Point2D): Double =
-      Math.sqrt(Math.pow(x - other.x, 2) + Math.pow(y - other.y, 2))
-
-  val zero: Point2D = apply(0, 0)
+  val zero: Point2D[Double] = apply(0.0, 0.0)
