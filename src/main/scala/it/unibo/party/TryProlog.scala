@@ -1,8 +1,11 @@
-import alice.tuprolog.{Term, Struct, Var}
+package it.unibo.party
+
+import alice.tuprolog.{Struct, Term, Var}
+import it.unibo.party.{extractTerm, mkPrologEngine}
 
 object TryScala2P extends App:
 
-  import Scala2P.{*, given}
+  import it.unibo.party.Scala2P.{*, given}
 
   val engine: Term => LazyList[Term] = mkPrologEngine(
     """

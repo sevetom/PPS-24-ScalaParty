@@ -1,3 +1,5 @@
+package it.unibo.party
+
 import alice.tuprolog.*
 
 object Scala2P:

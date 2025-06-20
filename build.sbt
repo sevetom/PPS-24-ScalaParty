@@ -10,6 +10,7 @@ lazy val root = project
 
       libraryDependencies ++= Seq(
           "org.scalameta" %% "munit" % "1.0.0" % Test,
-          "it.unibo.alice.tuprolog" % "tuprolog" % "3.3.0"
+          "it.unibo.alice.tuprolog" % "tuprolog" % "3.3.0",
+          "org.scalatest" %% "scalatest" % "3.2.19" % "test"
       )
   )
