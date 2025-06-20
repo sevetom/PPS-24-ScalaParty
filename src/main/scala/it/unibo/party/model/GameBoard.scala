@@ -1,6 +1,6 @@
 package it.unibo.party.model
 
-import it.unibo.party.model.GameBoard.BoardBox.EmptyBox
+import it.unibo.party.model.GameBoard.BoardBox.{EmptyBox, FullBox}
 
 object GameBoard {
   type Collectable = Int
@@ -16,7 +16,7 @@ object GameBoard {
       
     def tryAcquireItem: Option[Collectable] = b match 
       case EmptyBox => Option.empty
-      case _ => ???
+      case FullBox(item) => Option(item)
     
       
     
