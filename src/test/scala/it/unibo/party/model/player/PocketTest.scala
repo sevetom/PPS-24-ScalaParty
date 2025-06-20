@@ -1,4 +1,4 @@
-package it.unibo.party.model
+package it.unibo.party.model.player
 
 import it.unibo.party.model.items.Collectable
 import it.unibo.party.model.player.Pocket
