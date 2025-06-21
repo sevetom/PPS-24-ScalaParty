@@ -29,8 +29,9 @@ object Dice:
 
     override def lastRolled: Int = _lastRolled
 
-    override def roll(n: Int): Int = {
+    override def roll(n: Int): Int =
+      require(n > 0, "Number of rolls must be positive")
       _lastRolled = scala.util.Random.nextInt(DICE_DIM) + 1
       _lastRolled
-    }
+
 
