@@ -7,7 +7,11 @@ import it.unibo.party.model.partyGame.*
 
 class PartyGameTest extends AnyFlatSpec:
 
+  val initialPartyGame: PartyGame = PartyGame.empty
+
   "A PartyGame" should "have a board" in:
     val board: GameBoard = GameBoard(Map.empty, Map.empty)
-    val partyGame: PartyGame = PartyGame(board)
-    partyGame.board shouldEqual board
+    initialPartyGame.board shouldEqual board
+
+  "A PartyGame" should "have a dice" in:
+    initialPartyGame.dice should not be null
