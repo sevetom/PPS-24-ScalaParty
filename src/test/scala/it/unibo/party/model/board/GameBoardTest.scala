@@ -19,9 +19,14 @@ class GameBoardTest extends AnyFlatSpec with should.Matchers:
   )
 
   "A GameBoard" should "allow to move a pawn in an existent position" in:
-    val pawnEndPosition: BoardPosition = BoardPosition(1, 0)
-    val newBoard = simpleBoard.movePawn(pawnId, pawnEndPosition)
-    newBoard.pawns(pawnId).position should be (pawnEndPosition)
+    val existentPosition: BoardPosition = BoardPosition(1, 0)
+    val newBoard = simpleBoard.movePawn(pawnId, existentPosition)
+    newBoard.pawns(pawnId).position should be (existentPosition)
+    
+  it should "Throw IllegalArgumentException when trying to move a pown to a non-existent position" in:
+    val nonExistentPosition: BoardPosition = BoardPosition(2, 2)
+    assertThrows[IllegalArgumentException]:
+      simpleBoard.movePawn(pawnId, nonExistentPosition)
     
     
 

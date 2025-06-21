@@ -23,6 +23,7 @@ object GameBoard:
       case GameBoard(board, pawns) => GameBoard(
         board,
         pawns.map(entry => entry match
-          case (id, pawn) if id == pawnId => (id, Pawn[BoardPosition](position, pawn.pocket))
+          case (id, pawn) if id == pawnId && b.board.contains(position) => (id, Pawn[BoardPosition](position, pawn.pocket))
+          case _ => throw IllegalArgumentException()
         )
       )
