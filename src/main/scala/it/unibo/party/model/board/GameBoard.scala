@@ -3,7 +3,7 @@ package it.unibo.party.model.board
 import it.unibo.party.geometry.Point2D
 import it.unibo.party.model.board.BoardBox.BoardBox
 import it.unibo.party.model.board.GameBoard.BoardPosition.BoardPosition
-import it.unibo.party.model.player.Pawn
+import it.unibo.party.model.player.{Pawn, Pocket}
 
 object GameBoard:
   object BoardPosition:
@@ -21,11 +21,10 @@ object GameBoard:
   extension(b: GameBoard)
     def movePawn(pawnId: Int, position: BoardPosition): GameBoard = b match
       case GameBoard(board, pawns) if pawns.contains(pawnId) && board.contains(position) => 
+        val (newOwned, newBoardBox) = board(position).tryAcquireItem(pawns(pawnId).pocket.getAll)
         GameBoard(
-          board,
-          pawns.updated(pawnId, Pawn[BoardPosition](
-            position,
-            if board(position).isEmpty then pawns(pawnId).pocket else pawns(pawnId).pocket.add(board(position).tryAcquireItem(pawns(pawnId).pocket).get)
-          ))
+          board.updated(position, newBoardBox),
+          pawns.updated(pawnId, Pawn(position, Pocket(newOwned))
+          )
         )
       case _ => throw IllegalArgumentException()
