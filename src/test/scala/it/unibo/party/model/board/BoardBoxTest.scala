@@ -15,16 +15,16 @@ class BoardBoxTest extends AnyFlatSpec with should.Matchers:
   val fullBox: BoardBox = FullBox(item)
   val ownedItems = Seq(Monad(), Monad(), Rung(4))
 
-    "A BoardBox" should "not have items if empty" in:
+    "A BoardBox" should "be empty if it doesn't have items" in:
     emptyBox.isEmpty should be (true)
 
-  it should "have items if not empty" in:
+  it should "not be empty if it has items" in:
     fullBox.isEmpty should be (false)
 
-  it should "return the owned item when trying to acquire something if it's empty" in:
+  it should "return the owned items when trying to acquire an item but it's empty" in:
     emptyBox.tryAcquireItem(ownedItems) should be (ownedItems, EmptyBox)
 
-  it should "empty itself and return the updated list of items when trying to acquire something if it's full" in:
+  it should "empty itself and return the updated sequence of items when acquiring an item" in:
     fullBox.tryAcquireItem(ownedItems) should be (ownedItems :+ (item), EmptyBox)
 
     
