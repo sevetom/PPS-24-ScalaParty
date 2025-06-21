@@ -20,10 +20,9 @@ object GameBoard:
 
   extension(b: GameBoard)
     def movePawn(pawnId: Int, position: BoardPosition): GameBoard = b match
-      case GameBoard(board, pawns) => GameBoard(
-        board,
-        pawns.map(entry => entry match
-          case (id, pawn) if id == pawnId && b.board.contains(position) => (id, Pawn[BoardPosition](position, pawn.pocket))
-          case _ => throw IllegalArgumentException()
+      case GameBoard(board, pawns) if pawns.contains(pawnId) && board.contains(position) => 
+        GameBoard(
+          board,
+          pawns.updated(pawnId, Pawn[BoardPosition](position, pawns(pawnId).pocket))
         )
-      )
+      case _ => throw IllegalArgumentException()
