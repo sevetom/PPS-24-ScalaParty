@@ -1,31 +1,27 @@
 package it.unibo.party.model.board
 
-import GameBoard.BoardBox.*
-import GameBoard.BoardBox
-import it.unibo.party.model.items.Collectable
-import it.unibo.party.model.player.Pocket
+import BoardBox.BoardBox
+import it.unibo.party.model.board.BoardBox.BoardBox.*
+import it.unibo.party.model.board.GameBoard.BoardPosition
+import it.unibo.party.model.board.GameBoard.BoardPosition.BoardPosition
+import it.unibo.party.model.board.GameBoard.GameBoard
+import it.unibo.party.model.player.{Pawn, Pocket}
 import org.scalatest.*
 import org.scalatest.flatspec.*
 import org.scalatest.matchers.*
 
 class GameBoardTest extends AnyFlatSpec with should.Matchers:
-  val emptyBox: BoardBox = EmptyBox
-  val item: Collectable = Collectable.Monad()
-  val fullBox: BoardBox = FullBox(item)
+  val pawnId = 1
+  val pawnStratPosition: BoardPosition = BoardPosition(0, 0)
+  val simpleBoard: GameBoard = GameBoard(
+    Map(BoardPosition(0, 0) -> EmptyBox, BoardPosition(1, 0) -> EmptyBox),
+    Map(pawnId -> Pawn[BoardPosition](pawnStratPosition, Pocket.empty))
+  )
 
-  "A BoardBox" should "not have items if empty" in:
-    emptyBox.isEmpty should be (true)
-
-  it should "have items if not empty" in:
-    fullBox.isEmpty should be (false)
-
-  it should "return an empty optional if an item is requested but not present" in:
-    emptyBox.tryAcquireItem(Pocket.empty) should be (Option.empty)
-
-  it should "return the an optional of the monad if requested and present" in:
-    fullBox.tryAcquireItem(Pocket.empty) should be (Option(item))
-
-
-
-
+  "A GameBoard" should "allow to move a pawn in an existent position" in:
+    val pawnEndPosition: BoardPosition = BoardPosition(1, 0)
+    val newBoard = simpleBoard.movePawn(pawnId, pawnEndPosition)
+    newBoard.pawns(pawnId).position should be (pawnEndPosition)
+    
+    
 
