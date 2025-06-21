@@ -28,3 +28,10 @@ class CollectableTest extends AnyFlatSpec:
     val collectable: Collectable = rung
     val owned: Seq[Collectable] = Seq.empty
     collectable.tryCollectWith(owned).isEmpty shouldBe true
+    
+  it should "have the same type as itself" in:
+    monad.getType shouldEqual CollectableType.MonadType
+    
+  it should "have the same type as a different one with the same type" in:
+    val differentMonad: Collectable = Monad()
+    monad.getType shouldEqual differentMonad.getType

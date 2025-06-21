@@ -4,6 +4,9 @@ enum Collectable:
   case Monad()
   case Rung(monadsNeeded: Int)
 
+enum CollectableType:
+  case MonadType, RungType
+
 object CollectableOperations:
   import Collectable.*
 
@@ -17,6 +20,10 @@ object CollectableOperations:
           Some(owned.diff(monadsPayed) :+ r)
         else
           Option.empty
+          
+    def getType: CollectableType = c match
+      case _: Monad => CollectableType.MonadType
+      case _: Rung => CollectableType.RungType
           
   val freeRung: Rung = Rung(0)
 
