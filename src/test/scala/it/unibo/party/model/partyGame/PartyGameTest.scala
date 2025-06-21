@@ -18,9 +18,13 @@ class PartyGameTest extends AnyFlatSpec:
 
   "A PartyGame" should "allow rolling the dice" in:
     val rolledValue = initialPartyGame.dice.roll(1)
-    rolledValue should be >= 1
-    rolledValue should be <= 6
+    rolledValue.last should be >= 1
+    rolledValue.last should be <= 6
     initialPartyGame.dice.lastRolled shouldEqual rolledValue
 
   "A PartyGame" should "not allow rolling the dice with a negative number of times" in:
     an[IllegalArgumentException] should be thrownBy initialPartyGame.dice.roll(-1)
+
+  "A Dice roll" should "return as many values as requested" in:
+    val rolls = initialPartyGame.dice.roll(3)
+    rolls.length shouldEqual 3

@@ -2,7 +2,6 @@ package it.unibo.party.model.partyGame
 
 import it.unibo.party.model.board.GameBoard.GameBoard
 import it.unibo.party.model.partyGame
-import it.unibo.party.model.partyGame.Dice
 
 trait PartyGame:
   def board: GameBoard
@@ -16,8 +15,8 @@ object PartyGame:
   def empty: PartyGame = PartyGameImpl(GameBoard(Map.empty, Map.empty), Dice())
 
 trait Dice:
-  def lastRolled: Int
-  def roll(n: Int): Int
+  def lastRolled: List[Int]
+  def roll(n: Int): List[Int]
 
 object Dice:
   def apply(): Dice = DiceImpl()
@@ -25,13 +24,13 @@ object Dice:
   private val DICE_DIM = 6
 
   case class DiceImpl() extends Dice:
-    private var _lastRolled: Int = 0
+    private var _lastRolled: List[Int] = List.empty
 
-    override def lastRolled: Int = _lastRolled
+    override def lastRolled: List[Int] = _lastRolled
 
-    override def roll(n: Int): Int =
+    override def roll(n: Int): List[Int] =
       require(n > 0, "Number of rolls must be positive")
-      _lastRolled = scala.util.Random.nextInt(DICE_DIM) + 1
+      _lastRolled = List.fill(n)(scala.util.Random.nextInt(DICE_DIM) + 1)
       _lastRolled
 
 
