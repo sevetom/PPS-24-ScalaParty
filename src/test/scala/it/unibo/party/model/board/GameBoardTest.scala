@@ -5,6 +5,8 @@ import it.unibo.party.model.board.BoardBox.BoardBox.*
 import it.unibo.party.model.board.GameBoard.BoardPosition
 import it.unibo.party.model.board.GameBoard.BoardPosition.BoardPosition
 import it.unibo.party.model.board.GameBoard.GameBoard
+import it.unibo.party.model.items.Collectable
+import it.unibo.party.model.items.Collectable.Monad
 import it.unibo.party.model.player.{Pawn, Pocket}
 import org.scalatest.*
 import org.scalatest.flatspec.*
@@ -32,6 +34,16 @@ class GameBoardTest extends AnyFlatSpec with should.Matchers:
     val nonExistentPawnId = 5
     assertThrows[IllegalArgumentException]:
       simpleBoard.movePawn(nonExistentPawnId, existentPosition)
+      
+  it should "Make a pawn acquire an item when moving to a box with an item on it" in:
+    val boardWithMonad = GameBoard(
+      Map(BoardPosition(0, 0) -> EmptyBox, BoardPosition(1, 0) -> FullBox(Monad())),
+      Map(pawnId -> Pawn[BoardPosition](pawnStratPosition, Pocket.empty))
+    )
+    val positionWithMonad: BoardPosition = BoardPosition(1, 0)
+    val newBoard = boardWithMonad.movePawn(pawnId, positionWithMonad)
+    newBoard.pawns(pawnId).pocket.contains(Monad()) should be (true)
+    
     
     
     

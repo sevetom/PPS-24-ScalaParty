@@ -23,6 +23,9 @@ object GameBoard:
       case GameBoard(board, pawns) if pawns.contains(pawnId) && board.contains(position) => 
         GameBoard(
           board,
-          pawns.updated(pawnId, Pawn[BoardPosition](position, pawns(pawnId).pocket))
+          pawns.updated(pawnId, Pawn[BoardPosition](
+            position,
+            if board(position).isEmpty then pawns(pawnId).pocket else pawns(pawnId).pocket.add(board(position).tryAcquireItem(pawns(pawnId).pocket).get)
+          ))
         )
       case _ => throw IllegalArgumentException()
