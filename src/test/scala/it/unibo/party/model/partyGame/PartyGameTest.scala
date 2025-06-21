@@ -15,3 +15,9 @@ class PartyGameTest extends AnyFlatSpec:
 
   "A PartyGame" should "have a dice" in:
     initialPartyGame.dice should not be null
+
+  "A PartyGame" should "allow rolling the dice" in:
+    val rolledValue = initialPartyGame.dice.roll(1)
+    rolledValue should be >= 1
+    rolledValue should be <= 6
+    initialPartyGame.dice.lastRolled shouldEqual rolledValue

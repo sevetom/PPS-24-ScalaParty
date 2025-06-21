@@ -30,7 +30,7 @@ object Dice:
     override def lastRolled: Int = _lastRolled
 
     override def roll(n: Int): Int = {
-      _lastRolled = 0
+      _lastRolled = scala.util.Random.nextInt(DICE_DIM) + 1
       _lastRolled
     }
 
