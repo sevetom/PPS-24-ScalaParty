@@ -40,10 +40,7 @@ object Pocket:
 
     override def removeMultipleByType(itemType: CollectableType, count: Int): Pocket =
       val typedItems = items.filter(_.getType == itemType)
-      if typedItems.size <= count then
-        Pocket(items.filterNot(_.getType == itemType))
-      else
-        Pocket(items.diff(typedItems.take(count)))
+      Pocket(items.diff(typedItems.take(count)))
 
     override def contains(item: Collectable): Boolean = items.contains(item)
 
