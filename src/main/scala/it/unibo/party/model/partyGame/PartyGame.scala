@@ -16,6 +16,15 @@ object PartyGame:
 
   def empty: PartyGame = PartyGameImpl(GameBoard(Map.empty, Map.empty), summon[Dice])
 
+  given CanRoll[PartyGame] with
+    extension (pg: PartyGame)
+      def roll(n: Int): (PartyGame, List[Int]) =
+        val (newDice, result) = pg.dice.roll(n)
+        (PartyGame(pg.board)(using newDice), result)
+
+trait CanRoll[T]:
+  extension (t: T) def roll(n: Int): (T, List[Int])
+
 trait Dice:
   def lastRolled: List[Int]
   def roll(n: Int): (Dice, List[Int])
