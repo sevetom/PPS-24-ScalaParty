@@ -1,5 +1,7 @@
 package it.unibo.party.controller
 
+import it.unibo.party.common.Direction
+
 object Moves:
   
   enum PartyMoveType:
@@ -7,6 +9,6 @@ object Moves:
 
   case class PartyMove(
     playerId: Int,
-    moveType: PartyMoveType,
-    // direction: Option[Direction]
+    moveType: PartyMoveType, 
+    direction: Option[Direction]
   )
