@@ -1,6 +1,6 @@
 package it.unibo.party.view
 
-import it.unibo.party.view.screens.StartingScene
+import it.unibo.party.view.screens.StartScene
 import scalafx.application.JFXApp3
 
 import scala.swing.*
@@ -13,6 +13,6 @@ object GameView extends JFXApp3:
       width = 1440
       height = 1024
       resizable = false
-      scene = new StartingScene
+      scene = new StartScene
   
 

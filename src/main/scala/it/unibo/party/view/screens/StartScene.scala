@@ -8,8 +8,9 @@ import scalafx.scene.layout.{VBox, StackPane}
 import scalafx.scene.text.Font
 import scalafx.Includes._
 
-class StartingScene extends Scene:
-  stylesheets += getClass.getResource("./../style/style.css").toExternalForm
+class StartScene extends Scene:
+  stylesheets += getClass.getResource("./../style/commonStyle.css").toExternalForm
+  stylesheets += getClass.getResource("./../style/startStyle.css").toExternalForm
   fill = scalafx.scene.paint.Color.White
   root = new StackPane {
     children = Seq(
