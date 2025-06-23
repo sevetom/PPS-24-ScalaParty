@@ -7,7 +7,7 @@ import it.unibo.party.model.items.Collectable
 object GameState:
   
   enum GamePhase:
-    case GAME_START, DICE_ROLL, PLAYER_MOVING, PLAYING_MINIGAME
+    case GameStart, DiceRoll, PlayerMoving, PlayingMinigame
     
   case class GameState(  
     phase: GamePhase,

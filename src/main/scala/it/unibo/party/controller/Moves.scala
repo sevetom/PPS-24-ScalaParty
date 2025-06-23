@@ -3,7 +3,7 @@ package it.unibo.party.controller
 object Moves:
   
   enum PartyMoveType:
-    case DICE_ROLL, MOVEMENT
+    case DiceRoll, Movement
 
   case class PartyMove(
     playerId: Int,
