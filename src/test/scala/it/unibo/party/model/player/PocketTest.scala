@@ -52,5 +52,12 @@ class PocketTest extends AnyFlatSpec:
     val updatedPocket = emptyPocket.addMultiple(genericItem, totalCount)
         .removeMultipleByType(genericItem.getType, removeCount)
     updatedPocket.countByType(genericItem.getType) shouldEqual totalCount - removeCount
+
+  it should "remove all elements of the specified type when removing more than available" in :
+    val removeCount = 10
+    val totalCount = 5
+    val updatedPocket = emptyPocket.addMultiple(genericItem, totalCount)
+        .removeMultipleByType(genericItem.getType, removeCount)
+    updatedPocket.countByType(genericItem.getType) shouldEqual 0
     
   
