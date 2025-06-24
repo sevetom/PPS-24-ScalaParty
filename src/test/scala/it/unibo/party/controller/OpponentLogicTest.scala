@@ -33,7 +33,7 @@ class OpponentLogicTest extends AnyFlatSpec:
     val gamePhase: GamePhase = GamePhase.PLAYER_MOVING
     val opponentLogic: OpponentLogic = OpponentLogic()
     opponentLogic.update(gamePhase, moves) match
-      case OpponentActionResult.Moved(position) =>
+      case OpponentActionResult.Moved(position, items) =>
         position shouldEqual Point2D(3, 0) // Assuming a rightward movement of 3 units
       case _ => fail("Expected Moved action result")
 

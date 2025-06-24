@@ -3,6 +3,7 @@ package it.unibo.party.controller
 import it.unibo.party.common.GameState.GamePhase
 import it.unibo.party.controller.Moves.PartyMove
 import it.unibo.party.geometry.Point2D
+import it.unibo.party.model.items.Collectable
 import it.unibo.party.model.partyGame.Dice
 
 sealed trait OpponentActionResult
@@ -12,7 +13,7 @@ object OpponentActionResult:
 
   case class Turn() extends OpponentActionResult
 
-  case class Moved(position: Point2D[Int]) extends OpponentActionResult
+  case class Moved(position: Point2D[Int], collected: Option[List[Collectable]]) extends OpponentActionResult
 
   case class Default() extends OpponentActionResult
 
@@ -34,7 +35,9 @@ object OpponentLogic:
           val (_, result) = dice.roll()
           OpponentActionResult.Rolled(result)
         case GamePhase.PLAYER_MOVING =>
-          OpponentActionResult.Moved(move.position.getOrElse(Point2D(0, 0)) +
-            Point2D(move.diceResult.getOrElse(0), 0)) // Assuming a simple rightward movement for demonstration
+          val startPosition = move.position.getOrElse(Point2D(0, 0))
+          val newPosition = Point2D(startPosition.x + move.diceResult.getOrElse(0), startPosition.y)
+          val collectedItems = List.empty[Collectable] // Simulate no items collected for simplicity
+          OpponentActionResult.Moved(newPosition, Some(collectedItems))
         case _ =>
           OpponentActionResult.Default()
