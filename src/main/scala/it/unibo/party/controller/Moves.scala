@@ -1,14 +1,14 @@
 package it.unibo.party.controller
 
-import it.unibo.party.common.Direction
+import it.unibo.party.geometry.Direction
 
 object Moves:
   
   enum PartyMoveType:
-    case DICE_ROLL, MOVEMENT
+    case DiceRoll, Movement
 
   case class PartyMove(
     playerId: Int,
-    moveType: PartyMoveType, 
+    moveType: PartyMoveType,
     direction: Option[Direction]
   )
