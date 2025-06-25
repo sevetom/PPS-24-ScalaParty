@@ -24,20 +24,20 @@ object OpponentLogic:
   def apply(): OpponentLogic = OpponentLogicImpl()
 
   private case class OpponentLogicImpl() extends OpponentLogic:
-    override def update(gamePhase: GamePhase, move: PartyMove): OpponentActionResult =
-      gamePhase match
-        case GamePhase.GAME_START =>
-          val dice = Dice()
-          val (_, result) = dice.roll()
-          OpponentActionResult.Rolled(result)
-        case GamePhase.DICE_ROLL =>
-          val dice = Dice()
-          val (_, result) = dice.roll()
-          OpponentActionResult.Rolled(result)
-        case GamePhase.PLAYER_MOVING =>
-          val startPosition = move.position.getOrElse(Point2D(0, 0))
-          val newPosition = Point2D(startPosition.x + move.diceResult.getOrElse(0), startPosition.y)
-          val collectedItems = List.empty[Collectable] // Simulate no items collected for simplicity
-          OpponentActionResult.Moved(newPosition, Some(collectedItems))
-        case _ =>
-          OpponentActionResult.Default()
+//    override def update(gamePhase: GamePhase, move: PartyMove): OpponentActionResult =
+//      gamePhase match
+//        case GamePhase.GAME_START =>
+//          val dice = Dice()
+//          val (_, result) = dice.roll()
+//          OpponentActionResult.Rolled(result)
+//        case GamePhase.DICE_ROLL =>
+//          val dice = Dice()
+//          val (_, result) = dice.roll()
+//          OpponentActionResult.Rolled(result)
+//        case GamePhase.PLAYER_MOVING =>
+//          val startPosition = move.position.getOrElse(Point2D(0, 0))
+//          val newPosition = Point2D(startPosition.x + move.diceResult.getOrElse(0), startPosition.y)
+//          val collectedItems = List.empty[Collectable] // Simulate no items collected for simplicity
+//          OpponentActionResult.Moved(newPosition, Some(collectedItems))
+//        case _ =>
+//          OpponentActionResult.Default()
