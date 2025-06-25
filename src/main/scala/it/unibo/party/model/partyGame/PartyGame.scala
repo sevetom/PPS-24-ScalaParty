@@ -28,7 +28,7 @@ object PartyGame:
         val (newDice, result) = pg.dice.roll(n)
         (PartyGame(pg.board)(using newDice), result)
 
-  extension(pg: PartyGame)
+  extension (pg: PartyGame)
     def movePlayer(id: Int, direction: Direction, steps: Int): MovementResult =
       val newPosition = pg.board.pawns.get(id) match
         case Some(pawn) =>
@@ -38,12 +38,17 @@ object PartyGame:
 
       pg.movePawn(id, newPosition)
 
-    def getPlayersPosition: Map[Int, BoardPosition] =
-      pg.board.pawns.view.mapValues(_.position).toMap
+    def getPlayersPosition: Map[BoardPosition, Int] =
+      pg.board.pawns.map((id, pawn) => pawn.position -> id)
 
-    def getBoardBoxes: Set[BoardBox] =
-      pg.board.board.values.toSet
+    def getBoardBoxes: Set[BoardPosition] =
+      pg.board.board.keys.toSet
 
     def getItems: Map[BoardPosition, Collectable] =
       pg.board.board.collect:
         case (pos, BoardBox.FullBox(item)) => pos -> item
+
+    def getPocketsContents: Map[Int, Set[Collectable]] =
+      pg.board.pawns.collect:
+        case (id, pawn) => id -> pawn.pocket.getAll.toSet
+
