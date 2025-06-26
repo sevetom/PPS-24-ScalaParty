@@ -2,7 +2,7 @@ package it.unibo.party.model.partyGame
 
 import it.unibo.party.geometry.Direction
 
-sealed trait MovementResult
+trait MovementResult
 
 object MovementResult:
   case class Moved(
