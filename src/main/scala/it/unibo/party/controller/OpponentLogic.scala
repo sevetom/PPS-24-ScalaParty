@@ -9,12 +9,12 @@ trait OpponentLogic extends Subscriber[GameState]
 
 object OpponentLogic:
 
-  def apply(id: Int, playingAgent: PlayingAgent): OpponentLogic = OpponentLogicImpl(id, playingAgent)
+  def apply(playingAgent: PlayingAgent): OpponentLogic = OpponentLogicImpl(playingAgent)
 
-  private case class OpponentLogicImpl(id: Int, playingAgent: PlayingAgent) extends OpponentLogic:
+  private case class OpponentLogicImpl(playingAgent: PlayingAgent) extends OpponentLogic:
     override def notify(event: GameState): Unit =
-      (event.phase, event.currentPlayer) match
-        case (GamePhase.PlayerMoving, 1) =>
-          playingAgent.makeMove(PartyMove(id, PartyMoveType.Movement, Some(Direction.Right)))
-        case _ =>
-          () //placeholder
+      if event.currentPlayer == playingAgent.id then
+        event.phase match
+          case GamePhase.PlayerMoving =>
+            playingAgent.makeMove(PartyMove(playingAgent.id, PartyMoveType.Movement, Some(Direction.Up)))
+          case _ =>

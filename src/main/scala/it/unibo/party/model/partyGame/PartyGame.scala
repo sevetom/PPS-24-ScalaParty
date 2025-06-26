@@ -38,8 +38,8 @@ object PartyGame:
 
       pg.movePawn(id, newPosition)
 
-    def getPlayersPosition: Map[BoardPosition, Int] =
-      pg.board.pawns.map((id, pawn) => pawn.position -> id)
+    def getPlayersPosition: Map[Int, BoardPosition] =
+      pg.board.pawns.map((id, pawn) => id -> pawn.position)
 
     def getBoardBoxes: Set[BoardPosition] =
       pg.board.board.keys.toSet

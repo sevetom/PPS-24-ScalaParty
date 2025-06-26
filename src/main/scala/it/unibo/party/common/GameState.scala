@@ -5,7 +5,7 @@ import it.unibo.party.model.items.Collectable
 import it.unibo.party.model.partyGame.PartyGame
 
 enum GamePhase:
-  case GameStart, DiceRoll, PlayerMoving, PlayingMinigame
+  case GameStart, DiceRoll, PlayerMoving, PlayingMinigame, GameOver
 
 case class GameState(
                       phase: GamePhase,
@@ -34,6 +34,6 @@ object GameState:
       possibleDirections = possibleDirections,
       itemsCollected = game.getPocketsContents,
       board = game.getBoardBoxes.map(_.toPoint2D),
-      playersPositions = game.getPlayersPosition.map((pos, playerId) => playerId -> pos.toPoint2D),
+      playersPositions = game.getPlayersPosition.map((id, pos) => id -> pos.toPoint2D),
       itemsPositions = game.getItems.map((pos, item) => pos.toPoint2D -> item)
     )

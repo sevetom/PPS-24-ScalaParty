@@ -18,6 +18,6 @@ given MovementManager:AnyRef with
         val availableDirs = newBoard.availableDirections(to)
   
         val updatedGame = PartyGame(newBoard)(using pg.dice)
-        MovementResult.Moved(updatedGame, Some(availableDirs))
+        MovementResult.Moved(updatedGame, if availableDirs == Set.empty then None else Some(availableDirs))
       }.getOrElse(MovementResult.InvalidMove)
 

@@ -78,6 +78,23 @@ object PartyPane:
                 )
               }
             )
+          },
+          new VBox {
+            style = "-fx-background-color: #006d6d; -fx-background-radius: 10;"
+            padding = Insets(10)
+            spacing = 8
+            children = Seq(
+              new Label("Player Turn") {
+                textFill = Color.White
+                font = Font("Arial", 16)
+              },
+              new HBox {
+                spacing = 10
+                alignment = Pos.Center
+                children =
+                  labelValue(state.currentPlayer.toString, Color.AliceBlue)
+              }
+            )
           }
         )
       }
