@@ -1,0 +1,24 @@
+package it.unibo.party.controller.pubsub
+
+import it.unibo.party.controller.pubsub.Subscriber
+
+trait Publisher[T]:
+  def publish(event: T): Unit
+
+  def subscribe(subscriber: Subscriber[T]): Publisher[T]
+
+  def unsubscribe(subscriber: Subscriber[T]): Publisher[T]
+
+object Publisher:
+  def apply[T](subscribers: Seq[Subscriber[T]]): Publisher[T] = new PublisherImpl[T](subscribers)
+
+  private class PublisherImpl[T](private val subscribers: Seq[Subscriber[T]]) extends Publisher[T]:
+
+    override def publish(event: T): Unit = subscribers.foreach(_.notify(event))
+
+    override def subscribe(subscriber: Subscriber[T]): Publisher[T] = PublisherImpl(subscribers :+ subscriber)
+
+    override def unsubscribe(subscriber: Subscriber[T]): Publisher[T] = PublisherImpl(subscribers.filterNot(_ == subscriber))
+    
+  def emptyPublisher[T]: Publisher[T] = Publisher[T](Seq.empty)
+

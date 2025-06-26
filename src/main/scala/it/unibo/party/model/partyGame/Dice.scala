@@ -6,7 +6,7 @@ trait CanRoll[T]:
 trait Dice:
   def lastRolled: List[Int]
 
-  def roll(n: Int): (Dice, List[Int])
+  def roll(n: Int = 1): (Dice, List[Int])
 
 object Dice:
   def apply(): Dice = DiceImpl(List.empty)
