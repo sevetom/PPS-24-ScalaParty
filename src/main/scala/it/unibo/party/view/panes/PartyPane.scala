@@ -4,6 +4,7 @@ import it.unibo.party.common.GameState.GameState
 import it.unibo.party.view.components.Board
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.Label
+import scalafx.scene.input.KeyCode
 import scalafx.scene.layout.{BorderPane, GridPane, HBox, Pane, StackPane, VBox}
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.{Circle, Rectangle}
@@ -127,6 +128,20 @@ object PartyPane:
       def labelValue(text: String, color: Color): Label = new Label(text) {
         textFill = color
         font = Font("Arial", 40)
-
       }
+
+
+      onKeyPressed = event => {
+        event.getCode match {
+          case KeyCode.Up.delegate => println("Up pressed")
+          case KeyCode.Down.delegate => println("Down pressed")
+          case KeyCode.Left.delegate => println("Left pressed")
+          case KeyCode.Right.delegate => println("Right pressed")
+          case _ => // Do nothing for other keys
+        }
+      }
+
+      focusTraversable = true
+
+
     }
