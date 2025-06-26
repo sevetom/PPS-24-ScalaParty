@@ -1,16 +1,22 @@
 package it.unibo.party.model.partyGame
 
+import it.unibo.party.geometry.Direction
+import it.unibo.party.model.board.BoardBox.BoardBox
+import it.unibo.party.model.board.GameBoard.BoardPosition.BoardPosition
 import it.unibo.party.model.board.GameBoard.GameBoard
+import it.unibo.party.model.items.Collectable
 import it.unibo.party.model.partyGame
+import it.unibo.party.model.partyGame.MovementManager.movePawn
 
 trait PartyGame:
   def board: GameBoard
+
   def dice: Dice
 
 object PartyGame:
   def apply(board: GameBoard)(using dice: Dice): PartyGame = PartyGameImpl(board, dice)
 
-  given defaultDice : Dice = Dice()
+  given defaultDice: Dice = Dice()
 
   private case class PartyGameImpl(board: GameBoard, dice: Dice) extends PartyGame
 
@@ -21,3 +27,28 @@ object PartyGame:
       def roll(n: Int): (PartyGame, List[Int]) =
         val (newDice, result) = pg.dice.roll(n)
         (PartyGame(pg.board)(using newDice), result)
+
+  extension (pg: PartyGame)
+    def movePlayer(id: Int, direction: Direction, steps: Int): MovementResult =
+      val newPosition = pg.board.pawns.get(id) match
+        case Some(pawn) =>
+          val start = pawn.position
+          (1 to steps).foldLeft(start)((pos, _) => pos + direction)
+        case None => throw new NoSuchElementException(s"No pawn found with id $id")
+
+      pg.movePawn(id, newPosition)
+
+    def getPlayersPosition: Map[BoardPosition, Int] =
+      pg.board.pawns.map((id, pawn) => pawn.position -> id)
+
+    def getBoardBoxes: Set[BoardPosition] =
+      pg.board.board.keys.toSet
+
+    def getItems: Map[BoardPosition, Collectable] =
+      pg.board.board.collect:
+        case (pos, BoardBox.FullBox(item)) => pos -> item
+
+    def getPocketsContents: Map[Int, Set[Collectable]] =
+      pg.board.pawns.collect:
+        case (id, pawn) => id -> pawn.pocket.getAll.toSet
+

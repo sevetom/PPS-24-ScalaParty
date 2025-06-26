@@ -1,6 +1,6 @@
 package it.unibo.party.model.board
 
-import it.unibo.party.geometry.Point2D
+import it.unibo.party.geometry.{Direction, Point2D}
 import it.unibo.party.model.board.BoardBox.BoardBox
 import it.unibo.party.model.board.GameBoard.BoardPosition.BoardPosition
 import it.unibo.party.model.player.{Pawn, Pocket}
@@ -10,21 +10,29 @@ object GameBoard:
     opaque type BoardPosition = Point2D[Int]
 
     def apply(x: Int, y: Int): BoardPosition = Point2D(x, y)
-
+    
     extension (bp: BoardPosition)
       def x: Int = bp.x
       def y: Int = bp.y
       def toPoint2D: Point2D[Int] = bp
+      
+    extension (bp: BoardPosition)
+      def +(dir: Direction): BoardPosition =
+        val (dx, dy) = dir.offset
+        BoardPosition(bp.x + dx, bp.y + dy)
 
   case class GameBoard(board: Map[BoardPosition, BoardBox], pawns: Map[Int, Pawn[BoardPosition]])
 
-  extension(b: GameBoard)
+  extension (b: GameBoard)
     def movePawn(pawnId: Int, position: BoardPosition): GameBoard = b match
-      case GameBoard(board, pawns) if pawns.contains(pawnId) && board.contains(position) => 
+      case GameBoard(board, pawns) if pawns.contains(pawnId) && board.contains(position) =>
         val (newOwned, newBoardBox) = board(position).tryAcquireItem(pawns(pawnId).pocket.getAll)
         GameBoard(
-            board.updated(position, newBoardBox),
-            pawns.updated(pawnId, pawns(pawnId).moveTo(position).withPocket(Pocket(newOwned))
+          board.updated(position, newBoardBox),
+          pawns.updated(pawnId, pawns(pawnId).moveTo(position).withPocket(Pocket(newOwned))
           )
         )
       case _ => throw IllegalArgumentException()
+
+    def availableDirections(from: BoardPosition): List[Direction] =
+      ???
