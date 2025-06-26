@@ -7,7 +7,7 @@ trait MovementResult
 object MovementResult:
   case class Moved(
                     updatedGame: PartyGame,
-                    availableDirections: Option[List[Direction]]
+                    availableDirections: Option[Set[Direction]]
                   ) extends MovementResult
 
   case object InvalidMove extends MovementResult

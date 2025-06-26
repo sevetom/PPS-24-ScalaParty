@@ -36,13 +36,13 @@ object GameBoard:
         )
       case _ => throw IllegalArgumentException()
 
-    def availableDirections(from: BoardPosition): List[Direction] =
+    def availableDirections(from: BoardPosition): Set[Direction] =
       Direction
         .values
         .map(dir => (dir, from + dir))
         .filter((dir, pos) => b.board.contains(pos))
         .map((dir, _) => dir)
-        .toList
+        .toSet
 
 
   def standardBoard() : GameBoard =
