@@ -14,7 +14,7 @@ case class GameState(
                       possibleDirections: Option[Set[Direction]] = Option.empty,
                       itemsCollected: Map[Int, Set[Collectable]],
                       board: Set[Point2D[Int]],
-                      playersPositions: Map[Point2D[Int], Int],
+                      playersPositions: Map[Int, Point2D[Int]],
                       itemsPositions: Map[Point2D[Int], Collectable],
                     )
 
@@ -34,6 +34,6 @@ object GameState:
       possibleDirections = possibleDirections,
       itemsCollected = game.getPocketsContents,
       board = game.getBoardBoxes.map(_.toPoint2D),
-      playersPositions = game.getPlayersPosition.map((pos, playerId) => pos.toPoint2D -> playerId),
+      playersPositions = game.getPlayersPosition.map((pos, playerId) => playerId -> pos.toPoint2D),
       itemsPositions = game.getItems.map((pos, item) => pos.toPoint2D -> item)
     )
