@@ -5,16 +5,16 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers.*
 
 class PubSubTest extends AnyFlatSpec:
-  val startingValue: Int = 0
-  val incrementAmount: Int = 1
+  case class Log[E](var memory: List[E]):
+    def log(message: E): Unit = memory = memory :+ message
+    def latest(): Option[E] = memory.lastOption
+    def reset(): Unit = memory = List()
 
-  case class testCounter(var value: Int):
-    def increment(amount: Int): Unit = value += amount
-    def reset(): Unit = value = startingValue
+  val newValue = 1
 
-  val counter: testCounter = testCounter(startingValue)
+  val logger: Log[Int] = Log(List())
   val publisher: Publisher[Int] = Publisher.emptyPublisher
-  val subscriber: Subscriber[Int] = Subscriber(counter.increment)
+  val subscriber: Subscriber[Int] = Subscriber(logger.log)
 
   "A publisher" should "allow adding a subscriber" in:
     val updatedPub = publisher.subscribe(subscriber)
@@ -25,14 +25,14 @@ class PubSubTest extends AnyFlatSpec:
     updatedPub.contains(subscriber) shouldBe false
 
   it should "notify subscribers when an event is published" in:
-    counter.reset()
-    var updatedPub = publisher.subscribe(subscriber)
-    updatedPub.publish(incrementAmount)
-    counter.value shouldBe startingValue + incrementAmount
+    logger.reset()
+    val updatedPub = publisher.subscribe(subscriber)
+    updatedPub.publish(newValue)
+    logger.latest().get shouldBe newValue
 
   it should "not notify unsubscribed subscribers" in:
-    counter.reset()
+    logger.reset()
     var updatedPub = publisher.subscribe(subscriber)
     updatedPub = publisher.unsubscribe(subscriber)
-    updatedPub.publish(incrementAmount)
-    counter.value shouldBe startingValue
+    updatedPub.publish(newValue)
+    logger.latest().isEmpty shouldBe true
