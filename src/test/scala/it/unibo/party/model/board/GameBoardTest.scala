@@ -1,6 +1,7 @@
 package it.unibo.party.model.board
 
 import BoardBox.BoardBox
+import it.unibo.party.geometry.Direction
 import it.unibo.party.model.board.BoardBox.BoardBox.*
 import it.unibo.party.model.board.GameBoard.BoardPosition
 import it.unibo.party.model.board.GameBoard.BoardPosition.BoardPosition
@@ -18,6 +19,15 @@ class GameBoardTest extends AnyFlatSpec with should.Matchers:
   val existentPosition: BoardPosition = BoardPosition(1, 0)
   val simpleBoard: GameBoard = GameBoard(
     Map(BoardPosition(0, 0) -> EmptyBox, BoardPosition(1, 0) -> EmptyBox),
+    Map(pawnId -> Pawn[BoardPosition](pawnStratPosition, Pocket.empty))
+  )
+  val directionBoard: GameBoard = GameBoard(
+    Map(
+      BoardPosition(0, 0) -> EmptyBox,
+      BoardPosition(1, 0) -> EmptyBox,
+      BoardPosition(0, 1) -> EmptyBox,
+      BoardPosition(1, 1) -> EmptyBox
+    ),
     Map(pawnId -> Pawn[BoardPosition](pawnStratPosition, Pocket.empty))
   )
 
@@ -43,6 +53,11 @@ class GameBoardTest extends AnyFlatSpec with should.Matchers:
     val positionWithMonad: BoardPosition = BoardPosition(1, 0)
     val newBoard = boardWithMonad.movePawn(pawnId, positionWithMonad)
     newBoard.pawns(pawnId).pocket.contains(Monad()) should be (true)
+    
+  it should "Return the correct possible directions from a position" in:
+    val expectedDirections = List(Direction.Right, Direction.Down)
+    val availableDirections = directionBoard.availableDirections(pawnStratPosition)
+    availableDirections should contain theSameElementsAs expectedDirections
     
     
     

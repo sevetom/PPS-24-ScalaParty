@@ -2,7 +2,9 @@ package it.unibo.party.model.board
 
 import it.unibo.party.geometry.{Direction, Point2D}
 import it.unibo.party.model.board.BoardBox.BoardBox
+import it.unibo.party.model.board.BoardBox.BoardBox.*
 import it.unibo.party.model.board.GameBoard.BoardPosition.BoardPosition
+import it.unibo.party.model.items.Collectable.*
 import it.unibo.party.model.player.{Pawn, Pocket}
 
 object GameBoard:
@@ -35,4 +37,30 @@ object GameBoard:
       case _ => throw IllegalArgumentException()
 
     def availableDirections(from: BoardPosition): List[Direction] =
-      ???
+      Direction
+        .values
+        .map(dir => (dir, from + dir))
+        .filter((dir, pos) => b.board.contains(pos))
+        .map((dir, _) => dir)
+        .toList
+
+
+  def standardBoard() : GameBoard =
+    GameBoard(
+      Map(
+          BoardPosition(0, 0) -> FullBox(Rung(3)), BoardPosition(1, 0) -> EmptyBox, BoardPosition(2, 0) -> EmptyBox, BoardPosition(3, 0) -> EmptyBox, BoardPosition(4, 0) -> EmptyBox, BoardPosition(5, 0) -> EmptyBox, BoardPosition(6, 0) -> EmptyBox, BoardPosition(7, 0) -> EmptyBox,
+          BoardPosition(0, 1) -> EmptyBox, BoardPosition(4, 1) -> EmptyBox, BoardPosition(7, 1) -> EmptyBox,
+          BoardPosition(0, 2) -> EmptyBox, BoardPosition(4, 2) -> FullBox(Monad()), BoardPosition(7, 2) -> EmptyBox,
+          BoardPosition(0, 3) -> EmptyBox, BoardPosition(1, 3) -> EmptyBox, BoardPosition(2, 3) -> EmptyBox, BoardPosition(3, 3) -> EmptyBox, BoardPosition(4, 3) -> EmptyBox, BoardPosition(5, 3) -> EmptyBox, BoardPosition(6, 3) -> EmptyBox, BoardPosition(7, 3) -> EmptyBox, BoardPosition(8, 3) -> EmptyBox, BoardPosition(9, 3) -> EmptyBox,
+          BoardPosition(0, 4) -> EmptyBox, BoardPosition(4, 4) -> EmptyBox, BoardPosition(7, 4) -> EmptyBox, BoardPosition(9, 4) -> EmptyBox,
+          BoardPosition(0, 5) -> EmptyBox, BoardPosition(4, 5) -> EmptyBox, BoardPosition(7, 5) -> EmptyBox, BoardPosition(9, 5) -> EmptyBox,
+          BoardPosition(0, 6) -> EmptyBox, BoardPosition(4, 6) -> EmptyBox, BoardPosition(7, 6) -> EmptyBox, BoardPosition(9, 6) -> EmptyBox,
+          BoardPosition(0, 7) -> EmptyBox, BoardPosition(1, 7) -> FullBox(Monad()), BoardPosition(2, 7) -> EmptyBox, BoardPosition(3, 7) -> EmptyBox, BoardPosition(4, 7) -> EmptyBox, BoardPosition(5, 7) -> EmptyBox, BoardPosition(6, 7) -> EmptyBox, BoardPosition(7, 7) -> EmptyBox, BoardPosition(8, 7) -> EmptyBox, BoardPosition(9, 7) -> EmptyBox,
+          BoardPosition(3, 8) -> EmptyBox, BoardPosition(9, 8) -> EmptyBox,
+          BoardPosition(3, 9) -> EmptyBox, BoardPosition(4, 9) -> EmptyBox, BoardPosition(5, 9) -> EmptyBox, BoardPosition(6, 9) -> EmptyBox, BoardPosition(7, 9) -> EmptyBox, BoardPosition(8, 9) -> EmptyBox, BoardPosition(9, 9) -> EmptyBox
+      ),
+      Map(
+        0 -> Pawn[BoardPosition](BoardPosition(9, 9), Pocket.empty),
+        1 -> Pawn[BoardPosition](BoardPosition(9, 9), Pocket.empty),
+      )
+    )
