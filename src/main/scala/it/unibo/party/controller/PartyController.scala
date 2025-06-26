@@ -19,11 +19,11 @@ object PartyController:
   def apply(game: PartyGame, players: Seq[Int]) = new PartyControllerImpl(game, players)
 
   class PartyControllerImpl(private var game: PartyGame, private val players: Seq[Int]) extends PartyController:
-    private val statePublisher: Publisher[GameState] = Publisher.emptyPublisher
+    private var statePublisher: Publisher[GameState] = Publisher.emptyPublisher
     private val gamePhase: GamePhase = GamePhase.PlayerMoving
     private var currentPlayerIndex: Int = 0
 
-    override def addMoveListener(listener: Subscriber[GameState]): Unit = statePublisher.subscribe(listener)
+    override def addMoveListener(listener: Subscriber[GameState]): Unit = statePublisher = statePublisher.subscribe(listener)
 
     override def start(): Unit =
       val result: MovementResult = game.movePlayer(currentPlayerIndex, Direction.Up, 0)

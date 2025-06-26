@@ -14,6 +14,7 @@ import scalafx.scene.layout.{Pane, StackPane}
 import scalafx.scene.paint.Color
 import it.unibo.party.view.panes.StartPane
 import it.unibo.party.controller.PartyController
+import it.unibo.party.controller.pubsub.Subscriber
 import it.unibo.party.model.partyGame.PartyGame
 
 import scala.swing.*
@@ -24,7 +25,7 @@ import scalafx.util.Duration
 
 
 
-class GameView(playingAgent: PlayingAgent):
+class GameView(playingAgent: PlayingAgent) extends Subscriber[GameState]:
   private val container = new StackPane()
   private val commonStyleSheet = getClass.getResource("./style/commonStyle.css").toExternalForm
   private val gameStyleScheet = getClass.getResource("./style/partyStyle.css").toExternalForm
@@ -34,76 +35,13 @@ class GameView(playingAgent: PlayingAgent):
     root = container
   }
 
-  container.children.add(StartPane(() => this.update(
-    GameState(
-      PlayerMoving,
-      0,
-      Option.empty,
-      Some(Set(Direction.Up, Direction.Left)),
-      Map.empty,
-      Set(
-        Point2D(0, 0), Point2D(1, 0), Point2D(2, 0), Point2D(3, 0), Point2D(4, 0), Point2D(5, 0), Point2D(6, 0), Point2D(7, 0),
-        Point2D(0, 1), Point2D(4, 1), Point2D(7, 1),
-        Point2D(0, 2), Point2D(4, 2), Point2D(7, 2),
-        Point2D(0, 3), Point2D(1, 3), Point2D(2, 3), Point2D(3, 3), Point2D(4, 3), Point2D(5, 3), Point2D(6, 3), Point2D(7, 3), Point2D(8, 3), Point2D(9, 3),
-        Point2D(0, 4), Point2D(4, 4), Point2D(7, 4), Point2D(9, 4),
-        Point2D(0, 5), Point2D(4, 5), Point2D(7, 5), Point2D(9, 5),
-        Point2D(0, 6), Point2D(4, 6), Point2D(7, 6), Point2D(9, 6),
-        Point2D(0, 7), Point2D(1, 7), Point2D(2, 7), Point2D(3, 7), Point2D(4, 7), Point2D(5, 7), Point2D(6, 7), Point2D(7, 7), Point2D(8, 7), Point2D(9, 7),
-        Point2D(3, 8), Point2D(9, 8),
-        Point2D(3, 9), Point2D(4, 9), Point2D(5, 9), Point2D(6, 9), Point2D(7, 9), Point2D(8, 9), Point2D(9, 9)
-      ),
-      Map(
-        0 -> Point2D(9, 9), 1 -> Point2D(9, 9)
-      ),
-      Map(
-        Point2D(0, 0) -> Monad(),
-        Point2D(4, 1) -> Monad(),
-        Point2D(4, 2) -> Monad(),
-        Point2D(2, 3) -> Monad()
-      )
-    )
-  )))
+  container.children.add(StartPane(() => playingAgent.controller.start()))
 
-  def update(state: GameState): Unit = {
+  override def notify(event: GameState): Unit = {
     container.children.clear()
-    val pane: Pane = state.phase match
+    val pane: Pane = event.phase match
       // case GameStart => gameStartPane(state, playingAgent)
       // case PlayingMinigame => minigamePane(state, playingAgent)
-      case _ => PartyPane(state, playingAgent)
+      case _ => PartyPane(event, playingAgent)
     container.children.add(pane)
   }
-
-
-
-object Main extends JFXApp3:
-  override def start(): Unit =
-    val game = PartyGame.empty
-    val controller = PartyController(game, Seq(0, 1))
-    val playingAgent = PlayingAgent(0, controller)
-    val gameView = new GameView(playingAgent)
-    // publisher.subscribe(gameView)
-    stage = new JFXApp3.PrimaryStage:
-      title = "Scala Party"
-      width = 1080
-      height = 720
-      resizable = false
-      scene = gameView.scene
-
-//    val delay = new PauseTransition(Duration.apply(5000))
-//    delay.onFinished = _ => {
-//      // questo codice verrà eseguito dopo 5 secondi
-//      gameView.update(
-//        GameState(
-//          GameStart,
-//          0,
-//          Seq.empty,
-//          Seq.empty,
-//          Seq.empty
-//        )
-//      )
-//    }
-//    delay.play() // fa partire il conto alla rovescia
-
-
-

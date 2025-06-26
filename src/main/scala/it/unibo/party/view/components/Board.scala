@@ -2,7 +2,7 @@ package it.unibo.party.view.components
 
 import it.unibo.party.geometry.Point2D
 import it.unibo.party.model.items.Collectable
-import it.unibo.party.model.items.Collectable.Monad
+import it.unibo.party.model.items.Collectable.{Monad, Rung}
 import scalafx.geometry.Pos
 import scalafx.scene.control.Label
 import scalafx.scene.layout.{GridPane, HBox, Pane, Priority, Region, StackPane}
@@ -22,6 +22,11 @@ object Board:
   def monad: Circle = new Circle {
     radius = 8
     fill = Color.MediumOrchid
+  }
+
+  def rung: Circle = new Circle {
+    radius = 8
+    fill = Color.Orange
   }
 
   private def tile: Rectangle = new Rectangle {
@@ -64,6 +69,7 @@ object Board:
                   item =>
                     val itemShape = item match {
                       case Monad() => monad
+                      case Rung(_) => rung
                     }
                     children += itemShape
                 )

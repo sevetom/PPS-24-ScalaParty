@@ -48,7 +48,7 @@ object GameBoard:
   def standardBoard() : GameBoard =
     GameBoard(
       Map(
-          BoardPosition(0, 0) -> FullBox(Rung(3)), BoardPosition(1, 0) -> EmptyBox, BoardPosition(2, 0) -> EmptyBox, BoardPosition(3, 0) -> EmptyBox, BoardPosition(4, 0) -> EmptyBox, BoardPosition(5, 0) -> EmptyBox, BoardPosition(6, 0) -> EmptyBox, BoardPosition(7, 0) -> EmptyBox,
+          BoardPosition(0, 0) -> FullBox(Rung(2)), BoardPosition(1, 0) -> EmptyBox, BoardPosition(2, 0) -> EmptyBox, BoardPosition(3, 0) -> EmptyBox, BoardPosition(4, 0) -> EmptyBox, BoardPosition(5, 0) -> EmptyBox, BoardPosition(6, 0) -> EmptyBox, BoardPosition(7, 0) -> EmptyBox,
           BoardPosition(0, 1) -> EmptyBox, BoardPosition(4, 1) -> EmptyBox, BoardPosition(7, 1) -> EmptyBox,
           BoardPosition(0, 2) -> EmptyBox, BoardPosition(4, 2) -> FullBox(Monad()), BoardPosition(7, 2) -> EmptyBox,
           BoardPosition(0, 3) -> EmptyBox, BoardPosition(1, 3) -> EmptyBox, BoardPosition(2, 3) -> EmptyBox, BoardPosition(3, 3) -> EmptyBox, BoardPosition(4, 3) -> EmptyBox, BoardPosition(5, 3) -> EmptyBox, BoardPosition(6, 3) -> EmptyBox, BoardPosition(7, 3) -> EmptyBox, BoardPosition(8, 3) -> EmptyBox, BoardPosition(9, 3) -> EmptyBox,
