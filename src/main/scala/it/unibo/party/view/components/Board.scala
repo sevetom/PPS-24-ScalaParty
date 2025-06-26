@@ -10,7 +10,7 @@ import scalafx.scene.paint.Color
 import scalafx.scene.shape.{Circle, Rectangle, SVGPath, TriangleMesh}
 
 object Board:
-  
+
   def pawn(color: Color): SVGPath = new SVGPath {
     content = "M 71.938747,85.361188 H 52.020238 c -2.225794,0 -6.001995,0.08077 -7.847298,-1.108256 -1.91429,-1.233476 -3.138918,-3.354596 -3.249995,-5.629157 -0.107074,-2.192591 1.850974,-5.422492 2.963872,-7.350087 L 53.84607,54.023755 c 1.112898,-1.927595 2.93105,-5.238265 4.883428,-6.241832 2.025366,-1.041085 4.474623,-1.041085 6.49999,0 1.952376,1.003567 3.770528,4.314237 4.883426,6.241832 l 9.959254,17.249933 c 1.112898,1.927595 3.070946,5.157496 2.963872,7.350088 -0.111077,2.274562 -1.335706,4.395681 -3.249996,5.629157 -1.845303,1.189024 -5.621503,1.108255 -7.847297,1.108255 z"
     fill = color
@@ -18,42 +18,47 @@ object Board:
     scaleX = 0.4
     scaleY = 0.4
   }
-  
+
   def monad: Circle = new Circle {
     radius = 8
     fill = Color.MediumOrchid
   }
 
   private def tile: Rectangle = new Rectangle {
-    width = 60
-    height = 60
+    width = 40
+    height = 40
     fill = Color.web("#cfcfcf")
     arcWidth = 15
     arcHeight = 15
   }
-  
+
   def apply(
-             board: Seq[Point2D[Int]], 
-             playersPositions: Seq[(Int, Point2D[Int])], 
-             itemsPositions: Seq[(Collectable, Point2D[Int])],
+             board: Set[Point2D[Int]],
+             playersPositions: Map[Int, Point2D[Int]],
+             itemsPositions: Map[Point2D[Int], Collectable],
              gridSize: Int = 10
            ): Pane = {
+
+    val playersMap: Map[Point2D[Int], Seq[Int]] = playersPositions.groupBy(_._2).map {
+      case (point, players) => point -> players.keys.toSeq
+    }
     
-    val playersMap: Map[Point2D[Int], Seq[Int]] = playersPositions.groupBy(_._2).map { case (point, players) => point -> players.map(_._1) }
-    val itemsMap: Map[Point2D[Int], Seq[Collectable]] = itemsPositions.groupBy(_._2).map { case (point, items) => point -> items.map(_._1) }
-    
+    val itemsMap: Map[Point2D[Int], Seq[Collectable]] = itemsPositions.groupBy(_._1).map {
+      case (point, items) => point -> items.values.toSeq
+    }
+
     new GridPane {
       hgap = 8
       vgap = 8
       alignment = Pos.Center
-      
+
       board.foreach(
         point =>
           val stack = new StackPane {
             children += tile
             children += new HBox {
               alignment = Pos.Center
-              
+
               itemsMap.get(point).foreach(
                 list => list.foreach(
                   item =>
@@ -67,7 +72,7 @@ object Board:
               playersMap.get(point).foreach(
                 list => list.foreach(
                   playerId =>
-                    val playerColor = playerId match 
+                    val playerColor = playerId match
                       case 0 => Color.MediumOrchid
                       case 1 => Color.Orange
                       case 2 => Color.LightGreen
@@ -76,16 +81,14 @@ object Board:
                 )
               )
             }
-            }
-            
+          }
+
           add(stack, point.x, point.y)
-      
+
       )
 
-      
-      
 
-      }
+    }
   }
     
   

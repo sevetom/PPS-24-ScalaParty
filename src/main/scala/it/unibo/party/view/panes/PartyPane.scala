@@ -1,7 +1,9 @@
 package it.unibo.party.view.panes
 
-import it.unibo.party.common.GameState.GameState
+import it.unibo.party.common.GameState
+import it.unibo.party.controller.PlayingAgent
 import it.unibo.party.view.components.Board
+import it.unibo.party.view.input.InputHandler
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.Label
 import scalafx.scene.input.KeyCode
@@ -9,10 +11,11 @@ import scalafx.scene.layout.{BorderPane, GridPane, HBox, Pane, StackPane, VBox}
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.{Circle, Rectangle}
 import scalafx.scene.text.Font
+import scalafx.scene.input.InputIncludes.jfxKeyEvent2sfx
 
 object PartyPane:
 
-  def apply(state: GameState /*, playingAgent: PlayingAgent*/): Pane =
+  def apply(state: GameState , playingAgent: PlayingAgent): Pane =
     new BorderPane {
       padding = Insets(20)
 
@@ -130,15 +133,11 @@ object PartyPane:
         font = Font("Arial", 40)
       }
 
+      // ---------- Input handling ----------
 
-      onKeyPressed = event => {
-        event.getCode match {
-          case KeyCode.Up.delegate => println("Up pressed")
-          case KeyCode.Down.delegate => println("Down pressed")
-          case KeyCode.Left.delegate => println("Left pressed")
-          case KeyCode.Right.delegate => println("Right pressed")
-          case _ => // Do nothing for other keys
-        }
+
+      onKeyPressed = (event) => {
+        InputHandler(event, state, playingAgent)
       }
 
       focusTraversable = true
