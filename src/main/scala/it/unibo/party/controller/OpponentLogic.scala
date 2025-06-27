@@ -13,6 +13,7 @@ object OpponentLogic:
 
   private case class OpponentLogicImpl(playingAgent: PlayingAgent) extends OpponentLogic:
     override def notify(event: GameState): Unit =
+      println(s"[Opponent] Received event for player=${event.currentPlayer} hash=${System.identityHashCode(event)}")
       if event.currentPlayer == playingAgent.id then
         event.phase match
           case GamePhase.PlayerMoving =>

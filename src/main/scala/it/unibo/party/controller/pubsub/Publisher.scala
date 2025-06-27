@@ -16,7 +16,10 @@ object Publisher:
 
   private class PublisherImpl[T](private val subscribers: Seq[Subscriber[T]]) extends Publisher[T]:
 
-    override def publish(event: T): Unit = subscribers.foreach(_.notify(event))
+    override def publish(event: T): Unit = {
+      println(s"Publishing event: $event to ${subscribers.size} subscribers")
+      subscribers.foreach(_.notify(event))
+    }
 
     override def subscribe(subscriber: Subscriber[T]): Publisher[T] = PublisherImpl(subscribers :+ subscriber)
 

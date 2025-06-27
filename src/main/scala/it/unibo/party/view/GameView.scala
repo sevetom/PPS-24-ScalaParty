@@ -25,6 +25,8 @@ import scalafx.util.Duration
 
 
 
+
+
 class GameView(playingAgent: PlayingAgent) extends Subscriber[GameState]:
   private val container = new StackPane()
   private val commonStyleSheet = getClass.getResource("./style/commonStyle.css").toExternalForm
@@ -38,10 +40,13 @@ class GameView(playingAgent: PlayingAgent) extends Subscriber[GameState]:
   container.children.add(StartPane(() => playingAgent.controller.start()))
 
   override def notify(event: GameState): Unit = {
-    container.children.clear()
-    val pane: Pane = event.phase match
-      // case GameStart => gameStartPane(state, playingAgent)
-      // case PlayingMinigame => minigamePane(state, playingAgent)
-      case _ => PartyPane(event, playingAgent)
-    container.children.add(pane)
+    scalafx.application.Platform.runLater {
+      println(event.currentPlayer)
+      container.children.clear()
+      val pane: Pane = event.phase match
+        // case GameStart => gameStartPane(state, playingAgent)
+        // case PlayingMinigame => minigamePane(state, playingAgent)
+        case _ => PartyPane(event, playingAgent)
+      container.children.add(pane)
+    }
   }
