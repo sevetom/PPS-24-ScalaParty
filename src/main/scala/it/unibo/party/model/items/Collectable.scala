@@ -24,6 +24,10 @@ object CollectableOperations:
     def getType: CollectableType = c match
       case _: Monad => CollectableType.MonadType
       case _: Rung => CollectableType.RungType
+      
+    def getPrice: Int = c match
+      case _: Monad => 1
+      case r: Rung => r.monadsNeeded
           
   val freeRung: Rung = Rung(0)
 
