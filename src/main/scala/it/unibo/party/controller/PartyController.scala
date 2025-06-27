@@ -26,23 +26,20 @@ object PartyController:
     private var gamePhase: GamePhase = GamePhase.PlayerMoving
     private var currentPlayerIndex: Int = 0
 
+    /*
+    * Beware that when subscribing the first subscribers get notified first.
+    */
     override def addMoveListener(listener: Subscriber[GameState]): Unit = statePublisher = statePublisher.subscribe(listener)
 
     override def start(): Unit =
-      val result: MovementResult = game.movePlayer(currentPlayerIndex, Direction.Up, 0)
-      var directions: Option[Set[Direction]] = Option.empty
-      result match
-        case MovementResult.Moved(updatedGame, availableDirections) =>
-          game = updatedGame
-          directions = availableDirections
-        case _ =>
+      val directions: Set[Direction] = game.getPossibleDirections(players(currentPlayerIndex))
       statePublisher.publish(
         GameState.fromGame(
           game,
           gamePhase,
           players(currentPlayerIndex),
           Some(stepsPerPlayer),
-          directions
+          Some(directions)
         )
       )
 
@@ -52,17 +49,17 @@ object PartyController:
       if move.playerId == turnPlayer then
         move.moveType match
           case PartyMoveType.Movement =>
-            val result: MovementResult = game.movePlayer(currentPlayerIndex, move.direction.get, stepsPerPlayer)
+            val result = game.movePlayer(currentPlayerIndex, move.direction.get, stepsPerPlayer)
             result match
-              case MovementResult.Moved(updatedGame, availableDirections) =>
+              case MovementResult.Moved(updatedGame) =>
                 game = updatedGame
-                directions = availableDirections
                 currentPlayerIndex += 1
                 currentPlayerIndex = if currentPlayerIndex < players.length then currentPlayerIndex else 0
                 turnPlayer = players(currentPlayerIndex)
+                directions = Some(game.getPossibleDirections(turnPlayer))
               case _ =>
           case PartyMoveType.DiceRoll => // not yet implemented
-        val winner = game.getPocketsContents.find((k, v) => v.count(_.getType == RungType) >= winRungs)
+        val winner = game.getPockets.find((k, v) => v.countByType(RungType) >= winRungs)
         if winner.isDefined then
           gamePhase = GamePhase.GameOver
           turnPlayer = winner.get._1

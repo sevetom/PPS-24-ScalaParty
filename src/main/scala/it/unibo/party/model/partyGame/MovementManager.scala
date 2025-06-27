@@ -15,9 +15,9 @@ given MovementManager:AnyRef with
         val newPawn = newBoard.pawns(pawnId)
         val collected = newPawn.pocket.getAll.diff(oldPocket)
   
-        val availableDirs = newBoard.availableDirections(to)
+        // val availableDirs = newBoard.availableDirections(to)
   
         val updatedGame = PartyGame(newBoard)(using pg.dice)
-        MovementResult.Moved(updatedGame, if availableDirs == Set.empty then None else Some(availableDirs))
+        MovementResult.Moved(updatedGame/*, if availableDirs == Set.empty then None else Some(availableDirs)*/)
       }.getOrElse(MovementResult.InvalidMove)
 

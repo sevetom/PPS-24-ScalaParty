@@ -7,6 +7,7 @@ import it.unibo.party.model.board.GameBoard.GameBoard
 import it.unibo.party.model.items.Collectable
 import it.unibo.party.model.partyGame
 import it.unibo.party.model.partyGame.MovementManager.movePawn
+import it.unibo.party.model.player.Pocket
 
 trait PartyGame:
   def board: GameBoard
@@ -35,8 +36,12 @@ object PartyGame:
           val start = pawn.position
           (1 to steps).foldLeft(start)((pos, _) => pos + direction)
         case None => throw new NoSuchElementException(s"No pawn found with id $id")
-
       pg.movePawn(id, newPosition)
+      
+    def getPossibleDirections(id: Int): Set[Direction] = 
+      pg.board.pawns.get(id) match
+        case Some(pawn) => pg.board.availableDirections(pawn.position)
+        case None => throw new NoSuchElementException(s"No pawn found with id $id")
 
     def getPlayersPosition: Map[Int, BoardPosition] =
       pg.board.pawns.map((id, pawn) => id -> pawn.position)
@@ -48,7 +53,7 @@ object PartyGame:
       pg.board.board.collect:
         case (pos, BoardBox.FullBox(item)) => pos -> item
 
-    def getPocketsContents: Map[Int, Set[Collectable]] =
+    def getPockets: Map[Int, Pocket] =
       pg.board.pawns.collect:
-        case (id, pawn) => id -> pawn.pocket.getAll.toSet
+        case (id, pawn) => id -> pawn.pocket
 
