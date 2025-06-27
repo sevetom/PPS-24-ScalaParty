@@ -13,9 +13,9 @@ object OpponentLogic:
 
   private case class OpponentLogicImpl(playingAgent: PlayingAgent) extends OpponentLogic:
     override def notify(event: GameState): Unit =
-      println(s"[Opponent] Received event for player=${event.currentPlayer} hash=${System.identityHashCode(event)}")
-      if event.currentPlayer == playingAgent.id then
+      if event.currentPlayer == playingAgent.id then {
         event.phase match
           case GamePhase.PlayerMoving =>
-            playingAgent.makeMove(PartyMove(playingAgent.id, PartyMoveType.Movement, Some(Direction.Up)))
+            playingAgent.makeMove(PartyMove(playingAgent.id, PartyMoveType.Movement, Some(event.possibleDirections.get.head)))
           case _ =>
+      }

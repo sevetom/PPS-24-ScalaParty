@@ -1,7 +1,10 @@
 package it.unibo.party.view.panes
 
 import it.unibo.party.common.GameState
+import it.unibo.party.model.items.Collectable
+import it.unibo.party.model.items.CollectableOperations.*
 import it.unibo.party.controller.PlayingAgent
+import it.unibo.party.model.items.CollectableType.{MonadType, RungType}
 import it.unibo.party.view.components.Board
 import it.unibo.party.view.input.InputHandler
 import scalafx.geometry.{Insets, Pos}
@@ -15,7 +18,7 @@ import scalafx.scene.input.InputIncludes.jfxKeyEvent2sfx
 
 object PartyPane:
 
-  def apply(state: GameState , playingAgent: PlayingAgent): Pane =
+  def apply(state: GameState, playingAgent: PlayingAgent): Pane =
     new BorderPane {
       padding = Insets(20)
 
@@ -54,8 +57,8 @@ object PartyPane:
                 spacing = 10
                 alignment = Pos.Center
                 children = Seq(
-                  labelValue("3", Color.MediumOrchid),
-                  labelValue("0", Color.Orange)
+                  labelValue(state.itemsCollected(0).countByType(RungType).toString, Color.MediumOrchid),
+                  labelValue(state.itemsCollected(0).countByType(MonadType).toString, Color.Orange)
                 )
               }
             )
@@ -73,29 +76,12 @@ object PartyPane:
                 spacing = 10
                 alignment = Pos.Center
                 children = Seq(
-                  labelValue("0", Color.MediumOrchid),
-                  labelValue("0", Color.Orange)
+                  labelValue(state.itemsCollected(1).countByType(RungType).toString, Color.MediumOrchid),
+                  labelValue(state.itemsCollected(1).countByType(MonadType).toString, Color.Orange)
                 )
               }
             )
           },
-          new VBox {
-            style = "-fx-background-color: #006d6d; -fx-background-radius: 10;"
-            padding = Insets(10)
-            spacing = 8
-            children = Seq(
-              new Label("Player Turn") {
-                textFill = Color.White
-                font = Font("Arial", 16)
-              },
-              new HBox {
-                spacing = 10
-                alignment = Pos.Center
-                children =
-                  labelValue(state.currentPlayer.toString, Color.AliceBlue)
-              }
-            )
-          }
         )
       }
 
@@ -116,7 +102,7 @@ object PartyPane:
                 textFill = Color.White
                 font = Font("Arial", 16)
               },
-              new Label("5") {
+              new Label(state.itemsPositions.find((k, v) => v.getType == RungType).get._2.getPrice.toString) {
                 textFill = Color.White
                 font = Font("Arial", 30)
               },
@@ -126,17 +112,33 @@ object PartyPane:
               }
             )
           },
+          //          new VBox {
+          //            style = "-fx-background-color: #6b4413; -fx-background-radius: 10;"
+          //            padding = Insets(10)
+          //            spacing = 10
+          //            alignment = Pos.Center
+          //            children = Seq(
+          //              new Label("🎲 Roll") {
+          //                textFill = Color.White
+          //                font = Font("Arial", 16)
+          //              },
+          //              new Label("6") {
+          //                textFill = Color.White
+          //                font = Font("Arial", 30)
+          //              }
+          //            )
+          //          }
           new VBox {
             style = "-fx-background-color: #6b4413; -fx-background-radius: 10;"
             padding = Insets(10)
             spacing = 10
             alignment = Pos.Center
             children = Seq(
-              new Label("🎲 Roll") {
+              new Label("Player in Turn") {
                 textFill = Color.White
                 font = Font("Arial", 16)
               },
-              new Label("6") {
+              new Label(state.currentPlayer.toString) {
                 textFill = Color.White
                 font = Font("Arial", 30)
               }
@@ -153,7 +155,7 @@ object PartyPane:
       // ---------- Input handling ----------
 
 
-      onKeyPressed = (event) => {
+      onKeyPressed = event => {
         InputHandler(event, state, playingAgent)
       }
 
