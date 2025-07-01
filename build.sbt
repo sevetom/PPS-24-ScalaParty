@@ -8,6 +8,10 @@ lazy val root = project
 
       scalaVersion := scala3Version,
 
+      scalacOptions ++= Seq(
+        "-indent"
+      ),
+
       libraryDependencies ++= Seq(
           "org.scalameta" %% "munit" % "1.0.0" % Test,
           "it.unibo.alice.tuprolog" % "tuprolog" % "3.3.0",
