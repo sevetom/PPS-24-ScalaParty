@@ -6,6 +6,7 @@ import it.unibo.party.model.board.BoardBox.BoardBox.*
 import it.unibo.party.model.board.BoardDSL.*
 import it.unibo.party.model.board.BoardDSL.Cell.*
 import it.unibo.party.model.board.GameBoard.BoardPosition.BoardPosition
+import it.unibo.party.model.items.Collectable
 import it.unibo.party.model.items.Collectable.*
 import it.unibo.party.model.player.{Pawn, Pocket}
 
@@ -53,6 +54,13 @@ object GameBoard:
         ),
         b.pawns
       )
+    
+    def addRandomItems(item: Collectable, count: Int): GameBoard =
+      val randomPositions = scala.util.Random.shuffle(b.board.filter((_, box) => box.isEmpty).keys.toList).take(count)
+      val newBoard = randomPositions.foldLeft(b.board)((acc, pos) => acc.updated(pos, FullBox(item)))
+      GameBoard(newBoard, b.pawns)
+
+
       
 
   def standardBoard() : GameBoard =

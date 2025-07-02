@@ -62,6 +62,15 @@ class GameBoardTest extends AnyFlatSpec with should.Matchers:
   it should "Return the board without items when calling clearItems" in:
     val clearedBoard = itemBoard.clearItems
     clearedBoard.board.values.forall(_.isEmpty) should be (true)
+
+  it should "Return the board with items in random positions when calling addRandomItems" in:
+    val item = Monad()
+    val count = 2
+    val boardWithItems = itemBoard.clearItems.addRandomItems(item, count)
+    boardWithItems.board.values.count(_ match
+      case FullBox(_) => true
+      case EmptyBox => false
+    ) should be (count)
     
     
     
