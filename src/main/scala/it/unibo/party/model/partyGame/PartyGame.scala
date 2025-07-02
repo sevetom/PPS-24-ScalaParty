@@ -31,14 +31,24 @@ object PartyGame:
 
   extension (pg: PartyGame)
     def movePlayer(id: Int, direction: Direction, steps: Int): MovementResult =
-      val newPosition = pg.board.pawns.get(id) match
-        case Some(pawn) =>
-          val start = pawn.position
-          (1 to steps).foldLeft(start)((pos, _) => pos + direction)
-        case None => throw new NoSuchElementException(s"No pawn found with id $id")
-      pg.movePawn(id, newPosition)
-      
-    def getPossibleDirections(id: Int): Set[Direction] = 
+      pg.board.pawns.get(id).map(_.position).fold(MovementResult.InvalidMove: MovementResult)
+        (start =>
+          (1 to steps).foldLeft(Option(pg -> start))
+            ((acc, _) =>
+              acc.flatMap:
+                (game, currentPos) =>
+                  val nextPos = currentPos + direction
+                  game.board.board.get(nextPos)
+                    .flatMap(_ => game.movePawn(id, nextPos) match
+                      case MovementResult.Moved(updatedGame) => Some(updatedGame -> nextPos)
+                      case _ => None
+                    )
+            ).map(_._1)
+            .map(MovementResult.Moved.apply)
+            .getOrElse(MovementResult.InvalidMove)
+        )
+    
+    def getPossibleDirections(id: Int): Set[Direction] =
       pg.board.pawns.get(id) match
         case Some(pawn) => pg.board.availableDirections(pawn.position)
         case None => throw new NoSuchElementException(s"No pawn found with id $id")

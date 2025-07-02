@@ -52,7 +52,7 @@ object PartyController:
       if move.playerId == turnPlayer then
         move.moveType match
           case PartyMoveType.Movement =>
-            val result = game.movePlayer(currentPlayerIndex, move.direction.get, stepsPerPlayer)
+            val result = game.movePlayer(currentPlayerIndex, move.direction.get, game.dice.lastRolled.sum)
             result match
               case MovementResult.Moved(updatedGame) =>
                 game = updatedGame
@@ -61,7 +61,10 @@ object PartyController:
                 turnPlayer = players(currentPlayerIndex)
                 directions = Some(game.getPossibleDirections(turnPlayer))
               case _ =>
-          case PartyMoveType.DiceRoll => // not yet implemented
+          case PartyMoveType.DiceRoll =>
+            val (newDice, result) = game.dice.roll(1)
+            game = PartyGame(game.board)(using newDice)
+            directions = Some(game.getPossibleDirections(turnPlayer))
         val winner = game.getPockets.find((k, v) => v.countByType(RungType) >= winRungs)
         if winner.isDefined then
           gamePhase = GamePhase.GameOver
