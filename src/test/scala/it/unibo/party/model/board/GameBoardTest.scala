@@ -12,24 +12,24 @@ import it.unibo.party.model.player.{Pawn, Pocket}
 import org.scalatest.*
 import org.scalatest.flatspec.*
 import org.scalatest.matchers.*
+import it.unibo.party.model.board.BoardDSL.*
+import it.unibo.party.model.board.BoardDSL.Cell.*
+
+import scala.language.postfixOps
 
 class GameBoardTest extends AnyFlatSpec with should.Matchers:
   val pawnId = 1
-  val pawnStratPosition: BoardPosition = BoardPosition(0, 0)
+  val pawnStartPosition: BoardPosition = BoardPosition(0, 0)
   val existentPosition: BoardPosition = BoardPosition(1, 0)
-  val simpleBoard: GameBoard = GameBoard(
-    Map(BoardPosition(0, 0) -> EmptyBox, BoardPosition(1, 0) -> EmptyBox),
-    Map(pawnId -> Pawn[BoardPosition](pawnStratPosition, Pocket.empty))
-  )
-  val directionBoard: GameBoard = GameBoard(
-    Map(
-      BoardPosition(0, 0) -> EmptyBox,
-      BoardPosition(1, 0) -> EmptyBox,
-      BoardPosition(0, 1) -> EmptyBox,
-      BoardPosition(1, 1) -> EmptyBox
-    ),
-    Map(pawnId -> Pawn[BoardPosition](pawnStratPosition, Pocket.empty))
-  )
+  val simpleBoard: GameBoard = \| | O | O |+ (pawnId, pawnStartPosition) |/
+  val directionBoard: GameBoard =
+    \| | O | O |
+    -> | O | O |+
+      (pawnId, pawnStartPosition) |/
+  val itemBoard: GameBoard =
+    \| | 4 | O |
+    -> | O | M |+
+      (pawnId, pawnStartPosition) |/
 
   "A GameBoard" should "allow to move a pawn in an existent position" in:
     val newBoard = simpleBoard.movePawn(pawnId, existentPosition)
@@ -48,7 +48,7 @@ class GameBoardTest extends AnyFlatSpec with should.Matchers:
   it should "Make a pawn acquire an item when moving to a box with an item on it" in:
     val boardWithMonad = GameBoard(
       Map(BoardPosition(0, 0) -> EmptyBox, BoardPosition(1, 0) -> FullBox(Monad())),
-      Map(pawnId -> Pawn[BoardPosition](pawnStratPosition, Pocket.empty))
+      Map(pawnId -> Pawn[BoardPosition](pawnStartPosition, Pocket.empty))
     )
     val positionWithMonad: BoardPosition = BoardPosition(1, 0)
     val newBoard = boardWithMonad.movePawn(pawnId, positionWithMonad)
@@ -56,8 +56,12 @@ class GameBoardTest extends AnyFlatSpec with should.Matchers:
     
   it should "Return the correct possible directions from a position" in:
     val expectedDirections = List(Direction.Right, Direction.Down)
-    val availableDirections = directionBoard.availableDirections(pawnStratPosition)
+    val availableDirections = directionBoard.availableDirections(pawnStartPosition)
     availableDirections should contain theSameElementsAs expectedDirections
+
+  it should "Return the board without items when calling clearItems" in:
+    val clearedBoard = itemBoard.clearItems
+    clearedBoard.board.values.forall(_.isEmpty) should be (true)
     
     
     
