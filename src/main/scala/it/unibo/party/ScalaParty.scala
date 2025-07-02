@@ -10,7 +10,7 @@ import it.unibo.party.model.board.GameBoard.standardBoard
 object ScalaParty extends JFXApp3:
   override def start(): Unit =
     val game = PartyGame(standardBoard())(using Dice())
-    val controller = PartyController(game, Seq(0, 1))
+    val controller = PartyController(game, List(0, 1))
     val player = PlayingAgent(0, controller)
     val gameView = GameView(player)
     val opponentAgent = PlayingAgent(1, controller)

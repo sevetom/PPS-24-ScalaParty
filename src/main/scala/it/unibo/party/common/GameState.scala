@@ -6,12 +6,12 @@ import it.unibo.party.model.partyGame.PartyGame
 import it.unibo.party.model.player.Pocket
 
 enum GamePhase:
-  case GameStart, DiceRoll, PlayerMoving, PlayingMinigame, GameOver
+  case StartingRoll, DiceRoll, PlayerMoving, PlayingMinigame, GameOver
 
 case class GameState(
                       phase: GamePhase,
                       currentPlayer: Int,
-                      diceResult: Option[Int] = Option.empty,
+                      diceResult: Option[(Int, Int)] = Option.empty,
                       possibleDirections: Option[Set[Direction]] = Option.empty,
                       itemsCollected: Map[Int, Pocket],
                       board: Set[Point2D[Int]],
@@ -24,7 +24,7 @@ object GameState:
                 game: PartyGame,
                 gamePhase: GamePhase,
                 playerTurn: Int,
-                diceResult: Option[Int] = Option.empty,
+                diceResult: Option[(Int, Int)] = Option.empty,
                 possibleDirections: Option[Set[Direction]] = Option.empty
               ):
   GameState =
