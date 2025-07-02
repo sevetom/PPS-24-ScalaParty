@@ -7,6 +7,8 @@ import it.unibo.party.model.board.GameBoard.{BoardPosition, GameBoard}
 import it.unibo.party.model.items.Collectable.{Monad, Rung}
 import it.unibo.party.model.board.BoardDSL.*
 import it.unibo.party.model.board.BoardDSL.Cell.*
+import it.unibo.party.model.board.GameBoard.BoardPosition.BoardPosition
+import it.unibo.party.model.player.{Pawn, Pocket}
 
 import scala.language.postfixOps
 
@@ -39,6 +41,12 @@ object BoardDSL:
 
   extension (b: BuildingBoard)
     def |(c: Cell | Int) :BuildingBoard = extend(b, c)
+    def |+(id: Int, p: BoardPosition, pocket: Pocket = Pocket.empty): BuildingBoard =
+      b.copy(
+        gameBoard = b.gameBoard.copy(
+          pawns = b.gameBoard.pawns.updated(id, Pawn[BoardPosition](p, pocket))
+        )
+      )
     def |/ :GameBoard = b.gameBoard
 
 object main extends App:
@@ -52,5 +60,7 @@ object main extends App:
      > | O | * | * | * | O | * | * | O | * | O |
      > | O | M | O | O | O | O | M | O | O | O |
      > | * | * | * | O | * | * | * | * | * | O |
-     > | * | * | * | O | O | M | O | O | O | O |/
+     > | * | * | * | O | O | M | O | O | O | O |+
+      (0, BoardPosition(9, 9)) |+
+      (1, BoardPosition(9, 9)) |/
   )

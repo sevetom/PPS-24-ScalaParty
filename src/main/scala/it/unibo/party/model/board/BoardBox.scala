@@ -1,9 +1,7 @@
 package it.unibo.party.model.board
 
-import it.unibo.party.geometry.Point2D
 import it.unibo.party.model.board.BoardBox.BoardBox.{EmptyBox, FullBox}
 import it.unibo.party.model.items.*
-import it.unibo.party.model.player.{Pawn, Pocket}
 import it.unibo.party.model.items.CollectableOperations.*
 
 object BoardBox:
