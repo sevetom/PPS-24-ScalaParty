@@ -15,8 +15,8 @@ object ScalaParty extends JFXApp3:
     val gameView = GameView(player)
     val opponentAgent = PlayingAgent(1, controller)
     val opponent = OpponentLogic(opponentAgent)
-    controller.addMoveListener(gameView)
     controller.addMoveListener(opponent)
+    controller.addViewListener(gameView)
     stage = new JFXApp3.PrimaryStage:
       title = "Scala Party"
       width = 1080

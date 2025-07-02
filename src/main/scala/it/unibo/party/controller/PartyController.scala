@@ -12,6 +12,8 @@ private val stepsPerPlayer: Int = 1
 private val winRungs: Int = 1
 
 trait PartyController:
+  def addViewListener(listener: Subscriber[GameState]): Unit
+
   def addMoveListener(listener: Subscriber[GameState]): Unit
 
   def start(): Unit
@@ -22,14 +24,15 @@ object PartyController:
   def apply(game: PartyGame, players: Seq[Int]) = new PartyControllerImpl(game, players)
 
   class PartyControllerImpl(private var game: PartyGame, private val players: Seq[Int]) extends PartyController:
-    private var statePublisher: Publisher[GameState] = Publisher.emptyPublisher
+    private var statePublisher: Publisher[GameState] = Publisher(List.empty)
     private var gamePhase: GamePhase = GamePhase.PlayerMoving
     private var currentPlayerIndex: Int = 0
 
-    /*
-    * Beware that when subscribing the first subscribers get notified first.
-    */
-    override def addMoveListener(listener: Subscriber[GameState]): Unit = statePublisher = statePublisher.subscribe(listener)
+    override def addViewListener(listener: Subscriber[GameState]): Unit =
+      statePublisher = statePublisher.subscribeFirst(listener)
+
+    override def addMoveListener(listener: Subscriber[GameState]): Unit =
+      statePublisher = statePublisher.subscribeLast(listener)
 
     override def start(): Unit =
       val directions: Set[Direction] = game.getPossibleDirections(players(currentPlayerIndex))

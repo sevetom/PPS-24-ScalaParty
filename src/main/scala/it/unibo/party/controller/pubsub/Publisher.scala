@@ -1,7 +1,5 @@
 package it.unibo.party.controller.pubsub
 
-import it.unibo.party.controller.pubsub.Subscriber
-
 trait Publisher[T]:
   def publish(event: T): Unit
 
@@ -14,7 +12,7 @@ trait Publisher[T]:
 object Publisher:
   def apply[T](subscribers: Seq[Subscriber[T]]): Publisher[T] = new PublisherImpl[T](subscribers)
 
-  private class PublisherImpl[T](private val subscribers: Seq[Subscriber[T]]) extends Publisher[T]:
+  private class PublisherImpl[T](val subscribers: Seq[Subscriber[T]]) extends Publisher[T]:
 
     override def publish(event: T): Unit = subscribers.foreach(_.notify(event))
     
@@ -25,4 +23,14 @@ object Publisher:
     override def contains(subscriber: Subscriber[T]): Boolean = subscribers.contains(subscriber)
     
   def emptyPublisher[T]: Publisher[T] = Publisher[T](Seq.empty)
+
+  extension [T](publisher: Publisher[T])
+    def subscribeFirst(subscriber: Subscriber[T]): Publisher[T] =
+      publisher match
+        case impl: PublisherImpl[T] =>
+          Publisher(Seq(subscriber) ++ impl.subscribers)
+        case _ => publisher.subscribe(subscriber)
+
+    def subscribeLast(subscriber: Subscriber[T]): Publisher[T] =
+      publisher.subscribe(subscriber)
 
