@@ -17,5 +17,7 @@ object OpponentLogic:
         event.phase match
           case GamePhase.PlayerMoving =>
             playingAgent.makeMove(PartyMove(playingAgent.id, PartyMoveType.Movement, Some(event.possibleDirections.get.head)))
-          case _ =>
+          case GamePhase.DiceRoll =>
+            playingAgent.makeMove(PartyMove(playingAgent.id, PartyMoveType.DiceRoll, None))
+          case _ => // Ignore other phases
       }
