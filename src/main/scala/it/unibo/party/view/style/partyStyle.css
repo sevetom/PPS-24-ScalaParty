@@ -63,3 +63,9 @@
     -fx-font-family: "Poppins";
     -fx-alignment: center;
 }
+
+.dice-box-header {
+    -fx-background-color: #684B31;
+    -fx-padding: 10pt;
+    -fx-alignment: center;
+}

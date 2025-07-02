@@ -1,13 +1,15 @@
 package it.unibo.party.view.panes
 
 import it.unibo.party.common.GameState
-import it.unibo.party.model.items.CollectableOperations.*
+import it.unibo.party.controller.Moves.PartyMove
+import it.unibo.party.controller.Moves.PartyMoveType.DiceRoll
 import it.unibo.party.controller.PlayingAgent
+import it.unibo.party.model.items.CollectableOperations.*
 import it.unibo.party.model.items.CollectableType.RungType
 import it.unibo.party.view.components.{Board, Pocket, SideBoxes}
 import it.unibo.party.view.input.InputHandler
-import scalafx.scene.layout.{BorderPane, Pane, VBox}
 import scalafx.scene.input.InputIncludes.jfxKeyEvent2sfx
+import scalafx.scene.layout.{BorderPane, Pane, VBox}
 
 object PartyPane:
 
@@ -38,7 +40,11 @@ object PartyPane:
       right = new VBox:
         styleClass += "side-container"
         children += SideBoxes.rungPrice(state.itemsPositions.find((k, v) => v.getType == RungType).get._2.getPrice)
-        children += SideBoxes.diceBox(state.diceResult.getOrElse(0))
+        children += SideBoxes.diceBox(
+          state.diceResult.getOrElse(0),
+          () => playingAgent.makeMove(PartyMove(state.currentPlayer, DiceRoll, None)),
+          state.currentPlayer == 1 && state.phase == DiceRoll
+        )
 
       onKeyPressed = event => InputHandler(event, state, playingAgent)
       focusTraversable = true
