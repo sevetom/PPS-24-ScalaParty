@@ -4,9 +4,8 @@ import it.unibo.party.common.{GamePhase, GameState}
 import it.unibo.party.controller.Moves.{PartyMove, PartyMoveType}
 import it.unibo.party.controller.pubsub.{Publisher, Subscriber}
 import it.unibo.party.geometry.Direction
-import it.unibo.party.model.partyGame.{MovementResult, PartyGame}
-import it.unibo.party.model.items.CollectableOperations.*
 import it.unibo.party.model.items.CollectableType.RungType
+import it.unibo.party.model.partyGame.{MovementResult, PartyGame}
 
 private val stepsPerPlayer: Int = 1
 private val winRungs: Int = 1
@@ -62,7 +61,7 @@ object PartyController:
                 directions = Some(game.getPossibleDirections(turnPlayer))
               case _ =>
           case PartyMoveType.DiceRoll =>
-            val (newDice, result) = game.dice.roll(1)
+            val (newDice, result) = game.dice.roll()
             game = PartyGame(game.board)(using newDice)
             directions = Some(game.getPossibleDirections(turnPlayer))
         val winner = game.getPockets.find((k, v) => v.countByType(RungType) >= winRungs)
@@ -74,7 +73,7 @@ object PartyController:
             game,
             gamePhase,
             turnPlayer,
-            Some(stepsPerPlayer),
+            Some(game.dice.lastRolled.sum),
             directions
           )
         )
