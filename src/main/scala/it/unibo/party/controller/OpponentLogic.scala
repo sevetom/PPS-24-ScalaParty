@@ -16,7 +16,11 @@ object OpponentLogic:
       if event.currentPlayer == playingAgent.id then
         event.phase match
           case PartyPhase.PlayerMoving =>
-            event.possibleDirections.flatMap(_.headOption).foreach:
+            val directionPriority = List(Direction.Up, Direction.Left, Direction.Right, Direction.Down)
+            val sortedDirOpt =
+              event.possibleDirections
+                .flatMap(dirs => directionPriority.find(dirs.contains))
+            sortedDirOpt.foreach:
               dir => playingAgent.makeMove(PartyMove(playingAgent.id, PartyMoveType.Movement, Some(dir)))
           case PartyPhase.DiceRoll =>
             playingAgent.makeMove(PartyMove(playingAgent.id, PartyMoveType.DiceRoll, None))
