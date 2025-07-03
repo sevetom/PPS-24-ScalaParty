@@ -1,0 +1,26 @@
+.board-box {
+    -fx-fill: #BEBEBE;
+    -fx-arc-height: 10pt;
+    -fx-arc-width: 10pt;
+}
+
+.board-box-stack {
+    -fx-min-width: 100%;
+}
+
+.board-box-content {
+    -fx-min-width: 100%;
+    -fx-alignment: center;
+    -fx-padding: 0;
+    -fx-hgap: 4;
+}
+
+.board {
+    -fx-hgap: 2pt;
+    -fx-vgap: 3pt;
+    -fx-alignment: center;
+}
+
+.pawn {
+    -fx-stroke-width: 0;
+}

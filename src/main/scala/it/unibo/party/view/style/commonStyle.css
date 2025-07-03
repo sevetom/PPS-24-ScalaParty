@@ -1,3 +1,7 @@
+.root {
+    -fx-background-color: #2B2B2B;
+}
+
 .text{
     -fx-font-smoothing-type: gray;
 }
