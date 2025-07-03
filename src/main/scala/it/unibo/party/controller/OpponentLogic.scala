@@ -16,6 +16,9 @@ object OpponentLogic:
       if event.currentPlayer.id == playingAgent.id then {
         event.phase match
           case PartyPhase.PlayerMoving =>
-            playingAgent.makeMove(PartyMove(playingAgent.id, PartyMoveType.Movement, Some(event.possibleDirections.get.head)))
-          case _ =>
-      }
+            event.possibleDirections.flatMap(_.headOption).foreach:
+              dir => playingAgent.makeMove(PartyMove(playingAgent.id, PartyMoveType.Movement, Some(dir)))
+          case PartyPhase.DiceRoll =>
+            playingAgent.makeMove(PartyMove(playingAgent.id, PartyMoveType.DiceRoll, None))
+          case _ => // Ignore other phases
+

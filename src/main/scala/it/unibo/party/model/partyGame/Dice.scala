@@ -19,4 +19,5 @@ object Dice:
     override def roll(n: Int): (Dice, List[Int]) =
       require(n > 0, "Number of rolls must be positive")
       val newRoll = List.fill(n)(scala.util.Random.nextInt(DICE_DIM) + 1)
-      (DiceImpl(newRoll), newRoll)
+      val newDice = copy(_lastRolled = newRoll)
+      (newDice, newRoll)

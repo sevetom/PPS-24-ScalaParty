@@ -6,8 +6,8 @@ import it.unibo.party.controller.Moves.{PartyMove, PartyMoveType}
 import it.unibo.party.controller.managers.PartyTurnManager
 import it.unibo.party.controller.pubsub.{Publisher, Subscriber}
 import it.unibo.party.geometry.Direction
-import it.unibo.party.model.partyGame.{Dice, MovementResult, PartyGame}
 import it.unibo.party.model.items.CollectableType.RungType
+import it.unibo.party.model.partyGame.{MovementResult, PartyGame}
 
 private val stepsPerPlayer: Int = 1
 private val winRungs: Int = 1
@@ -55,6 +55,7 @@ object PartyController:
             diceResult = Some(handleStartRoll())
         handleWinCondition()
         statePublisher.publish(
+          PartyState.fromGame(
           PartyState.fromGame(
             game,
             turnManager.currentPhase,
