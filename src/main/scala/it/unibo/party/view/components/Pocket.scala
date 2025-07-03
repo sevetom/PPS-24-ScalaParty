@@ -19,5 +19,5 @@ object Pocket:
         styleClass += "pocket-content"
         items.foreach(_ match
           case Monad() => children += Items.monad(9)
-          case Rung(_) => children += Items.rung
+          case Rung(_) => children += Items.rung(1.5)
         )
