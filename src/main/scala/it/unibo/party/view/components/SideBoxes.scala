@@ -1,6 +1,7 @@
 package it.unibo.party.view.components
 
 import com.sun.javafx.geometry.BoundsUtils
+import it.unibo.party.common.Player
 import scalafx.scene.control.{Button, Label}
 import scalafx.scene.layout.{HBox, Pane, VBox}
 
@@ -17,7 +18,7 @@ object SideBoxes:
       children += Label(price.toString)
       children += Items.monad(22)
 
-  def diceBox(result: Int, onRoll: () => Unit, isEnabled: Boolean): Pane = new VBox:
+  def diceBox(result: (Player, Int), onRoll: () => Unit, isEnabled: Boolean): Pane = new VBox:
     styleClass += "side-box"
     styleClass += "dice-box"
     children += new HBox:
@@ -28,4 +29,4 @@ object SideBoxes:
       rollButton.disable = !isEnabled
     children += new HBox:
       styleClass += "dice-content"
-      children += Label(result.toString)
+      children += Label("(p" + result._1.id.toString + ") " + result._2.toString)

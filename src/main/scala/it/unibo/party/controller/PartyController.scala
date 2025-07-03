@@ -1,13 +1,13 @@
 package it.unibo.party.controller
 
-import it.unibo.party.common.PartyPhase.StartingRoll
-import it.unibo.party.common.{PartyPhase, PartyState, Player}
+import it.unibo.party.common.PartyPhase
+import it.unibo.party.common.{PartyState, Player}
 import it.unibo.party.controller.Moves.{PartyMove, PartyMoveType}
 import it.unibo.party.controller.managers.PartyTurnManager
 import it.unibo.party.controller.pubsub.{Publisher, Subscriber}
 import it.unibo.party.geometry.Direction
 import it.unibo.party.model.items.CollectableType.RungType
-import it.unibo.party.model.partyGame.{MovementResult, PartyGame}
+import it.unibo.party.model.partyGame.{Dice, MovementResult, PartyGame}
 
 private val stepsPerPlayer: Int = 1
 private val winRungs: Int = 1
@@ -56,7 +56,6 @@ object PartyController:
         handleWinCondition()
         statePublisher.publish(
           PartyState.fromGame(
-          PartyState.fromGame(
             game,
             turnManager.currentPhase,
             turnManager.currentPlayer,
@@ -78,7 +77,7 @@ object PartyController:
       val diceResult = Dice().roll()._2.head
       diceResults = diceResults + (dicePlayer -> -diceResult)
       turnManager = turnManager.nextTurn()
-      if turnManager.currentPhase != StartingRoll then
+      if turnManager.currentPhase != PartyPhase.StartingRoll then
         turnManager = turnManager.changePlayerOrder(diceResults)
       (turnManager.currentPlayer, diceResult)
 

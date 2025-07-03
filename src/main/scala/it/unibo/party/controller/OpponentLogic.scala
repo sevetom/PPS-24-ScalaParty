@@ -13,7 +13,7 @@ object OpponentLogic:
 
   private case class OpponentLogicImpl(playingAgent: PlayingAgent) extends OpponentLogic:
     override def notify(event: PartyState): Unit =
-      if event.currentPlayer.id == playingAgent.id then {
+      if event.currentPlayer.id == playingAgent.id then 
         event.phase match
           case PartyPhase.PlayerMoving =>
             event.possibleDirections.flatMap(_.headOption).foreach:
@@ -21,4 +21,3 @@ object OpponentLogic:
           case PartyPhase.DiceRoll =>
             playingAgent.makeMove(PartyMove(playingAgent.id, PartyMoveType.DiceRoll, None))
           case _ => // Ignore other phases
-

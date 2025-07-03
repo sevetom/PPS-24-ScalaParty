@@ -1,7 +1,7 @@
 package it.unibo.party.controller.managers
 
-import it.unibo.party.common.{PartyPhase, Player}
 import it.unibo.party.common.PartyPhase.*
+import it.unibo.party.common.{PartyPhase, Player}
 
 trait PartyTurnManager:
   def currentPlayer: Player

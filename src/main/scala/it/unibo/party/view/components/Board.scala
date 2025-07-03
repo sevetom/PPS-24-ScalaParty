@@ -33,7 +33,7 @@ object Board:
              gridSize: Int = 10
            ): Pane =
 
-    val playersMap: Map[Point2D[Int], Seq[Int]] =
+    val playersMap: Map[Point2D[Int], Seq[Player]] =
       playersPositions.groupBy(_._2).map((_, _) match
         case (point, players) => point -> players.keys.toSeq)
     
@@ -51,7 +51,7 @@ object Board:
             children += boardBox(48)
             children += new FlowPane:
               styleClass += "board-box-content"
-              val players: Seq[Int] = playersMap.getOrElse(point, Seq.empty)
+              val players: Seq[Player] = playersMap.getOrElse(point, Seq.empty)
               val items: Seq[Collectable] = itemsMap.getOrElse(point, Seq.empty)
               val numChildren: Int = players.size + items.size
               items.foreach(
@@ -64,7 +64,7 @@ object Board:
               )
               players.foreach(
                 playerId =>
-                  val playerColor = playerId match
+                  val playerColor = playerId.id match
                     case 0 => Color.web("#02838C")
                     case 1 => Color.web("#BA0013")
                     case 2 => Color.LightGreen
