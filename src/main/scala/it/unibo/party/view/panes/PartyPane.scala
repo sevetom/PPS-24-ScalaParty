@@ -52,7 +52,9 @@ object PartyPane:
         children += SideBoxes.diceBox(
           state.diceResult.getOrElse((Player(0), 0)),
           () => playingAgent.makeMove(PartyMove(state.currentPlayer.id, DiceRoll, None)),
-          state.currentPlayer.id == 0 && state.phase == PartyPhase.DiceRoll
+          state.currentPlayer.id == 0 &&
+            (state.phase == PartyPhase.DiceRoll ||
+            state.phase == PartyPhase.StartingRoll)
         )
 
       onKeyPressed = event => InputHandler(event, state, playingAgent)
