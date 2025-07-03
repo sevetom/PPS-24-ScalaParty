@@ -1,5 +1,6 @@
 package it.unibo.party.view.components
 
+import it.unibo.party.common.Player
 import it.unibo.party.geometry.Point2D
 import it.unibo.party.model.items.Collectable
 import it.unibo.party.model.items.Collectable.{Monad, Rung}
@@ -39,12 +40,12 @@ object Board:
 
   def apply(
              board: Set[Point2D[Int]],
-             playersPositions: Map[Int, Point2D[Int]],
+             playersPositions: Map[Player, Point2D[Int]],
              itemsPositions: Map[Point2D[Int], Collectable],
              gridSize: Int = 10
            ): Pane = {
 
-    val playersMap: Map[Point2D[Int], Seq[Int]] = playersPositions.groupBy(_._2).map {
+    val playersMap: Map[Point2D[Int], Seq[Player]] = playersPositions.groupBy(_._2).map {
       case (point, players) => point -> players.keys.toSeq
     }
     
@@ -78,7 +79,7 @@ object Board:
               playersMap.get(point).foreach(
                 list => list.foreach(
                   playerId =>
-                    val playerColor = playerId match
+                    val playerColor = playerId.id match
                       case 0 => Color.MediumOrchid
                       case 1 => Color.Orange
                       case 2 => Color.LightGreen

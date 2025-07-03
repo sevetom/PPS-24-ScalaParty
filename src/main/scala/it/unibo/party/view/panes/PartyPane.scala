@@ -1,6 +1,6 @@
 package it.unibo.party.view.panes
 
-import it.unibo.party.common.GameState
+import it.unibo.party.common.{PartyState, Player}
 import it.unibo.party.model.items.Collectable
 import it.unibo.party.model.items.CollectableOperations.*
 import it.unibo.party.controller.PlayingAgent
@@ -18,7 +18,7 @@ import scalafx.scene.input.InputIncludes.jfxKeyEvent2sfx
 
 object PartyPane:
 
-  def apply(state: GameState, playingAgent: PlayingAgent): Pane =
+  def apply(state: PartyState, playingAgent: PlayingAgent): Pane =
     new BorderPane {
       padding = Insets(20)
 
@@ -57,8 +57,8 @@ object PartyPane:
                 spacing = 10
                 alignment = Pos.Center
                 children = Seq(
-                  labelValue(state.itemsCollected(0).countByType(RungType).toString, Color.MediumOrchid),
-                  labelValue(state.itemsCollected(0).countByType(MonadType).toString, Color.Orange)
+                  labelValue(state.itemsCollected(Player(0)).countByType(RungType).toString, Color.MediumOrchid),
+                  labelValue(state.itemsCollected(Player(0)).countByType(MonadType).toString, Color.Orange)
                 )
               }
             )
@@ -76,8 +76,8 @@ object PartyPane:
                 spacing = 10
                 alignment = Pos.Center
                 children = Seq(
-                  labelValue(state.itemsCollected(1).countByType(RungType).toString, Color.MediumOrchid),
-                  labelValue(state.itemsCollected(1).countByType(MonadType).toString, Color.Orange)
+                  labelValue(state.itemsCollected(Player(1)).countByType(RungType).toString, Color.MediumOrchid),
+                  labelValue(state.itemsCollected(Player(1)).countByType(MonadType).toString, Color.Orange)
                 )
               }
             )

@@ -1,8 +1,8 @@
 package it.unibo.party.view
 
-import it.unibo.party.common.GamePhase.{GameOver, PlayerMoving}
-import it.unibo.party.common.{GamePhase, GameState}
-import it.unibo.party.common.GameState.*
+import it.unibo.party.common.PartyPhase.{GameOver, PlayerMoving}
+import it.unibo.party.common.{PartyPhase, PartyState}
+import it.unibo.party.common.PartyState.*
 import it.unibo.party.controller.PlayingAgent
 import it.unibo.party.geometry.{Direction, Point2D}
 import it.unibo.party.model.items.Collectable.Monad
@@ -26,7 +26,7 @@ import scalafx.util.Duration
 
 
 
-class GameView(playingAgent: PlayingAgent) extends Subscriber[GameState]:
+class GameView(playingAgent: PlayingAgent) extends Subscriber[PartyState]:
   private val container = new StackPane()
   private val commonStyleSheet = getClass.getResource("./style/commonStyle.css").toExternalForm
   private val gameStyleScheet = getClass.getResource("./style/partyStyle.css").toExternalForm
@@ -38,7 +38,7 @@ class GameView(playingAgent: PlayingAgent) extends Subscriber[GameState]:
 
   container.children.add(StartPane(() => playingAgent.controller.start()))
 
-  override def notify(event: GameState): Unit = {
+  override def notify(event: PartyState): Unit = {
     scalafx.application.Platform.runLater {
       container.children.clear()
       val pane: Pane = event.phase match
