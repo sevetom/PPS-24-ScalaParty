@@ -1,6 +1,6 @@
 package it.unibo.party.view.panes
 
-import it.unibo.party.common.GameState
+import it.unibo.party.common.PartyState
 import it.unibo.party.model.items.CollectableOperations.*
 import it.unibo.party.controller.PlayingAgent
 import it.unibo.party.model.items.CollectableType.RungType
@@ -12,7 +12,7 @@ import scalafx.scene.input.InputIncludes.jfxKeyEvent2sfx
 
 object PartyPane:
 
-  def apply(state: GameState, playingAgent: PlayingAgent): Pane =
+  def apply(state: PartyState, playingAgent: PlayingAgent): Pane =
     new BorderPane:
       
       top = new HBox:
