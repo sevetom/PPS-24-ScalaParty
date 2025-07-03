@@ -1,6 +1,6 @@
 package it.unibo.party.view.panes
 
-import it.unibo.party.common.GameState
+import it.unibo.party.common.{GamePhase, GameState}
 import it.unibo.party.controller.Moves.PartyMove
 import it.unibo.party.controller.Moves.PartyMoveType.DiceRoll
 import it.unibo.party.controller.PlayingAgent
@@ -43,7 +43,7 @@ object PartyPane:
         children += SideBoxes.diceBox(
           state.diceResult.getOrElse(0),
           () => playingAgent.makeMove(PartyMove(state.currentPlayer, DiceRoll, None)),
-          state.currentPlayer == 1 && state.phase == DiceRoll
+          state.currentPlayer == 0 && state.phase == GamePhase.DiceRoll
         )
 
       onKeyPressed = event => InputHandler(event, state, playingAgent)

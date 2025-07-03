@@ -25,7 +25,7 @@ object SideBoxes:
       val rollButton = Button("Roll")
       rollButton.onAction = _ => onRoll()
       children += rollButton
-      rollButton.disable = isEnabled
+      rollButton.disable = !isEnabled
     children += new HBox:
       styleClass += "dice-content"
       children += Label(result.toString)
