@@ -5,11 +5,17 @@ import it.unibo.party.model.items.Collectable
 import it.unibo.party.model.partyGame.PartyGame
 import it.unibo.party.model.player.Pocket
 
-enum GamePhase:
-  case GameStart, DiceRoll, PlayerMoving, PlayingMinigame, GameOver
+trait Phase
+trait State
 
-case class GameState(
-                      phase: GamePhase,
+enum PartyPhase extends Phase:
+  case GameStart, DiceRoll, PlayerMoving, GameOver
+
+enum PuzzlePhase extends Phase:
+  case Playing, GameOver
+
+case class PartyState(
+                      phase: PartyPhase,
                       currentPlayer: Int,
                       diceResult: Option[Int] = Option.empty,
                       possibleDirections: Option[Set[Direction]] = Option.empty,
@@ -17,18 +23,25 @@ case class GameState(
                       board: Set[Point2D[Int]],
                       playersPositions: Map[Int, Point2D[Int]],
                       itemsPositions: Map[Point2D[Int], Collectable],
-                    )
+                    ) extends State
 
-object GameState:
+case class PuzzleState(
+                      phase: PuzzlePhase,
+                      win: Boolean,
+                      gridSize: Int
+                      ) extends State
+
+
+object PartyState:
   def fromGame(
                 game: PartyGame,
-                gamePhase: GamePhase,
+                gamePhase: PartyPhase,
                 playerTurn: Int,
                 diceResult: Option[Int] = Option.empty,
                 possibleDirections: Option[Set[Direction]] = Option.empty
               ):
-  GameState =
-    GameState(
+  PartyState =
+    PartyState(
       phase = gamePhase,
       currentPlayer = playerTurn,
       diceResult = diceResult,

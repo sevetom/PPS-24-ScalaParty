@@ -1,6 +1,6 @@
 package it.unibo.party.view.panes
 
-import it.unibo.party.common.{GamePhase, GameState}
+import it.unibo.party.common.{PartyPhase, PartyState}
 import it.unibo.party.controller.Moves.PartyMove
 import it.unibo.party.controller.Moves.PartyMoveType.DiceRoll
 import it.unibo.party.model.items.CollectableOperations.*
@@ -14,9 +14,9 @@ import scalafx.scene.input.InputIncludes.jfxKeyEvent2sfx
 
 object PartyPane:
 
-  def apply(state: GameState, playingAgent: PlayingAgent): Pane =
+  def apply(state: PartyState, playingAgent: PlayingAgent): Pane =
     new BorderPane:
-
+      
       top = new HBox:
         styleClass += "turn-label-container"
         children += new Label:
@@ -52,7 +52,7 @@ object PartyPane:
         children += SideBoxes.diceBox(
           state.diceResult.getOrElse(0),
           () => playingAgent.makeMove(PartyMove(state.currentPlayer, DiceRoll, None)),
-          state.currentPlayer == 0 && state.phase == GamePhase.DiceRoll
+          state.currentPlayer == 0 && state.phase == PartyPhase.DiceRoll
         )
 
       onKeyPressed = event => InputHandler(event, state, playingAgent)

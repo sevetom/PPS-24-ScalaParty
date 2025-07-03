@@ -1,6 +1,6 @@
 package it.unibo.party.controller
 
-import it.unibo.party.common.{GamePhase, GameState}
+import it.unibo.party.common.{PartyPhase, PartyState}
 import it.unibo.party.controller.Moves.{PartyMove, PartyMoveType}
 import it.unibo.party.controller.pubsub.{Publisher, Subscriber}
 import it.unibo.party.geometry.Direction
@@ -11,9 +11,9 @@ private val stepsPerPlayer: Int = 1
 private val winRungs: Int = 1
 
 trait PartyController:
-  def addViewListener(listener: Subscriber[GameState]): Unit
+  def addViewListener(listener: Subscriber[PartyState]): Unit
 
-  def addMoveListener(listener: Subscriber[GameState]): Unit
+  def addMoveListener(listener: Subscriber[PartyState]): Unit
 
   def start(): Unit
 
@@ -23,21 +23,21 @@ object PartyController:
   def apply(game: PartyGame, players: Seq[Int]) = new PartyControllerImpl(game, players)
 
   class PartyControllerImpl(private var game: PartyGame, private val players: Seq[Int]) extends PartyController:
-    private var statePublisher: Publisher[GameState] = Publisher(List.empty)
-    private var gamePhase: GamePhase = GamePhase.DiceRoll
+    private var statePublisher: Publisher[PartyState] = Publisher(List.empty)
+    private var gamePhase: PartyPhase = PartyPhase.DiceRoll
     private var currentPlayerIndex: Int = 0
     private var remainingSteps: Int = 0
 
-    override def addViewListener(listener: Subscriber[GameState]): Unit =
+    override def addViewListener(listener: Subscriber[PartyState]): Unit =
       statePublisher = statePublisher.subscribeFirst(listener)
 
-    override def addMoveListener(listener: Subscriber[GameState]): Unit =
+    override def addMoveListener(listener: Subscriber[PartyState]): Unit =
       statePublisher = statePublisher.subscribeLast(listener)
 
     override def start(): Unit =
       val directions: Set[Direction] = game.getPossibleDirections(players(currentPlayerIndex))
       statePublisher.publish(
-        GameState.fromGame(
+        PartyState.fromGame(
           game,
           gamePhase,
           players(currentPlayerIndex),
@@ -61,7 +61,7 @@ object PartyController:
                   currentPlayerIndex += 1
                   currentPlayerIndex = if currentPlayerIndex < players.length then currentPlayerIndex else 0
                   turnPlayer = players(currentPlayerIndex)
-                  gamePhase = GamePhase.DiceRoll
+                  gamePhase = PartyPhase.DiceRoll
                 directions = Some(game.getPossibleDirections(turnPlayer))
               case _ =>
           case PartyMoveType.DiceRoll =>
@@ -69,13 +69,13 @@ object PartyController:
             game = PartyGame(game.board)(using newDice)
             remainingSteps = result.sum
             directions = Some(game.getPossibleDirections(turnPlayer))
-            gamePhase = GamePhase.PlayerMoving
+            gamePhase = PartyPhase.PlayerMoving
         val winner = game.getPockets.find((k, v) => v.countByType(RungType) >= winRungs)
         if winner.isDefined then
-          gamePhase = GamePhase.GameOver
+          gamePhase = PartyPhase.GameOver
           turnPlayer = winner.get._1
         statePublisher.publish(
-          GameState.fromGame(
+          PartyState.fromGame(
             game,
             gamePhase,
             turnPlayer,

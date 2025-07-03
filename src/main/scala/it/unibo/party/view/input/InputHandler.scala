@@ -1,6 +1,6 @@
 package it.unibo.party.view.input
 
-import it.unibo.party.common.{GamePhase, GameState}
+import it.unibo.party.common.{PartyPhase, PartyState}
 import it.unibo.party.controller.Moves.PartyMove
 import it.unibo.party.controller.Moves.PartyMoveType.*
 import it.unibo.party.controller.PlayingAgent
@@ -9,9 +9,9 @@ import scalafx.scene.input.{KeyCode, KeyEvent}
 
 object InputHandler:
 
-  def apply(event: KeyEvent, state: GameState, agent: PlayingAgent): Unit = {
+  def apply(event: KeyEvent, state: PartyState, agent: PlayingAgent): Unit = {
     val directions = state.possibleDirections.getOrElse(Set.empty[Direction])
-    if state.currentPlayer == agent.id && state.phase == GamePhase.PlayerMoving then
+    if state.currentPlayer == agent.id && state.phase == PartyPhase.PlayerMoving then
       event.getCode match
         case KeyCode.Up.delegate if directions.contains(Direction.Up) => agent.makeMove(PartyMove(state.currentPlayer, Movement, Some(Direction.Up)))
         case KeyCode.Down.delegate if directions.contains(Direction.Down) => agent.makeMove(PartyMove(state.currentPlayer, Movement, Some(Direction.Down)))
