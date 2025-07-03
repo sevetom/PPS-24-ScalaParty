@@ -24,8 +24,9 @@ object PartyController:
 
   class PartyControllerImpl(private var game: PartyGame, private val players: Seq[Int]) extends PartyController:
     private var statePublisher: Publisher[GameState] = Publisher(List.empty)
-    private var gamePhase: GamePhase = GamePhase.PlayerMoving
+    private var gamePhase: GamePhase = GamePhase.DiceRoll
     private var currentPlayerIndex: Int = 0
+    private var remainingSteps: Int = 0
 
     override def addViewListener(listener: Subscriber[GameState]): Unit =
       statePublisher = statePublisher.subscribeFirst(listener)
@@ -51,19 +52,24 @@ object PartyController:
       if move.playerId == turnPlayer then
         move.moveType match
           case PartyMoveType.Movement =>
-            val result = game.movePlayer(currentPlayerIndex, move.direction.get, game.dice.lastRolled.sum)
+            val result = game.movePlayer(currentPlayerIndex, move.direction.get, 1)
             result match
               case MovementResult.Moved(updatedGame) =>
                 game = updatedGame
-                currentPlayerIndex += 1
-                currentPlayerIndex = if currentPlayerIndex < players.length then currentPlayerIndex else 0
-                turnPlayer = players(currentPlayerIndex)
+                remainingSteps -= 1
+                if remainingSteps <= 0 then
+                  currentPlayerIndex += 1
+                  currentPlayerIndex = if currentPlayerIndex < players.length then currentPlayerIndex else 0
+                  turnPlayer = players(currentPlayerIndex)
+                  gamePhase = GamePhase.DiceRoll
                 directions = Some(game.getPossibleDirections(turnPlayer))
               case _ =>
           case PartyMoveType.DiceRoll =>
             val (newDice, result) = game.dice.roll()
             game = PartyGame(game.board)(using newDice)
+            remainingSteps = result.sum
             directions = Some(game.getPossibleDirections(turnPlayer))
+            gamePhase = GamePhase.PlayerMoving
         val winner = game.getPockets.find((k, v) => v.countByType(RungType) >= winRungs)
         if winner.isDefined then
           gamePhase = GamePhase.GameOver
