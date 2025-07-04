@@ -39,12 +39,16 @@ object OpponentLogic:
                                 opponentPosition: Point2D[Int],
                                 steps: Int,
                                 monadsOwned: Int): Option[Direction] =
-      var strBoard = ""
-      board.foreach(
-        box => items.foreach(
-          item => if box == item._1 then {
-            strBoard = strBoard++s"cell((${item._1.x}, ${item._1.y}), ${item._2}).\n"
-          } else strBoard = strBoard++s"cell((${item._1.x}, ${item._1.y}), Empty).\n"))
+      //var strBoard = ""
+      //board.foreach(
+      //  box => items.foreach(
+      //    item => if box == item._1 then {
+      //      strBoard = strBoard++s"cell((${item._1.x}, ${item._1.y}), ${item._2}).\n"
+      //    } else strBoard = strBoard++s"cell((${item._1.x}, ${item._1.y}), Empty).\n"))
+      var strBoard = board.map { pos =>
+        val content = items.getOrElse(pos, "empty")
+        s"cell((${pos.x}, ${pos.y}), $content)."
+      }.mkString("\n")
       val strOpponent = s"opponent_pos((${opponentPosition.x}, ${opponentPosition.y})).\n"
       val strSteps = s"steps($steps).\n"
       val strMonads = s"monads_owned($monadsOwned).\n"
