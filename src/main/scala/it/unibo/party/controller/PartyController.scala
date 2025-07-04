@@ -95,4 +95,4 @@ object PartyController:
     private def handleWinCondition(): Unit =
       val winner = game.getPockets.find((k, v) => v.countByType(RungType) >= winRungs)
       if winner.isDefined then
-        turnManager.end(Player(winner.get._1))
+        turnManager = turnManager.end(Player(winner.get._1))
