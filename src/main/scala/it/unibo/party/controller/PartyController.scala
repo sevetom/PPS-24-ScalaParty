@@ -28,6 +28,7 @@ object PartyController:
     private var statePublisher: Publisher[PartyState] = Publisher(List.empty)
     private var turnManager: PartyTurnManager = PartyTurnManager.fromTheStart(players)
     private var startingChallenge: DiceChallengeManager = DiceChallengeManager()
+    private var remainingSteps: Int = 0
 
     override def addViewListener(listener: Subscriber[PartyState]): Unit =
       statePublisher = statePublisher.subscribeFirst(listener)
@@ -46,7 +47,7 @@ object PartyController:
 
     override def handleMove(move: PartyMove): Unit =
       var directions: Option[Set[Direction]] = Option.empty
-      var diceResult: Option[(Player, Int)] = Option.empty
+      var diceResult: Option[(Player, Int)] = Some((turnManager.currentPlayer, remainingSteps - 1))
       if move.playerId == turnManager.currentPlayer.id then
         move.moveType match
           case PartyMoveType.Movement =>
@@ -58,7 +59,8 @@ object PartyController:
               case PartyPhase.DiceRoll =>
                 val result = game.roll(1)
                 game = result._1
-                diceResult = Some((turnManager.currentPlayer, result._2.sum))
+                remainingSteps = result._2.sum
+                diceResult = Some((turnManager.currentPlayer, remainingSteps))
                 turnManager = turnManager.nextTurn()
                 directions = Some(game.getPossibleDirections(turnManager.currentPlayer.id))
               case _ =>
@@ -80,7 +82,9 @@ object PartyController:
       result match
         case MovementResult.Moved(updatedGame) =>
           game = updatedGame
-          turnManager = turnManager.nextTurn()
+          remainingSteps -= stepsPerPlayer
+          if remainingSteps <= 0 then
+            turnManager = turnManager.nextTurn()
       game.getPossibleDirections(turnManager.currentPlayer.id)
 
     private def handleStartRoll(): (Player, Int) =

@@ -3,7 +3,6 @@ package it.unibo.party.controller
 import it.unibo.party.common.{PartyPhase, PartyState}
 import it.unibo.party.controller.Moves.{PartyMove, PartyMoveType}
 import it.unibo.party.controller.pubsub.Subscriber
-import it.unibo.party.geometry.Direction
 
 trait OpponentLogic extends Subscriber[PartyState]
 
