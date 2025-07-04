@@ -14,6 +14,12 @@ enum PartyPhase extends Phase:
 enum PuzzlePhase extends Phase:
   case Playing, GameOver
 
+enum MemoryPhase extends Phase:
+  case Playing, GameOver
+
+enum MazePhase extends Phase:
+  case Playing, GameOver
+
 case class PartyState(
                       phase: PartyPhase,
                       currentPlayer: Int,
