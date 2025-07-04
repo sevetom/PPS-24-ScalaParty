@@ -11,12 +11,11 @@ case class MaxTime(duration: Long):
   def isTimeUp(startTime: Long, currentTime: Long): Boolean =
     currentTime - startTime >= duration
 
-trait TimedMiniController(maxTime: MaxTime) extends MiniController
+trait TimedMiniController(startTime: Long, winTime: Long) extends MiniController
 
-object PuzzleController:
-
-  case class PuzzleControllerImpl(startTime: Long, maxTime: MaxTime) extends TimedMiniController(maxTime):
-    override def start(): MiniController = PuzzleControllerImpl(System.currentTimeMillis(), maxTime)
-
-    override def handleMove(move: Move): (MiniController, State) = ???
+//object PuzzleController:
+//
+//  case class PuzzleControllerImpl(startTime: Long, winTime: Long) extends TimedMiniController(startTime, winTime):
+//    override def start(): MiniController = ???
+//    override def handleMove(move: Move): (MiniController, State) = ???
 
