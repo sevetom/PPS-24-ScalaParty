@@ -9,6 +9,8 @@ trait State:
   def phase: Phase
 
 case class PuzzleState(phase: PuzzlePhase) extends State
+case class MemoryState(phase: MemoryPhase) extends State
+case class MazeState(phase: MazePhase) extends State
 
 case class PartyState(
                        phase: PartyPhase,

@@ -1,30 +1,25 @@
 package it.unibo.party.controller
 
-import it.unibo.party.geometry.Direction
+import it.unibo.party.geometry.{Direction, Point2D}
 
 object Moves:
 
-  trait MoveType
-  trait Move:
-    def playerId: Int
-    def moveType: MoveType
+  trait Move
   
-  enum PartyMoveType extends MoveType:
-    case DiceRoll, Movement
-
-  enum PuzzleMoveType extends MoveType:
-    case CheckSolution, Exit
-
-  enum MazeMoveType extends MoveType:
-    case Movement, Exit
-    
-  enum MemoryMoveType extends MoveType:
-    case FlipCard, Exit
-
-  case class PartyMove(playerId: Int, moveType: PartyMoveType, direction: Option[Direction]) extends Move
-    
-  case class PuzzleMove(playerId: Int, moveType: PuzzleMoveType, solution: Set[Set[Int]] ) extends Move
+  trait StartMove extends Move
   
-  case class MazeMove(playerId: Int, moveType: MazeMoveType, direction: Option[Direction]) extends Move
+  enum PartyMove extends Move:
+    case DiceRoll(playerId: Int)
+    case Movement(playerId: Int, direction: Direction)
+    case Resume
+
+  enum PuzzleMove extends Move:
+    case CheckSolution(solution: Set[Set[Int]])
+
+  enum MazeMove extends Move:
+    case Movement(direction: Direction)
+
+  enum MemoryMove extends Move:
+    case FlipCard(pos: Point2D[Int])
     
     
