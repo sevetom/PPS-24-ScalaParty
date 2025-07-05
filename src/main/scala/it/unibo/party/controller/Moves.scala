@@ -5,9 +5,9 @@ import it.unibo.party.geometry.{Direction, Point2D}
 object Moves:
 
   trait Move
-  
+
   trait StartMove extends Move
-  
+
   enum PartyMove extends Move:
     case DiceRoll(playerId: Int)
     case Movement(playerId: Int, direction: Direction)

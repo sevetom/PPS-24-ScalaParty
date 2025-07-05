@@ -48,6 +48,7 @@ object Controller:
               case 1 => Minigame.Memory
               case 2 => Minigame.Puzzle
           miniControllers = miniControllers.updatedWith(minigameKey)(_.map(_.start()))
+            
       statePublisher.publish(miniControllers(minigameKey).state)
 
 

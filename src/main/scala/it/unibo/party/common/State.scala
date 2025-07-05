@@ -8,9 +8,14 @@ import it.unibo.party.model.player.Pocket
 trait State:
   def phase: Phase
 
-case class PuzzleState(phase: PuzzlePhase) extends State
-case class MemoryState(phase: MemoryPhase) extends State
-case class MazeState(phase: MazePhase) extends State
+
+trait MinigameState extends State:
+  override def phase: MinigamePhase
+  def winnerId: Option[Int]
+
+case class PuzzleState() extends MinigameState
+case class MemoryState() extends MinigameState
+case class MazeState() extends MinigameState
 
 case class PartyState(
                        phase: PartyPhase,
