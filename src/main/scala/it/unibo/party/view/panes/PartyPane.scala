@@ -14,15 +14,24 @@ import scalafx.scene.input.InputIncludes.jfxKeyEvent2sfx
 
 object PartyPane:
 
-  def apply(state: PartyState, playingAgent: PlayingAgent): Pane =
+  def apply(state: PartyState, playingAgent: PlayingAgent): Pane = {
+    val userId: Int = playingAgent.id
+    var pockets: Seq[Pane] = state.itemsCollected.map((player, pocket) =>
+      Pocket(
+        if userId == player.id then "Your pocket" else "Enemy's pocket",
+        pocket.getAll,
+        if userId == player.id then "user-pocket" else "enemy-pocket"
+      )
+    ).toSeq
+
     new BorderPane:
-      
+
       top = new HBox:
         styleClass += "turn-label-container"
         children += new Label:
-          text = state.currentPlayer.id match
-            case 0 => "It's your turn!"
-            case 1 => "It's the enemy's turn!"
+          text = if userId == playingAgent.id then
+            "It's your turn!" else
+            "It's the enemy's turn!"
 
 
       center = Board(
@@ -33,30 +42,21 @@ object PartyPane:
 
       left = new VBox:
         styleClass += "side-container"
-        children = Seq(
-          Pocket(
-            "Your pocket",
-            state.itemsCollected.get(Player(0)).orElse(Option(it.unibo.party.model.player.Pocket.empty)).get.getAll,
-            "user-pocket"
-          ),
-          Pocket(
-            "Enemy's pocket",
-            state.itemsCollected.get(Player(1)).orElse(Option(it.unibo.party.model.player.Pocket.empty)).get.getAll,
-            "enemy-pocket"
-          )
-        )
+        children = pockets
 
       right = new VBox:
         styleClass += "side-container"
         children += SideBoxes.rungPrice(state.itemsPositions.find((k, v) => v.getType == RungType).get._2.getPrice)
         children += SideBoxes.diceBox(
-          state.diceResult.getOrElse((Player(0), 0)),
+          userId,
+          state.diceResult,
           () => playingAgent.makeMove(PartyMove(state.currentPlayer.id, DiceRoll, None)),
-          state.currentPlayer.id == 0 &&
+          state.currentPlayer.id == userId &&
             (state.phase == PartyPhase.DiceRoll ||
-            state.phase == PartyPhase.StartingRoll)
+              state.phase == PartyPhase.StartingRoll)
         )
 
       onKeyPressed = event => InputHandler(event, state, playingAgent)
       focusTraversable = true
+  }
 
