@@ -6,7 +6,8 @@ import it.unibo.party.model.partyGame.PartyGame
 import it.unibo.party.model.player.Pocket
 
 trait Phase
-trait State(phase: Phase)
+trait State:
+  def phase: Phase
 
 enum PartyPhase extends Phase:
   case GameStart, DiceRoll, PlayerMoving, GameOver
@@ -29,13 +30,11 @@ case class PartyState(
                       board: Set[Point2D[Int]],
                       playersPositions: Map[Int, Point2D[Int]],
                       itemsPositions: Map[Point2D[Int], Collectable],
-                    ) extends State(phase)
+                    ) extends State
 
-case class PuzzleState(
-                      phase: PuzzlePhase,
-                      win: Boolean,
-                      gridSize: Int
-                      ) extends State(phase)
+case class PuzzleState(phase: PuzzlePhase) extends State
+case class MemoryState(phase: MemoryPhase) extends State
+case class MazeState(phase: MazePhase) extends State
 
 
 object PartyState:

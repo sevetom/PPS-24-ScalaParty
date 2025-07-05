@@ -1,7 +1,7 @@
 package it.unibo.party.controller
 
 import it.unibo.party.common.{PartyPhase, PartyState}
-import it.unibo.party.controller.Moves.{PartyMove, PartyMoveType}
+import it.unibo.party.controller.Moves.{Move, PartyMove, PartyMoveType}
 import it.unibo.party.controller.pubsub.{Publisher, Subscriber}
 import it.unibo.party.geometry.Direction
 import it.unibo.party.model.items.CollectableType.RungType
@@ -17,7 +17,7 @@ trait PartyController:
 
   def start(): Unit
 
-  def handleMove(move: PartyMove): Unit
+  def handleMove(move: Move): Unit
 
 object PartyController:
   def apply(game: PartyGame, players: Seq[Int]) = new PartyControllerImpl(game, players)
@@ -46,30 +46,29 @@ object PartyController:
         )
       )
 
-    override def handleMove(move: PartyMove): Unit =
+    override def handleMove(move: Move): Unit =
       var directions: Option[Set[Direction]] = Option.empty
       var turnPlayer = players(currentPlayerIndex)
-      if move.playerId == turnPlayer then
-        move.moveType match
-          case PartyMoveType.Movement =>
-            val result = game.movePlayer(currentPlayerIndex, move.direction.get, 1)
-            result match
-              case MovementResult.Moved(updatedGame) =>
-                game = updatedGame
-                remainingSteps -= 1
-                if remainingSteps <= 0 then
-                  currentPlayerIndex += 1
-                  currentPlayerIndex = if currentPlayerIndex < players.length then currentPlayerIndex else 0
-                  turnPlayer = players(currentPlayerIndex)
-                  gamePhase = PartyPhase.DiceRoll
-                directions = Some(game.getPossibleDirections(turnPlayer))
-              case _ =>
-          case PartyMoveType.DiceRoll =>
-            val (newDice, result) = game.dice.roll()
-            game = PartyGame(game.board)(using newDice)
-            remainingSteps = result.sum
-            directions = Some(game.getPossibleDirections(turnPlayer))
-            gamePhase = PartyPhase.PlayerMoving
+      move match
+        case PartyMove(playerId, PartyMoveType.Movement, direction) if playerId == turnPlayer =>
+          val result = game.movePlayer(currentPlayerIndex, direction.get, 1)
+          result match
+            case MovementResult.Moved(updatedGame) =>
+              game = updatedGame
+              remainingSteps -= 1
+              if remainingSteps <= 0 then
+                currentPlayerIndex += 1
+                currentPlayerIndex = if currentPlayerIndex < players.length then currentPlayerIndex else 0
+                turnPlayer = players(currentPlayerIndex)
+                gamePhase = PartyPhase.DiceRoll
+              directions = Some(game.getPossibleDirections(turnPlayer))
+            case _ =>
+        case PartyMove(turnPlayer, PartyMoveType.DiceRoll, _) =>
+          val (newDice, result) = game.dice.roll()
+          game = PartyGame(game.board)(using newDice)
+          remainingSteps = result.sum
+          directions = Some(game.getPossibleDirections(turnPlayer))
+          gamePhase = PartyPhase.PlayerMoving
         val winner = game.getPockets.find((k, v) => v.countByType(RungType) >= winRungs)
         if winner.isDefined then
           gamePhase = PartyPhase.GameOver

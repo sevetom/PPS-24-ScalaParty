@@ -1,12 +1,12 @@
 package it.unibo.party.controller
 
-import it.unibo.party.controller.Moves.PartyMove
+import it.unibo.party.controller.Moves.{Move, PartyMove}
 
 trait PlayingAgent:
   def id: Int
   def controller: PartyController
   
-  def makeMove(move: PartyMove): Unit =
+  def makeMove(move: Move): Unit =
     controller.handleMove(move)
 
 object PlayingAgent:

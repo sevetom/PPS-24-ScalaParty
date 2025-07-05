@@ -7,11 +7,9 @@ trait MiniController:
   def start(): MiniController
   def handleMove(move: Move): (MiniController, State)
 
-case class MaxTime(duration: Long):
-  def isTimeUp(startTime: Long, currentTime: Long): Boolean =
-    currentTime - startTime >= duration
-
-trait TimedMiniController(startTime: Long, winTime: Long) extends MiniController
+trait TimedMiniController extends MiniController:
+  def startTime: Long
+  def winTime: Long
 
 //object PuzzleController:
 //
