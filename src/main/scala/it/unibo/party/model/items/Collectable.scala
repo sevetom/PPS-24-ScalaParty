@@ -1,13 +1,19 @@
 package it.unibo.party.model.items
 
+import it.unibo.party.model.items.Collectable.Rung
+
 enum Collectable:
   case Monad()
   case Rung(monadsNeeded: Int)
+
+object Collectable:
+  val freeRung: Rung = Rung(0)
 
 enum CollectableType:
   case MonadType, RungType
 
 object CollectableOperations:
+
   import Collectable.*
 
   extension (c: Collectable)
@@ -20,16 +26,19 @@ object CollectableOperations:
           Some(owned.diff(monadsPayed) :+ r)
         else
           Option.empty
-          
+
     def getType: CollectableType = c match
       case _: Monad => CollectableType.MonadType
       case _: Rung => CollectableType.RungType
-      
+
     def getPrice: Int = c match
       case _: Monad => 1
       case r: Rung => r.monadsNeeded
-          
-  val freeRung: Rung = Rung(0)
+      
+  extension(ct: CollectableType)
+    def toCollectable: Collectable = ct match
+      case CollectableType.MonadType => Monad()
+      case CollectableType.RungType => freeRung
 
 
 
