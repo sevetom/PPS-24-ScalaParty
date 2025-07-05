@@ -16,7 +16,7 @@ object PartyPane:
 
   def apply(state: PartyState, playingAgent: PlayingAgent): Pane = {
     val userId: Int = playingAgent.id
-    var pockets: Seq[Pane] = state.itemsCollected.map((player, pocket) =>
+    val pockets: Seq[Pane] = state.itemsCollected.map((player, pocket) =>
       Pocket(
         if userId == player.id then "Your pocket" else "Enemy's pocket",
         pocket.getAll,
