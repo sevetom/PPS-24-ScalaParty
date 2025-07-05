@@ -61,7 +61,7 @@ object GameBoard:
       
 
   def standardBoard() : GameBoard =
-     \| | O | O | O | O | O | O | 5 | O |
+     \| | O | O | O | O | O | O | O | O |
      -> | O | * | * | * | O | * | * | M |
      -> | O | * | * | * | M | * | * | O |
      -> | O | M | O | O | O | O | M | O | O | O |
@@ -70,7 +70,7 @@ object GameBoard:
      -> | O | * | * | * | O | * | * | O | * | O |
      -> | O | M | O | O | O | O | M | O | O | O |
      -> | * | * | * | O | * | * | * | * | * | O |
-     -> | * | * | * | O | O | M | O | O | O | O |+
+     -> | * | * | * | O | O | M | O | O | 0 | O |+
       (0, BoardPosition(9, 9)) |+
       (1, BoardPosition(9, 9)) |/
 

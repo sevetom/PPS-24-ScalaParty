@@ -33,9 +33,12 @@ class GameView(playingAgent: PlayingAgent) extends Subscriber[PartyState]:
     scalafx.application.Platform.runLater {
       container.children.clear()
       val pane: Pane = event.phase match
-        // case GameStart => gameStartPane(state, playingAgent)
         // case PlayingMinigame => minigamePane(state, playingAgent)
-        case GameOver => EndPane()
+        case GameOver => EndPane(
+          playingAgent.id,
+          event.currentPlayer.id,
+          () => System.exit(0)
+        )
         case _ => 
           scene.stylesheets = Seq(commonStyleSheet, partyStyleSheet, boardStyleSheet)
           PartyPane(event, playingAgent)

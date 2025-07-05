@@ -1,27 +1,36 @@
 package it.unibo.party.view.panes
 
-import scalafx.geometry.Insets
+import it.unibo.party.common.Player
+import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.{Button, Label}
-import scalafx.scene.layout.{Pane, StackPane}
+import scalafx.scene.layout.{Pane, StackPane, VBox}
 import scalafx.scene.paint.Color
-import scalafx.scene.text.Font
+import scalafx.scene.text.{Font, FontWeight, Text}
 
 
 object EndPane:
-  def apply(): Pane = {
-    new Pane {
-      style = "-fx-background-color: rgba(0, 0, 0, 0.5);"
-      children = Seq(
-        new StackPane {
-          style = "-fx-background-color: rgba(255, 255, 255, 0.8); -fx-background-radius: 10;"
-          padding = Insets(20)
-          children = Seq(
-            new Button("Game Over!") {
-              onMouseClicked = _ => System.exit(0)
+  def apply(playerId: Int, winnerId: Int, onClose: () => Unit): Pane = new StackPane {
+    children = Seq(
+      new VBox {
+        spacing = 20
+        alignment = Pos.Center
+        children = Seq(
+          new Text("GAME OVER") {
+            font = Font("Poppins", FontWeight.Bold, 50)
+            fill = Color.White
+          },
+          new Text(if winnerId == playerId then "You won!" else s"You lose :(") {
+            font = Font("Poppins", 30)
+            fill = Color.LightGray
+          },
+          new Button("CLOSE") {
+            font = Font("Poppins", 20)
+            onAction = _ => {
+              onClose()
             }
-          )
-        }
-      )
-    }
+          }
+        )
+      }
+    )
   }
   
