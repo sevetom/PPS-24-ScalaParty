@@ -4,10 +4,13 @@ import it.unibo.party.geometry.Direction
 import it.unibo.party.model.board.BoardBox.BoardBox
 import it.unibo.party.model.board.GameBoard.BoardPosition.BoardPosition
 import it.unibo.party.model.board.GameBoard.GameBoard
-import it.unibo.party.model.items.Collectable
+import it.unibo.party.model.items.{Collectable, CollectableType}
 import it.unibo.party.model.partyGame
 import it.unibo.party.model.partyGame.MovementManager.movePawn
 import it.unibo.party.model.player.Pocket
+
+private val monadsOnBoard = 10
+private val rungPrice = 5
 
 trait PartyGame:
   def board: GameBoard
@@ -66,4 +69,15 @@ object PartyGame:
     def getPockets: Map[Int, Pocket] =
       pg.board.pawns.collect:
         case (id, pawn) => id -> pawn.pocket
+
+    def regenerateBoard: PartyGame =
+      var newBoard = pg.board.clearItems
+      newBoard = newBoard.addRandomItems(CollectableType.MonadType, monadsOnBoard)
+      newBoard = newBoard.addRandomItem(Collectable.Rung(rungPrice))
+      PartyGame(newBoard)(using pg.dice)
+
+    def regenerateMonads: PartyGame =
+      var newBoard = pg.board.clearItems
+      newBoard = newBoard.addRandomItems(CollectableType.MonadType, monadsOnBoard)
+      PartyGame(newBoard)(using pg.dice)
 

@@ -6,11 +6,12 @@ import it.unibo.party.controller.Moves.{PartyMove, PartyMoveType}
 import it.unibo.party.controller.managers.{DiceChallengeManager, PartyTurnManager}
 import it.unibo.party.controller.pubsub.{Publisher, Subscriber}
 import it.unibo.party.geometry.Direction
-import it.unibo.party.model.items.CollectableType.RungType
+import it.unibo.party.model.items.CollectableType.{RungType, MonadType}
 import it.unibo.party.model.partyGame.{MovementResult, PartyGame}
+import it.unibo.party.model.items.CollectableOperations.getType
 
 private val stepsPerPlayer: Int = 1
-private val winRungs: Int = 1
+private val winRungs: Int = 5
 
 trait PartyController:
   def addViewListener(listener: Subscriber[PartyState]): Unit
@@ -65,6 +66,7 @@ object PartyController:
                 directions = Some(game.getPossibleDirections(turnManager.currentPlayer.id))
               case _ =>
         handleWinCondition()
+        handleBoardRegeneration()
         // TODO: implement actual minigame logic
         if turnManager.currentPhase == PartyPhase.PlayingMinigame then
           turnManager = turnManager.nextTurn()
@@ -100,3 +102,10 @@ object PartyController:
       val winner = game.getPockets.find((k, v) => v.countByType(RungType) >= winRungs)
       if winner.isDefined then
         turnManager = turnManager.end(Player(winner.get._1))
+        
+    private def handleBoardRegeneration(): Unit =
+      if !game.getItems.values.exists(_.getType == RungType) then
+        game = game.regenerateBoard
+      else if !game.getItems.values.exists(_.getType == MonadType) then
+        game = game.regenerateMonads
+
