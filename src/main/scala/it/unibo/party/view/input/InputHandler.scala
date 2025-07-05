@@ -9,18 +9,18 @@ import scalafx.scene.input.{KeyCode, KeyEvent}
 
 object InputHandler:
 
-  def apply(event: KeyEvent, state: PartyState, agent: PlayingAgent): Unit = {
+  def apply(event: KeyEvent, state: PartyState, agent: PlayingAgent): Unit = 
     val directions = state.possibleDirections.getOrElse(Set.empty[Direction])
-    if state.currentPlayer == agent.id && state.phase == PartyPhase.PlayerMoving then
+    if state.currentPlayer.id == agent.id && state.phase == PartyPhase.PlayerMoving then
       event.getCode match
-        case KeyCode.Up.delegate if directions.contains(Direction.Up) => agent.makeMove(PartyMove(state.currentPlayer, Movement, Some(Direction.Up)))
-        case KeyCode.Down.delegate if directions.contains(Direction.Down) => agent.makeMove(PartyMove(state.currentPlayer, Movement, Some(Direction.Down)))
-        case KeyCode.Left.delegate if directions.contains(Direction.Left) => agent.makeMove(PartyMove(state.currentPlayer, Movement, Some(Direction.Left)))
-        case KeyCode.Right.delegate if directions.contains(Direction.Right) => agent.makeMove(PartyMove(state.currentPlayer, Movement, Some(Direction.Right)))
+        case KeyCode.Up.delegate if directions.contains(Direction.Up) => 
+          agent.makeMove(PartyMove(state.currentPlayer.id, Movement, Some(Direction.Up)))
+        case KeyCode.Down.delegate if directions.contains(Direction.Down) => 
+          agent.makeMove(PartyMove(state.currentPlayer.id, Movement, Some(Direction.Down)))
+        case KeyCode.Left.delegate if directions.contains(Direction.Left) => 
+          agent.makeMove(PartyMove(state.currentPlayer.id, Movement, Some(Direction.Left)))
+        case KeyCode.Right.delegate if directions.contains(Direction.Right) => 
+          agent.makeMove(PartyMove(state.currentPlayer.id, Movement, Some(Direction.Right)))
         case KeyCode.Space.delegate =>
-          agent.makeMove(PartyMove(state.currentPlayer, DiceRoll, Option.empty[Direction]))
+          agent.makeMove(PartyMove(state.currentPlayer.id, DiceRoll, Option.empty[Direction]))
         case _ => // Ignore other keys
-  }
-      
-
-

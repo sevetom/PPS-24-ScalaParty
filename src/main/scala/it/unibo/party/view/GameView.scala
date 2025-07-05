@@ -1,6 +1,6 @@
 package it.unibo.party.view
 
-import it.unibo.party.common.PartyPhase.GameOver
+import it.unibo.party.common.PartyPhase.{GameOver, PlayerMoving}
 import it.unibo.party.common.{PartyPhase, PartyState}
 import it.unibo.party.common.PartyState.*
 import it.unibo.party.controller.PlayingAgent

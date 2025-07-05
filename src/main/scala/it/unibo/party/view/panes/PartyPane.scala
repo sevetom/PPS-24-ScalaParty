@@ -1,6 +1,6 @@
 package it.unibo.party.view.panes
 
-import it.unibo.party.common.{PartyPhase, PartyState}
+import it.unibo.party.common.{PartyPhase, PartyState, Player}
 import it.unibo.party.controller.Moves.PartyMove
 import it.unibo.party.controller.Moves.PartyMoveType.DiceRoll
 import it.unibo.party.model.items.CollectableOperations.*
@@ -20,7 +20,7 @@ object PartyPane:
       top = new HBox:
         styleClass += "turn-label-container"
         children += new Label:
-          text = state.currentPlayer match
+          text = state.currentPlayer.id match
             case 0 => "It's your turn!"
             case 1 => "It's the enemy's turn!"
 
@@ -36,12 +36,12 @@ object PartyPane:
         children = Seq(
           Pocket(
             "Your pocket",
-            state.itemsCollected.get(0).orElse(Option(it.unibo.party.model.player.Pocket.empty)).get.getAll,
+            state.itemsCollected.get(Player(0)).orElse(Option(it.unibo.party.model.player.Pocket.empty)).get.getAll,
             "user-pocket"
           ),
           Pocket(
             "Enemy's pocket",
-            state.itemsCollected.get(1).orElse(Option(it.unibo.party.model.player.Pocket.empty)).get.getAll,
+            state.itemsCollected.get(Player(1)).orElse(Option(it.unibo.party.model.player.Pocket.empty)).get.getAll,
             "enemy-pocket"
           )
         )
@@ -50,9 +50,11 @@ object PartyPane:
         styleClass += "side-container"
         children += SideBoxes.rungPrice(state.itemsPositions.find((k, v) => v.getType == RungType).get._2.getPrice)
         children += SideBoxes.diceBox(
-          state.diceResult.getOrElse(0),
-          () => playingAgent.makeMove(PartyMove(state.currentPlayer, DiceRoll, None)),
-          state.currentPlayer == 0 && state.phase == PartyPhase.DiceRoll
+          state.diceResult.getOrElse((Player(0), 0)),
+          () => playingAgent.makeMove(PartyMove(state.currentPlayer.id, DiceRoll, None)),
+          state.currentPlayer.id == 0 &&
+            (state.phase == PartyPhase.DiceRoll ||
+            state.phase == PartyPhase.StartingRoll)
         )
 
       onKeyPressed = event => InputHandler(event, state, playingAgent)
