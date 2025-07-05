@@ -2,6 +2,9 @@ package it.unibo.party
 
 import alice.tuprolog.*
 
+import java.io.File
+import scala.io.Source
+
 object Scala2P:
   given Conversion[String, Term] = Term.createTerm(_)
 
@@ -21,3 +24,9 @@ def mkPrologEngine(clauses: String*): Term => LazyList[Term] =
       override def next() =
         try solution.getSolution finally solution = engine.solveNext
   .to(LazyList)
+
+def openTheoryFile(path: String) = new File(path)
+
+implicit class RichFile(file: File) {
+  def read() = Source.fromFile(file).getLines()
+}
