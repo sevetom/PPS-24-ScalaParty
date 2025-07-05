@@ -77,7 +77,6 @@ object PartyGame:
       PartyGame(newBoard)(using pg.dice)
 
     def regenerateMonads: PartyGame =
-      var newBoard = pg.board.clearItems
-      newBoard = newBoard.addRandomItems(CollectableType.MonadType, monadsOnBoard)
+      val newBoard = pg.board.addRandomItems(CollectableType.MonadType, monadsOnBoard)
       PartyGame(newBoard)(using pg.dice)
 
