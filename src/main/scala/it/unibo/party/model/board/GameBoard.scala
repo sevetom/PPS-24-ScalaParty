@@ -6,8 +6,8 @@ import it.unibo.party.model.board.BoardBox.BoardBox.*
 import it.unibo.party.model.board.BoardDSL.*
 import it.unibo.party.model.board.BoardDSL.Cell.*
 import it.unibo.party.model.board.GameBoard.BoardPosition.BoardPosition
-import it.unibo.party.model.items.Collectable
-import it.unibo.party.model.items.Collectable.*
+import it.unibo.party.model.items.CollectableOperations.toCollectable
+import it.unibo.party.model.items.{Collectable, CollectableType}
 import it.unibo.party.model.player.{Pawn, Pocket}
 
 import scala.language.postfixOps
@@ -44,7 +44,7 @@ object GameBoard:
         yield dir
       ).toSet
       
-    def clearItems: GameBoard = 
+    def clearItems: GameBoard =
       GameBoard(
         this.board.map((_, _) match
           case (pos, _) => (pos, EmptyBox)
@@ -52,21 +52,27 @@ object GameBoard:
         this.pawns
       )
     
-    def addRandomItems(item: Collectable, count: Int): GameBoard =
-      val randomPositions = scala.util.Random.shuffle(this.board.filter((_, box) => box.isEmpty).keys.toList).take(count)
-      val newBoard = randomPositions.foldLeft(this.board)((acc, pos) => acc.updated(pos, FullBox(item)))
-      GameBoard(newBoard, this.pawns)
+    def addRandomItems(itemType: CollectableType, count: Int): GameBoard =
+      val randomPositions =
+        scala.util.Random.shuffle(board.filter(_._2.isEmpty).keys.toList).take(count)
+      val newBoard = randomPositions.foldLeft(board)((acc, pos) =>
+        acc.updated(pos, FullBox(itemType.toCollectable)))
+      GameBoard(newBoard, pawns)
 
-
-      
+    def addRandomItem(item: Collectable): GameBoard =
+      val emptyPositions = this.board.filter((_, box) => box.isEmpty).keys.toList
+      if emptyPositions.isEmpty then this
+      else
+        val randomPosition = scala.util.Random.shuffle(emptyPositions).head
+        GameBoard(this.board.updated(randomPosition, FullBox(item)), this.pawns)
 
   def standardBoard() : GameBoard =
-     \| | O | O | O | O | O | O | 5 | O |
+     \| | O | O | M | O | O | O | 5 | O |
      -> | O | * | * | * | O | * | * | M |
      -> | O | * | * | * | M | * | * | O |
      -> | O | M | O | O | O | O | M | O | O | O |
      -> | O | * | * | * | O | * | * | O | * | O |
-     -> | O | * | * | * | O | * | * | O | * | O |
+     -> | O | * | * | * | M | * | * | O | * | M |
      -> | O | * | * | * | O | * | * | O | * | O |
      -> | O | M | O | O | O | O | M | O | O | O |
      -> | * | * | * | O | * | * | * | * | * | O |

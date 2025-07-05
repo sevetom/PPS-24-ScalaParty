@@ -14,6 +14,7 @@ import org.scalatest.flatspec.*
 import org.scalatest.matchers.*
 import it.unibo.party.model.board.BoardDSL.*
 import it.unibo.party.model.board.BoardDSL.Cell.*
+import it.unibo.party.model.items.CollectableType.MonadType
 
 import scala.language.postfixOps
 
@@ -64,7 +65,7 @@ class GameBoardTest extends AnyFlatSpec with should.Matchers:
     clearedBoard.board.values.forall(_.isEmpty) should be (true)
 
   it should "Return the board with items in random positions when calling addRandomItems" in:
-    val item = Monad()
+    val item = MonadType
     val count = 2
     val boardWithItems = itemBoard.clearItems.addRandomItems(item, count)
     boardWithItems.board.values.count(_ match
