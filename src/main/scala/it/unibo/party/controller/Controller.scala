@@ -36,7 +36,7 @@ object Controller:
         case _: StartMove =>
           miniControllers = miniControllers.updatedWith(minigameKey)(_.map(_.start()))
         case PartyMove.Resume =>
-          miniControllers.updatedWith(minigameKey)(_.map(_ match
+          miniControllers = miniControllers.updatedWith(minigameKey)(_.map(_ match
             case controller: PartyController =>
               controller.doubleRollNextTurn(
                 Player(miniControllers(currentMinigame).state match
@@ -59,10 +59,9 @@ object Controller:
               case 0 => Minigame.Maze
               case 1 => Minigame.Memory
               case 2 => Minigame.Puzzle
-          miniControllers = miniControllers.updatedWith(minigameKey)(_.map(_.start()))
+            miniControllers = miniControllers.updatedWith(minigameKey)(_.map(_.start()))
 
       currentMinigame = minigameKey
-      println(s"state Published: ${miniControllers(minigameKey).state}")
       statePublisher.publish(miniControllers(minigameKey).state)
 
 

@@ -57,13 +57,9 @@ object PartyController:
     override def handleMove(move: Move): MiniController =
       val ctx = copy(
         state = state.copy(
-          diceResult = Some((turnManager.currentPlayer, remainingSteps - 1))
-        ),
-        game = game,
-        turnManager = turnManager,
-        startingChallenge = startingChallenge,
-        doubleRoller = doubleRoller,
-        remainingSteps = remainingSteps
+          diceResult = Some((turnManager.currentPlayer, remainingSteps - 1)),
+          possibleDirections = Option.empty
+        )
       )
       val updatedCtx = move match
         case Movement(playerId, direction) if playerId == turnManager.currentPlayer.id =>
@@ -78,9 +74,12 @@ object PartyController:
       val postWinCtx = checkWinCondition(updatedCtx)
       val regeneratedCtx = regenerateBoard(postWinCtx)
       copy(
-        state = regeneratedCtx.state.copy(
-          phase = regeneratedCtx.turnManager.currentPhase,
-          currentPlayer = regeneratedCtx.turnManager.currentPlayer
+        state = PartyState.fromGame(
+          regeneratedCtx.game,
+          regeneratedCtx.turnManager.currentPhase,
+          regeneratedCtx.turnManager.currentPlayer,
+          regeneratedCtx.state.diceResult,
+          regeneratedCtx.state.possibleDirections
         ),
         game = regeneratedCtx.game,
         turnManager = regeneratedCtx.turnManager,

@@ -26,7 +26,6 @@ class GameView(playingAgent: PlayingAgent) extends Subscriber[State]:
 
   override def notify(event: State): Unit = {
     scalafx.application.Platform.runLater {
-      println(s"Received event: $event")
       container.children.clear()
       val pane: Pane = event match
         case e: PartyState => 
