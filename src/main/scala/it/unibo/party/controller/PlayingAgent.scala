@@ -4,10 +4,9 @@ import it.unibo.party.controller.Moves.{Move, PartyMove}
 
 trait PlayingAgent:
   def id: Int
-  def controller: PartyController
+  def controller: Controller
   
-  def makeMove(move: Move): Unit = move match 
-    case PartyMove(_, _, _) => controller.handleMove(move.asInstanceOf[PartyMove])
+  def makeMove(move: Move): Unit = controller.handleMove(move)
 
 object PlayingAgent:
   
