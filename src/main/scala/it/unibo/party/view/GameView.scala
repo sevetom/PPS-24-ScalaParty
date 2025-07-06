@@ -4,6 +4,7 @@ import it.unibo.party.common.PartyPhase.{GameOver, PlayerMoving}
 import it.unibo.party.common.{PartyPhase, PartyState}
 import it.unibo.party.common.PartyState.*
 import it.unibo.party.controller.PlayingAgent
+import it.unibo.party.controller.Moves.StartMove
 import it.unibo.party.view.panes.{EndPane, PartyPane, StartPane}
 import scalafx.scene.Scene
 import scalafx.scene.layout.{Pane, StackPane}
@@ -11,10 +12,6 @@ import it.unibo.party.controller.pubsub.Subscriber
 
 
 import scalafx.Includes.*
-
-
-
-
 
 
 class GameView(playingAgent: PlayingAgent) extends Subscriber[PartyState]:
@@ -27,7 +24,7 @@ class GameView(playingAgent: PlayingAgent) extends Subscriber[PartyState]:
     root = container
   }
 
-  container.children.add(StartPane(() => playingAgent.controller.start()))
+  container.children.add(StartPane(() => playingAgent.makeMove(StartMove())))
 
   override def notify(event: PartyState): Unit = {
     scalafx.application.Platform.runLater {

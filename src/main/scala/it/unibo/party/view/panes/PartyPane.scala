@@ -2,7 +2,6 @@ package it.unibo.party.view.panes
 
 import it.unibo.party.common.{PartyPhase, PartyState, Player}
 import it.unibo.party.controller.Moves.PartyMove
-import it.unibo.party.controller.Moves.PartyMoveType.DiceRoll
 import it.unibo.party.model.items.CollectableOperations.*
 import it.unibo.party.controller.PlayingAgent
 import it.unibo.party.model.items.CollectableType.RungType
@@ -50,7 +49,7 @@ object PartyPane:
         children += SideBoxes.diceBox(
           userId,
           state.diceResult,
-          () => playingAgent.makeMove(PartyMove(state.currentPlayer.id, DiceRoll, None)),
+          () => playingAgent.makeMove(PartyMove.DiceRoll(state.currentPlayer.id)),
           state.currentPlayer.id == userId &&
             (state.phase == PartyPhase.DiceRoll ||
               state.phase == PartyPhase.StartingRoll)

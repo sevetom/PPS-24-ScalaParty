@@ -1,7 +1,7 @@
 package it.unibo.party.controller
 
 import it.unibo.party.common.{PartyPhase, PartyState}
-import it.unibo.party.controller.Moves.{PartyMove, PartyMoveType}
+import it.unibo.party.controller.Moves.PartyMove
 import it.unibo.party.controller.pubsub.Subscriber
 
 trait OpponentLogic extends Subscriber[PartyState]
@@ -16,7 +16,7 @@ object OpponentLogic:
         event.phase match
           case PartyPhase.PlayerMoving =>
             event.possibleDirections.flatMap(_.headOption).foreach:
-              dir => playingAgent.makeMove(PartyMove(playingAgent.id, PartyMoveType.Movement, Some(dir)))
+              dir => playingAgent.makeMove(PartyMove.Movement(playingAgent.id, dir))
           case PartyPhase.DiceRoll | PartyPhase.StartingRoll =>
-            playingAgent.makeMove(PartyMove(playingAgent.id, PartyMoveType.DiceRoll, None))
+            playingAgent.makeMove(PartyMove.DiceRoll(playingAgent.id))
           case _ => // Ignore other phases

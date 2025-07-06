@@ -6,7 +6,7 @@ object Moves:
 
   trait Move
 
-  trait StartMove extends Move
+  case class StartMove() extends Move
 
   enum PartyMove extends Move:
     case DiceRoll(playerId: Int)
