@@ -18,6 +18,8 @@ trait PartyController extends MiniController:
   override def state: PartyState
 
   override def handleMove(move: PartyMove): PartyController
+  
+  def doubleRollNextTurn(player: Player): PartyController
 
 object PartyController:
   def apply(game: PartyGame, players: List[Player]): PartyController =
@@ -48,6 +50,9 @@ object PartyController:
         turnManager.currentPlayer
       )
       copy(state = startingState)
+
+    override def doubleRollNextTurn(player: Player): PartyController =
+      copy(doubleRoller = Some(player))  
 
     override def handleMove(move: PartyMove): PartyController =
       val ctx = copy(
@@ -118,7 +123,10 @@ object PartyController:
       )
 
     private def handleDiceRoll(ctx: PartyControllerImpl): PartyControllerImpl =
-      val (rolledGame, rolls) = ctx.game.roll(1)
+      val (dices, checkedDoubleRoller) =
+        if ctx.doubleRoller.contains(ctx.turnManager.currentPlayer) then (2, Option.empty)
+        else (1, ctx.doubleRoller)
+      val (rolledGame, rolls) = ctx.game.roll(dices)
       ctx.copy(
         state = ctx.state.copy(
           possibleDirections = Some(rolledGame.getPossibleDirections(turnManager.currentPlayer.id)),
@@ -127,13 +135,14 @@ object PartyController:
         game = rolledGame,
         remainingSteps = rolls.sum,
         turnManager = ctx.turnManager.nextTurn(),
+        doubleRoller = checkedDoubleRoller
       )
 
     private def checkWinCondition(ctx: PartyControllerImpl): PartyControllerImpl =
       ctx.game.getPockets.find((_, v) => v.countByType(RungType) >= winRungs) match
         case Some((playerId, _)) =>
           ctx.copy(turnManager = ctx.turnManager.end(Player(playerId)))
-        case None => ctx
+        case _ => ctx
 
     private def regenerateBoard(ctx: PartyControllerImpl): PartyControllerImpl =
       val items = ctx.game.getItems.values.map(_.getType)
