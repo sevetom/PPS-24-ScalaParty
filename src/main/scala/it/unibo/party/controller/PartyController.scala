@@ -50,70 +50,96 @@ object PartyController:
       copy(state = startingState)
 
     override def handleMove(move: PartyMove): PartyController =
-      var directions: Option[Set[Direction]] = Option.empty
-      var diceResult: Option[(Player, Int)] = Some((turnManager.currentPlayer, remainingSteps - 1))
-      var updatedGame = game
-      var updatedRemainingSteps = remainingSteps
-      var updatedTurnManager = turnManager
-      var updatedStartingChallenge = startingChallenge
-      move match
-        case Movement(playerId, direction) if playerId == turnManager.currentPlayer.id =>
-          // Movement logic
-          val result = game.movePlayer(turnManager.currentPlayer.id, direction, stepsPerPlayer)
-          result match
-            case MovementResult.Moved(game) =>
-              updatedGame = game
-              updatedRemainingSteps -= stepsPerPlayer
-              if updatedRemainingSteps <= 0 then
-                updatedTurnManager = turnManager.nextTurn()
-          directions = Some(updatedGame.getPossibleDirections(turnManager.currentPlayer.id))
-        case DiceRoll(playerId) if playerId == turnManager.currentPlayer.id =>
-          turnManager.currentPhase match
-            case PartyPhase.StartingRoll =>
-              // Starting roll logic
-              val dicePlayer = turnManager.currentPlayer
-              updatedStartingChallenge = startingChallenge.newRoll(dicePlayer)
-              val result = updatedStartingChallenge.diceResults(dicePlayer)
-              updatedTurnManager = turnManager.nextTurn()
-              if updatedTurnManager.currentPhase != PartyPhase.StartingRoll then
-                updatedTurnManager = updatedTurnManager.changePlayerOrder(
-                  startingChallenge.diceResults.map((p, r) => (p, -r)))
-              diceResult = Some((dicePlayer, result))
-            case PartyPhase.DiceRoll =>
-              // Dice rolling logic
-              val result = game.roll(1)
-              updatedGame = result._1
-              updatedRemainingSteps = result._2.sum
-              diceResult = Some((turnManager.currentPlayer, remainingSteps))
-              updatedTurnManager = turnManager.nextTurn()
-              directions = Some(game.getPossibleDirections(turnManager.currentPlayer.id))
-            case _ =>
-        case Resume =>
-          updatedTurnManager = turnManager.nextTurn()
-        case _ =>
-      
-      // Check win condition    
-      val winner = updatedGame.getPockets.find((k, v) => v.countByType(RungType) >= winRungs)
-      if winner.isDefined then
-        updatedTurnManager = updatedTurnManager.end(Player(winner.get._1))
-      
-      // Board regeneration
-      if !updatedGame.getItems.values.exists(_.getType == RungType) then
-        updatedGame = updatedGame.regenerateBoard
-      else if !updatedGame.getItems.values.exists(_.getType == MonadType) then
-        updatedGame = updatedGame.regenerateMonads
-      
-      copy(
-        state = PartyState.fromGame(
-          game,
-          turnManager.currentPhase,
-          turnManager.currentPlayer,
-          diceResult,
-          directions
+      val ctx = copy(
+        state = state.copy(
+          diceResult = Some((turnManager.currentPlayer, remainingSteps - 1))
         ),
-        game = updatedGame,
-        turnManager = updatedTurnManager,
-        startingChallenge = updatedStartingChallenge,
-        remainingSteps = updatedRemainingSteps
+        game = game,
+        turnManager = turnManager,
+        startingChallenge = startingChallenge,
+        doubleRoller = doubleRoller,
+        remainingSteps = remainingSteps
       )
+      val updatedCtx = move match
+        case Movement(playerId, direction) if playerId == turnManager.currentPlayer.id =>
+          handleMovement(ctx, direction)
+        case DiceRoll(playerId) if playerId == turnManager.currentPlayer.id =>
+          ctx.turnManager.currentPhase match
+            case PartyPhase.StartingRoll => handleStartingRoll(ctx)
+            case PartyPhase.DiceRoll => handleDiceRoll(ctx)
+            case _ => ctx
+        case Resume => ctx.copy(turnManager = ctx.turnManager.nextTurn())
+        case _ => ctx
+      val postWinCtx = checkWinCondition(updatedCtx)
+      val regeneratedCtx = regenerateBoard(postWinCtx)
+      copy(
+        state = regeneratedCtx.state.copy(
+          regeneratedCtx.turnManager.currentPhase,
+          regeneratedCtx.turnManager.currentPlayer
+        ),
+        game = regeneratedCtx.game,
+        turnManager = regeneratedCtx.turnManager,
+        startingChallenge = regeneratedCtx.startingChallenge,
+        remainingSteps = regeneratedCtx.remainingSteps
+      )
+
+    private def handleMovement(ctx: PartyControllerImpl, direction: Direction): PartyControllerImpl =
+      val result = ctx.game.movePlayer(turnManager.currentPlayer.id, direction, stepsPerPlayer)
+      result match
+        case MovementResult.Moved(updatedGame) =>
+          val remaining = ctx.remainingSteps - stepsPerPlayer
+          val nextTurnManager =
+            if remaining <= 0 then ctx.turnManager.nextTurn() else ctx.turnManager
+          ctx.copy(
+            state = ctx.state.copy(
+              possibleDirections = Some(updatedGame.getPossibleDirections(turnManager.currentPlayer.id))
+            ),
+            game = updatedGame,
+            remainingSteps = remaining,
+            turnManager = nextTurnManager
+          )
+        case _ => ctx
+
+    private def handleStartingRoll(ctx: PartyControllerImpl): PartyControllerImpl =
+      val dicePlayer = ctx.turnManager.currentPlayer
+      val newChallenge = ctx.startingChallenge.newRoll(dicePlayer)
+      val diceRes = newChallenge.diceResults(dicePlayer)
+      val nextTurnManager = ctx.turnManager.nextTurn()
+      val orderedTurnManager =
+        if nextTurnManager.currentPhase != PartyPhase.StartingRoll then
+          nextTurnManager.changePlayerOrder(newChallenge.diceResults.map((p, r) => (p, -r)))
+        else nextTurnManager
+      ctx.copy(
+        state = ctx.state.copy(
+          diceResult = Some((dicePlayer, diceRes))
+        ),
+        startingChallenge = newChallenge,
+        turnManager = orderedTurnManager,
+      )
+
+    private def handleDiceRoll(ctx: PartyControllerImpl): PartyControllerImpl =
+      val (rolledGame, rolls) = ctx.game.roll(1)
+      ctx.copy(
+        state = ctx.state.copy(
+          possibleDirections = Some(rolledGame.getPossibleDirections(turnManager.currentPlayer.id)),
+          diceResult = Some((ctx.turnManager.currentPlayer, rolls.sum))
+        ),
+        game = rolledGame,
+        remainingSteps = rolls.sum,
+        turnManager = ctx.turnManager.nextTurn(),
+      )
+
+    private def checkWinCondition(ctx: PartyControllerImpl): PartyControllerImpl =
+      ctx.game.getPockets.find((_, v) => v.countByType(RungType) >= winRungs) match
+        case Some((playerId, _)) =>
+          ctx.copy(turnManager = ctx.turnManager.end(Player(playerId)))
+        case None => ctx
+
+    private def regenerateBoard(ctx: PartyControllerImpl): PartyControllerImpl =
+      val items = ctx.game.getItems.values.map(_.getType)
+      if !items.exists(_ == RungType) then
+        ctx.copy(game = ctx.game.regenerateBoard)
+      else if !items.exists(_ == MonadType) then
+        ctx.copy(game = ctx.game.regenerateMonads)
+      else ctx
 
