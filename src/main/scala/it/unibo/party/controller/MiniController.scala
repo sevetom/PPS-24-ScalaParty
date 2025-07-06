@@ -1,6 +1,6 @@
 package it.unibo.party.controller
 
-import it.unibo.party.common.State
+import it.unibo.party.common.*
 import it.unibo.party.controller.Moves.Move
 
 trait MiniController:
@@ -15,9 +15,27 @@ trait TimedMiniController extends MiniController:
 
   def isTimeUp: Boolean = System.currentTimeMillis() - startTime >= winTime
 
-//object PuzzleController:
-//
-//  case class PuzzleControllerImpl(startTime: Long, winTime: Long) extends TimedMiniController(startTime, winTime):
-//    override def start(): MiniController = ???
-//    override def handleMove(move: Move): (MiniController, State) = ???
+object PuzzleController:
+
+  def apply(startTime: Long, winTime: Long, state: PuzzleState): MiniController = PuzzleControllerImpl(startTime, winTime, state)
+  
+  private case class PuzzleControllerImpl(startTime: Long, winTime: Long, state: PuzzleState) extends TimedMiniController:
+    override def start(): MiniController = this
+    override def handleMove(move: Move): MiniController = this
+    
+object MemoryController:
+
+  def apply(startTime: Long, winTime: Long, state: MemoryState): MiniController = MemoryControllerImpl(startTime, winTime, state)
+  
+  private case class MemoryControllerImpl(startTime: Long, winTime: Long, state: MemoryState) extends TimedMiniController:
+    override def start(): MiniController = this
+    override def handleMove(move: Move): MiniController = this
+    
+object MazeController:
+  
+  def apply(startTime: Long, winTime: Long, state: MazeState): MiniController = MazeControllerImpl(startTime, winTime, state)
+  
+  private case class MazeControllerImpl(startTime: Long, winTime: Long, state: MazeState) extends TimedMiniController:
+    override def start(): MiniController = this
+    override def handleMove(move: Move): MiniController = this
 

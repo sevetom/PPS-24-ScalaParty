@@ -2,7 +2,7 @@ package it.unibo.party.controller
 
 import it.unibo.party.common.PartyPhase
 import it.unibo.party.common.{PartyState, Player}
-import it.unibo.party.controller.Moves.PartyMove
+import it.unibo.party.controller.Moves.{Move, PartyMove}
 import it.unibo.party.controller.Moves.PartyMove.*
 import it.unibo.party.controller.managers.{DiceChallengeManager, PartyTurnManager}
 import it.unibo.party.controller.pubsub.{Publisher, Subscriber}
@@ -17,7 +17,7 @@ private val winRungs: Int = 5
 trait PartyController extends MiniController:
   override def state: PartyState
 
-  override def handleMove(move: PartyMove): PartyController
+  override def handleMove(move: Move): MiniController
   
   def doubleRollNextTurn(player: Player): PartyController
 
@@ -54,7 +54,7 @@ object PartyController:
     override def doubleRollNextTurn(player: Player): PartyController =
       copy(doubleRoller = Some(player))  
 
-    override def handleMove(move: PartyMove): PartyController =
+    override def handleMove(move: Move): MiniController =
       val ctx = copy(
         state = state.copy(
           diceResult = Some((turnManager.currentPlayer, remainingSteps - 1))
@@ -79,8 +79,8 @@ object PartyController:
       val regeneratedCtx = regenerateBoard(postWinCtx)
       copy(
         state = regeneratedCtx.state.copy(
-          regeneratedCtx.turnManager.currentPhase,
-          regeneratedCtx.turnManager.currentPlayer
+          phase = regeneratedCtx.turnManager.currentPhase,
+          currentPlayer = regeneratedCtx.turnManager.currentPlayer
         ),
         game = regeneratedCtx.game,
         turnManager = regeneratedCtx.turnManager,

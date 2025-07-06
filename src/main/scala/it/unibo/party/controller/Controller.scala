@@ -1,6 +1,6 @@
 package it.unibo.party.controller
 
-import it.unibo.party.common.{PartyPhase, PartyState, Player, State}
+import it.unibo.party.common.{MinigameState, PartyPhase, PartyState, Player, State}
 import it.unibo.party.controller.Moves.*
 import it.unibo.party.controller.pubsub.{Publisher, Subscriber}
 import it.unibo.party.model.partyGame.PartyGame
@@ -22,6 +22,7 @@ object Controller:
 
   private class ControllerImpl(private var miniControllers: Map[Minigame, MiniController]) extends Controller:
     private var statePublisher: Publisher[State] = Publisher(List.empty)
+    private var currentMinigame: Minigame = Minigame.Party
 
     override def addViewListener(listener: Subscriber[State]): Unit =
       statePublisher = statePublisher.subscribeFirst(listener)
@@ -34,6 +35,17 @@ object Controller:
       move match
         case _: StartMove =>
           miniControllers = miniControllers.updatedWith(minigameKey)(_.map(_.start()))
+        case PartyMove.Resume =>
+          miniControllers.updatedWith(minigameKey)(_.map(_ match
+            case controller: PartyController =>
+              controller.doubleRollNextTurn(
+                Player(miniControllers(currentMinigame).state match
+                  case s: MinigameState => s.winnerId.get
+                )
+              )
+            )
+          )
+          miniControllers = miniControllers.updatedWith(minigameKey)(_.map(_.handleMove(move)))
         case _ =>
           minigameKey = move match
               case _: PartyMove => Minigame.Party
@@ -42,13 +54,15 @@ object Controller:
               case _: PuzzleMove => Minigame.Puzzle
           miniControllers = miniControllers.updatedWith(minigameKey)(_.map(_.handleMove(move)))
   
-          if miniControllers(Minigame.Party).state.phase == PartyPhase.PlayingMinigame then
+          if miniControllers(Minigame.Party).state.phase == PartyPhase.PlayingMinigame && currentMinigame == Minigame.Party then
             minigameKey = Random.nextInt(miniControllers.size - 1) match
               case 0 => Minigame.Maze
               case 1 => Minigame.Memory
               case 2 => Minigame.Puzzle
           miniControllers = miniControllers.updatedWith(minigameKey)(_.map(_.start()))
-            
+
+      currentMinigame = minigameKey
+      println(s"state Published: ${miniControllers(minigameKey).state}")
       statePublisher.publish(miniControllers(minigameKey).state)
 
 

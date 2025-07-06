@@ -10,6 +10,6 @@ trait PlayingAgent:
 
 object PlayingAgent:
   
-  def apply(id: Int, controller: PartyController): PlayingAgent = PlayingAgentImpl(id, controller)
+  def apply(id: Int, controller: Controller): PlayingAgent = PlayingAgentImpl(id, controller)
 
-  private case class PlayingAgentImpl(id: Int, controller: PartyController) extends PlayingAgent
+  private case class PlayingAgentImpl(id: Int, controller: Controller) extends PlayingAgent
