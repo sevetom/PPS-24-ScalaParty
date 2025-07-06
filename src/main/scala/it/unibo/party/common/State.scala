@@ -47,3 +47,13 @@ object PartyState:
       playersPositions = game.getPlayersPosition.map((id, pos) => Player(id) -> pos.toPoint2D),
       itemsPositions = game.getItems.map((pos, item) => pos.toPoint2D -> item)
     )
+    
+  val emptyPartyState: PartyState = 
+    PartyState(
+      phase = PartyPhase.StartingRoll,
+      currentPlayer = Player(0),
+      itemsCollected = Map.empty,
+      board = Set.empty,
+      playersPositions = Map.empty,
+      itemsPositions = Map.empty
+    )
