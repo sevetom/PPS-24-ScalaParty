@@ -39,6 +39,22 @@ closest_monad(Start, Target) :-
 	Distances \= [],
 	sort(Distances, [(_, Target)|_]).
 
+closest_rung(Start, Target, Monads) :-
+	Monads >= 5,
+	findall((D, Pos), (
+		cell(Pos, rung),
+		manhattan(Start, Pos, D)
+	), Distances),
+	Distances \= [],
+	sort(Distances, [(_, Target)|_]).
+
+closest_collectable(Start, Target) :-
+    monads_owned(N),
+    ( N >= 5 ->
+        closest_rung(Start, Target, N)
+    ; closest_monad(Start, Target)
+    ).
+
 path_bfs(Start, Goal, Path) :-
     bfs_queue([[Start]], Goal, FinalPath),
     reverse(FinalPath, Path).
@@ -56,5 +72,5 @@ bfs_queue([[Current|PathTail] | QueueTail], Goal, Path) :-
 best_path(Path) :-
     opponent_pos(Start),
     monads_owned(N),
-    closest_monad(Start, Target),
+    closest_collectable(Start, Target),
     path_bfs(Start, Target, Path).
