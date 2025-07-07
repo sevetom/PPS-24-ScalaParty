@@ -57,7 +57,7 @@ object PartyController:
     override def handleMove(move: Move): MiniController =
       val ctx = copy(
         state = state.copy(
-          diceResult = Some((turnManager.currentPlayer, remainingSteps - 1)),
+          diceResult = Some((turnManager.currentPlayer, remainingSteps)),
           possibleDirections = Option.empty
         )
       )
