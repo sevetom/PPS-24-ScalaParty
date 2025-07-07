@@ -18,7 +18,7 @@ trait PartyController extends MiniController:
   override def state: PartyState
 
   override def handleMove(move: Move): MiniController
-  
+
   def doubleRollNextTurn(player: Player): PartyController
 
 object PartyController:
@@ -52,7 +52,7 @@ object PartyController:
       copy(state = startingState)
 
     override def doubleRollNextTurn(player: Player): PartyController =
-      copy(doubleRoller = Some(player))  
+      copy(doubleRoller = Some(player))
 
     override def handleMove(move: Move): MiniController =
       val ctx = copy(
@@ -90,7 +90,7 @@ object PartyController:
     private def handleMovement(ctx: PartyControllerImpl, direction: Direction): PartyControllerImpl =
       val result = ctx.game.movePlayer(turnManager.currentPlayer.id, direction, stepsPerPlayer)
       result match
-        case MovementResult.Moved(updatedGame) =>
+        case MovementResult.Moved(updatedGame) if ctx.remainingSteps > 0 =>
           val remaining = ctx.remainingSteps - stepsPerPlayer
           val nextTurnManager =
             if remaining <= 0 then ctx.turnManager.nextTurn() else ctx.turnManager
