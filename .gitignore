@@ -3,3 +3,11 @@
 
 # MacOS system files
 .DS_Store
+
+# Idea
+.idea
+.idea_modules
+/.worksheet/
+
+# Bloop
+.bsp
