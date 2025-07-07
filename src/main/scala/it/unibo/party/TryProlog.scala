@@ -3,7 +3,7 @@ package it.unibo.party
 import alice.tuprolog.{Struct, Term, Var}
 import it.unibo.party.{extractTerm, mkPrologEngine}
 
-object TryScala2P extends App:
+object TryProlog extends App:
 
   import it.unibo.party.Scala2P.{*, given}
 
