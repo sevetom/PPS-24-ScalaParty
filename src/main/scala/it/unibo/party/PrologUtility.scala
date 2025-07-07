@@ -16,7 +16,7 @@ def extractTerm(t: Term, i: Integer): Term =
 def mkPrologEngine(clauses: String*): Term => LazyList[Term] =
   val engine = Prolog()
   engine.setTheory(Theory(clauses mkString " "))
-  goal => new Iterable[Term]:
+  goal=> new Iterable[Term]:
     override def iterator: Iterator[Term] = new Iterator[Term]:
       var solution: SolveInfo = engine.solve(goal)
       override def hasNext: Boolean =
@@ -27,9 +27,6 @@ def mkPrologEngine(clauses: String*): Term => LazyList[Term] =
 
 def openTheoryFile(path: String) = new File(path)
 
-implicit class RichFile(file: File) {
-  def read(): Iterator[String] = {
-    Source.fromFile(file).getLines()
-  }
-
-}
+implicit class RichFile(file: File):
+  private val source = Source.fromFile(file)
+  def read(): Iterator[String] = source.getLines()

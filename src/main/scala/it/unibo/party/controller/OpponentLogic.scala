@@ -1,7 +1,7 @@
 package it.unibo.party.controller
 
 import alice.tuprolog.{Struct, Term, Var}
-import it.unibo.party.common.{PartyPhase, PartyState, Player}
+import it.unibo.party.common.{PartyPhase, PartyState, Player, State}
 import it.unibo.party.controller.Moves.PartyMove
 import it.unibo.party.controller.pubsub.Subscriber
 import it.unibo.party.geometry.{Direction, Point2D}
@@ -9,7 +9,7 @@ import it.unibo.party.model.items.Collectable
 import it.unibo.party.model.items.CollectableType.MonadType
 import it.unibo.party.{RichFile, extractTerm, mkPrologEngine, openTheoryFile}
 
-trait OpponentLogic extends Subscriber[PartyState]
+trait OpponentLogic extends Subscriber[State]
 
 object OpponentLogic:
 
@@ -17,15 +17,18 @@ object OpponentLogic:
 
   private case class OpponentLogicImpl(playingAgent: PlayingAgent) extends OpponentLogic:
     private val player: Player = Player(playingAgent.id)
-    override def notify(event: PartyState): Unit =
-      if event.currentPlayer.id == playingAgent.id then
-        event.phase match
-          case PartyPhase.PlayerMoving =>
-            val dir = chooseDirection(event.board, event.itemsPositions, event.playersPositions(player), event.itemsCollected(player).countByType(MonadType))
-            playingAgent.makeMove(PartyMove.Movement(playingAgent.id, dir.getOrElse(event.possibleDirections.get.head)))
-          case PartyPhase.DiceRoll | PartyPhase.StartingRoll =>
-            playingAgent.makeMove(PartyMove.DiceRoll(playingAgent.id))
-          case _ => // Ignore other phases
+
+    override def notify(event: State): Unit =
+      event match
+        case ps: PartyState if ps.currentPlayer.id == playingAgent.id =>
+          ps.phase match
+            case PartyPhase.PlayerMoving =>
+              val dir = chooseDirection(ps.board, ps.itemsPositions, ps.playersPositions(player), ps.itemsCollected(player).countByType(MonadType))
+              playingAgent.makeMove(PartyMove.Movement(playingAgent.id, dir.getOrElse(ps.possibleDirections.get.head)))
+            case PartyPhase.DiceRoll | PartyPhase.StartingRoll =>
+              playingAgent.makeMove(PartyMove.DiceRoll(playingAgent.id))
+            case _ =>
+        case _ =>
 
     private def chooseDirection(board: Set[Point2D[Int]],
                                 items: Map[Point2D[Int], Collectable],
