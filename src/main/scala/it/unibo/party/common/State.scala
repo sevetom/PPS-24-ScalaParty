@@ -11,11 +11,11 @@ trait State:
 
 trait MinigameState extends State:
   override def phase: MinigamePhase
-  def winnerId: Option[Int]
+  def winner: Option[Player]
 
-case class PuzzleState(phase: MinigamePhase, winnerId: Option[Int]) extends MinigameState
-case class MemoryState(phase: MinigamePhase, winnerId: Option[Int]) extends MinigameState
-case class MazeState(phase: MinigamePhase, winnerId: Option[Int]) extends MinigameState
+case class PuzzleState(phase: MinigamePhase, winner: Option[Player]) extends MinigameState
+case class MemoryState(phase: MinigamePhase, winner: Option[Player]) extends MinigameState
+case class MazeState(phase: MinigamePhase, winner: Option[Player]) extends MinigameState
 
 case class PartyState(
                        phase: PartyPhase,
