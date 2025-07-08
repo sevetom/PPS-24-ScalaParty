@@ -12,22 +12,23 @@ class MazeBuilder(val width: Int, val height: Int):
     MazePosition(x, y)
 
   def +(tile: MazeTile): MazeBuilder =
-    require(currentIndex < width * height)
     val pos = indexToPosition(currentIndex)
     maze = maze + (pos, tile)
     currentIndex += 1
     this
 
   def build(): Maze =
-    require(currentIndex == width * height)
+    require(currentIndex == width * height, "Maze must have the correct number of tiles")
+    require(maze.path.values.exists(_ == MazeTile.Entry), "Maze must have an entry")
+    require(maze.path.values.exists(_ == MazeTile.Exit), "Maze must have an exit")
     maze
 
 object MazeBuilder:
   export MazeBuilder.DSL.*
 
-  def configure(configuration: MazeBuilder ?=> MazeBuilder): MazeBuilder =
-    given MazeBuilder(10, 10)
-    configuration
+  def construct(width: Int, height: Int)(structure: MazeBuilder ?=> MazeBuilder): MazeBuilder =
+    given MazeBuilder(width, height)
+    structure
 
   object DSL:
     def W(using b: MazeBuilder): MazeBuilder = b + MazeTile.Wall

@@ -12,6 +12,8 @@ trait Maze:
   def contains(pos: MazePosition): Boolean = path.contains(pos)
 
   def isEmpty: Boolean = path.isEmpty
+
+  def size: Int = path.size
   
 object Maze:
   def apply(path: Map[MazePosition, MazeTile]): Maze = MazeImpl(path)
