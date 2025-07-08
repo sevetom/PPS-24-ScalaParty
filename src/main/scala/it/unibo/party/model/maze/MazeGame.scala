@@ -7,17 +7,17 @@ private def height: Int = 10
 
 trait MazeGame:
   def player: MazePosition
-  def maze: Map[MazePosition, MazeTile]
+  def maze: Maze
 
   def generateMaze(): MazeGame
   def movePlayer(direction: String): MazeGame
   def reachedEnd(): Boolean
 
 object MazeGame:
-  def apply(player: MazePosition, maze: Map[MazePosition, MazeTile]): MazeGame = 
+  def apply(player: MazePosition, maze: Maze): MazeGame = 
     MazeGameImpl(player, maze)
     
-  private case class MazeGameImpl(player: MazePosition, maze: Map[MazePosition, MazeTile]) extends MazeGame:
+  private case class MazeGameImpl(player: MazePosition, maze: Maze) extends MazeGame:
     
     def generateMaze(): MazeGame = ???
 
@@ -25,4 +25,4 @@ object MazeGame:
 
     def reachedEnd(): Boolean = ???
       
-  val emptyMaze: MazeGame = MazeGame(MazePosition(0, 0), Map.empty)
+  val emptyMaze: MazeGame = MazeGame(MazePosition(0, 0), Maze.empty)
