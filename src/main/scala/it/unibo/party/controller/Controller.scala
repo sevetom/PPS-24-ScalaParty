@@ -40,7 +40,7 @@ object Controller:
             case controller: PartyController =>
               controller.doubleRollNextTurn(
                 Player(miniControllers(currentMinigame).state match
-                  case s: MinigameState => s.winnerId.get
+                  case s: MinigameState => s.winner.get.id
                 )
               )
             )
