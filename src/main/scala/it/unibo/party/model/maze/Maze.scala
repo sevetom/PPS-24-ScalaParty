@@ -12,11 +12,14 @@ trait Maze:
   def contains(pos: MazePosition): Boolean = path.contains(pos)
 
   def isEmpty: Boolean = path.isEmpty
-
+  
   def size: Int = path.size
   
 object Maze:
   def apply(path: Map[MazePosition, MazeTile]): Maze = MazeImpl(path)
+
+  def apply(width: Int, height: Int)(architecture: MazeBuilder ?=> MazeBuilder): Maze =
+    MazeBuilder.construct(width, height)(architecture).build()
 
   val empty: Maze = Maze(Map.empty)
 
