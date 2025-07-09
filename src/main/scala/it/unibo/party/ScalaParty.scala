@@ -13,7 +13,7 @@ object ScalaParty extends JFXApp3:
   override def start(): Unit =
     val game = PartyGame(standardBoard())(using Dice())
     val partyController = PartyController(game, List(Player(0), Player(1)))
-    val mazeController = MazeController(MazeGame.empty, Player(0))
+    val mazeController = MazeController(MazeGame.empty, Player(0), Player(1))
     val memoryController = MemoryController(0, 0, MemoryState(MinigamePhase.Playing, Option(Player(0))))
     val puzzleController = PuzzleController(0, 0, PuzzleState(MinigamePhase.Playing, Option(Player(0))))
     val controller = Controller(Map(

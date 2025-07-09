@@ -5,20 +5,12 @@ import it.unibo.party.geometry.Point2D
 import it.unibo.party.model.items.Collectable
 import it.unibo.party.model.items.Collectable.{Monad, Rung}
 import it.unibo.party.view.components.Items.*
-import it.unibo.party.view.utils.Svg.loadSvgPath
-import scalafx.geometry.Pos
-import scalafx.scene.layout.{FlowPane, GridPane, HBox, Pane, StackPane}
+import it.unibo.party.view.components.Pawn.pawn
+import scalafx.scene.layout.{FlowPane, GridPane, Pane, StackPane}
 import scalafx.scene.paint.Color
-import scalafx.scene.shape.{Circle, Rectangle, SVGPath}
+import scalafx.scene.shape.{Rectangle, SVGPath}
 
 object Board:
-
-  def pawn(color: Color, scale: Double): SVGPath = new SVGPath:
-    styleClass += "pawn"
-    content = loadSvgPath("./../resources/svg/pawn.svg", "pawn")
-    fill = color
-    scaleX = scale
-    scaleY = scale
 
   private def boardBox(size: Int): Rectangle = new Rectangle:
     styleClass += "board-box"
