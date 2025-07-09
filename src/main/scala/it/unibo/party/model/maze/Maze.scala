@@ -48,11 +48,13 @@ object Maze:
       val engine: Term => LazyList[Term] = mkPrologEngine(prologTheory)
       val input = Struct("solve_maze", Var("Path"))
       val results = engine(input)
-      val strOutput = results.map(extractTerm(_, 0)).headOption.get.toString
-      val pattern = """\((\d+),(\d+)\)""".r
-      val result: List[MazePosition] = pattern.findAllMatchIn(strOutput).map(m =>
-        MazePosition(m.group(1).toInt, m.group(2).toInt)
-      ).toList
-      if result.isEmpty then Option.empty
-      else Some(result)
+      val strOutput = results.map(extractTerm(_, 0)).headOption
+      if strOutput.isEmpty then
+        Option.empty
+      else
+        val pattern = """\((\d+),(\d+)\)""".r
+        val result: List[MazePosition] = pattern.findAllMatchIn(strOutput.get.toString).map(m =>
+          MazePosition(m.group(1).toInt, m.group(2).toInt)
+        ).toList
+        Some(result)
       

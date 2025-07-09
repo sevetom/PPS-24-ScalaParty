@@ -21,6 +21,7 @@ class MazeBuilder(val width: Int, val height: Int):
     require(currentIndex == width * height, "Maze must have the correct number of tiles")
     require(maze.layout.values.exists(_ == MazeTile.Entry), "Maze must have an entry")
     require(maze.layout.values.exists(_ == MazeTile.Exit), "Maze must have an exit")
+    require(maze.solution.isDefined, "Maze must be solvable")
     maze
 
 object MazeBuilder:

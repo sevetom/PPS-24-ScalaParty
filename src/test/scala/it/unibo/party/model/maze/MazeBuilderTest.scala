@@ -53,6 +53,15 @@ class MazeBuilderTest extends AnyFlatSpec:
       W | W | W | W | W
     an[IllegalArgumentException] should be thrownBy builder.build()
 
+  it should "not allow a maze that is not solvable" in:
+    val builder: MazeBuilder = MazeBuilder.construct(mazeDimensions._1, mazeDimensions._2):
+      W | W | E | W | W
+      W | * | * | * | W
+      W | * | W | W | W
+      W | * | W | W | W
+      W | W | X | W | W
+    an[IllegalArgumentException] should be thrownBy builder.build()
+
   "A maze" can "be directly built with the structure" in:
     val maze = Maze(mazeDimensions._1, mazeDimensions._2):
       W | W | E | W | W
