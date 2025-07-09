@@ -6,7 +6,7 @@ import it.unibo.party.controller.Moves.{MazeMove, Move}
 import it.unibo.party.controller.{MiniController, TimedMiniController}
 import it.unibo.party.model.maze.MazeGame
 
-private val startingWinTime = 15000L // 60 seconds
+private val startingWinTime = 15000L // 15 seconds
 
 object MazeController:
 
