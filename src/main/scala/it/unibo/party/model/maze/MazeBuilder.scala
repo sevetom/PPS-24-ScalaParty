@@ -19,8 +19,8 @@ class MazeBuilder(val width: Int, val height: Int):
 
   def build(): Maze =
     require(currentIndex == width * height, "Maze must have the correct number of tiles")
-    require(maze.path.values.exists(_ == MazeTile.Entry), "Maze must have an entry")
-    require(maze.path.values.exists(_ == MazeTile.Exit), "Maze must have an exit")
+    require(maze.layout.values.exists(_ == MazeTile.Entry), "Maze must have an entry")
+    require(maze.layout.values.exists(_ == MazeTile.Exit), "Maze must have an exit")
     maze
 
 object MazeBuilder:

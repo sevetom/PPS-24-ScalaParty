@@ -3,17 +3,18 @@ package it.unibo.party.model.maze
 import it.unibo.party.model.maze.MazePosition.MazePosition
 
 trait Maze:
-  def path: Map[MazePosition, MazeTile]
+  def layout: Map[MazePosition, MazeTile]
+  def solution: Option[List[MazePosition]]
 
   def +(tile: (MazePosition, MazeTile)): Maze
 
-  def get(pos: MazePosition): Option[MazeTile] = path.get(pos)
+  def get(pos: MazePosition): Option[MazeTile] = layout.get(pos)
 
-  def contains(pos: MazePosition): Boolean = path.contains(pos)
+  def contains(pos: MazePosition): Boolean = layout.contains(pos)
 
-  def isEmpty: Boolean = path.isEmpty
+  def isEmpty: Boolean = layout.isEmpty
   
-  def size: Int = path.size
+  def size: Int = layout.size
   
 object Maze:
   def apply(path: Map[MazePosition, MazeTile]): Maze = MazeImpl(path)
@@ -23,6 +24,10 @@ object Maze:
 
   val empty: Maze = Maze(Map.empty)
 
-  private case class MazeImpl(path: Map[MazePosition, MazeTile]) extends Maze:
+  private case class MazeImpl(layout: Map[MazePosition, MazeTile]) extends Maze:
     def +(tile: (MazePosition, MazeTile)): Maze = 
-      copy(path = path.updated(tile._1, tile._2))
+      copy(layout = layout.updated(tile._1, tile._2))
+
+    lazy val solution: Option[List[MazePosition]] = computeSolution()
+
+    private def computeSolution(): Option[List[MazePosition]] = ???
