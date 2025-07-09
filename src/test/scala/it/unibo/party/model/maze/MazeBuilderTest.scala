@@ -44,12 +44,48 @@ class MazeBuilderTest extends AnyFlatSpec:
       W | W | W | X | W
     an[IllegalArgumentException] should be thrownBy builder.build()
 
+  it should "not allow a maze with multiple entry" in:
+    val builder: MazeBuilder = MazeBuilder.construct(mazeDimensions._1, mazeDimensions._2):
+      W | W | E | E | W
+      W | * | * | * | W
+      W | * | W | W | W
+      W | * | * | * | W
+      W | W | W | X | W
+    an[IllegalArgumentException] should be thrownBy builder.build()
+
   it should "not allow a maze with no exit" in:
     val builder: MazeBuilder = MazeBuilder.construct(mazeDimensions._1, mazeDimensions._2):
       W | W | E | W | W
       W | * | * | * | W
       W | * | W | W | W
       W | * | * | * | W
+      W | W | W | W | W
+    an[IllegalArgumentException] should be thrownBy builder.build()
+
+  it should "not allow a maze with multiple exit" in :
+    val builder: MazeBuilder = MazeBuilder.construct(mazeDimensions._1, mazeDimensions._2):
+      W | W | E | W | W
+      W | * | * | * | W
+      W | * | W | W | W
+      W | * | * | * | W
+      W | X | W | X | W
+    an[IllegalArgumentException] should be thrownBy builder.build()
+
+  it should "not allow a entry inside the maze" in :
+    val builder: MazeBuilder = MazeBuilder.construct(mazeDimensions._1, mazeDimensions._2):
+      W | W | W | W | W
+      W | * | E | * | W
+      W | * | W | W | W
+      W | * | * | * | W
+      W | W | W | X | W
+    an[IllegalArgumentException] should be thrownBy builder.build()
+
+  it should "not allow a exit inside the maze" in :
+    val builder: MazeBuilder = MazeBuilder.construct(mazeDimensions._1, mazeDimensions._2):
+      W | W | E | W | W
+      W | * | * | * | W
+      W | * | W | W | W
+      W | * | * | X | W
       W | W | W | W | W
     an[IllegalArgumentException] should be thrownBy builder.build()
 

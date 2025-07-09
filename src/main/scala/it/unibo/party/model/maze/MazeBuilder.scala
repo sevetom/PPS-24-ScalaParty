@@ -19,8 +19,14 @@ class MazeBuilder(val width: Int, val height: Int):
 
   def build(): Maze =
     require(currentIndex == width * height, "Maze must have the correct number of tiles")
-    require(maze.layout.values.exists(_ == MazeTile.Entry), "Maze must have an entry")
-    require(maze.layout.values.exists(_ == MazeTile.Exit), "Maze must have an exit")
+    require(maze.layout.values.count(_ == MazeTile.Entry) == 1, "Maze must have exactly one entry")
+    require(maze.layout.values.count(_ == MazeTile.Exit) == 1, "Maze must have exactly one exit")
+    require(maze.layout.find(_._2 == MazeTile.Entry).exists(
+      (p, _) => p.x == 0 || p.x == width - 1 || p.y == 0 || p.y == height - 1
+    ), "Entry must be on the maze borders")
+    require(maze.layout.find(_._2 == MazeTile.Exit).exists(
+      (p, _) => p.x == 0 || p.x == width - 1 || p.y == 0 || p.y == height - 1
+    ), "Exit must be on the maze borders")
     require(maze.solution.isDefined, "Maze must be solvable")
     maze
 
@@ -33,8 +39,11 @@ object MazeBuilder:
 
   object DSL:
     def W(using b: MazeBuilder): MazeBuilder = b + MazeTile.Wall
+
     def *(using b: MazeBuilder): MazeBuilder = b + MazeTile.Passage
+
     def E(using b: MazeBuilder): MazeBuilder = b + MazeTile.Entry
+
     def X(using b: MazeBuilder): MazeBuilder = b + MazeTile.Exit
 
     extension (builder: MazeBuilder)
