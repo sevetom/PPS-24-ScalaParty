@@ -96,7 +96,8 @@ object PartyController:
             if remaining <= 0 then ctx.turnManager.nextTurn() else ctx.turnManager
           ctx.copy(
             state = ctx.state.copy(
-              possibleDirections = Some(updatedGame.getPossibleDirections(turnManager.currentPlayer.id))
+              possibleDirections = Some(updatedGame.getPossibleDirections(turnManager.currentPlayer.id)),
+              diceResult = Some((turnManager.currentPlayer, remaining))
             ),
             game = updatedGame,
             remainingSteps = remaining,

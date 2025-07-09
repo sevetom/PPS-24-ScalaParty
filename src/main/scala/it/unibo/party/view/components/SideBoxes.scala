@@ -39,5 +39,5 @@ object SideBoxes:
           font = Font("Poppins", 20)
           fill = Color.White
         },
-        new Label(result.map((pl, value) => if value <= 0 then "0" else value.-(1).toString).getOrElse(""))
+        new Label(result.map((pl, value) => if value <= 0 then "0" else value.toString).getOrElse(""))
       )
