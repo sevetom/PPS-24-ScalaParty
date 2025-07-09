@@ -1,6 +1,7 @@
 package it.unibo.party.model.maze
 
 import alice.tuprolog.{Struct, Term, Var}
+import it.unibo.party.model.maze.MazeBuilder.DSL.*
 import it.unibo.party.model.maze.MazePosition.MazePosition
 import it.unibo.party.{RichFile, extractTerm, mkPrologEngine, openTheoryFile}
 
@@ -26,6 +27,19 @@ object Maze:
     MazeBuilder.construct(width, height)(architecture).build()
 
   val empty: Maze = Maze(Map.empty)
+  
+  val standard: Maze = Maze(10, 11):
+    W | W | W | W | E | W | W | W | W | W
+    W | * | * | * | * | * | * | * | * | W
+    W | * | W | W | W | W | W | W | * | W
+    W | * | W | * | * | * | * | W | * | W
+    W | * | W | W | * | W | * | W | * | W
+    W | * | * | W | * | W | * | * | * | W
+    W | W | * | W | * | W | * | W | W | W
+    W | * | * | W | * | W | * | W | * | W
+    W | * | W | W | W | W | * | W | * | W
+    W | * | * | * | * | W | * | * | * | W
+    W | W | W | W | X | W | W | W | W | W
 
   private case class MazeImpl(layout: Map[MazePosition, MazeTile]) extends Maze:
     def +(tile: (MazePosition, MazeTile)): Maze =
