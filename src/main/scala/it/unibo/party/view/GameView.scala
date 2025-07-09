@@ -39,8 +39,5 @@ class GameView(playingAgent: PlayingAgent) extends Subscriber[State]:
             case _ =>
               scene.stylesheets = Seq(commonStyleSheet, partyStyleSheet, boardStyleSheet)
               PartyPane(e, playingAgent)
-        case e: MinigameState => MinigamePane(() =>
-          val delay = PauseTransition(Duration(500))
-          delay.onFinished = _ => playingAgent.makeMove(PartyMove.Resume)
-          delay.play())
+        case e: MinigameState => MinigamePane(() => playingAgent.makeMove(PartyMove.Resume))
       container.children.add(pane)
