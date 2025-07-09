@@ -36,14 +36,13 @@ object Controller:
         case _: StartMove =>
           miniControllers = miniControllers.updatedWith(minigameKey)(_.map(_.start()))
         case PartyMove.Resume =>
-          miniControllers = miniControllers.updatedWith(minigameKey)(_.map(_ match
+          miniControllers = miniControllers.updatedWith(minigameKey)(_.map:
             case controller: PartyController =>
               controller.doubleRollNextTurn(
                 Player(miniControllers(currentMinigame).state match
                   case s: MinigameState => s.winner.get.id
                 )
               )
-            )
           )
           miniControllers = miniControllers.updatedWith(minigameKey)(_.map(_.handleMove(move)))
         case _ =>

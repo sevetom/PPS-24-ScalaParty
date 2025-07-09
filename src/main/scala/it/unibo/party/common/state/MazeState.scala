@@ -9,7 +9,8 @@ case class MazeState(
                       timeRequired: Long,
                       maze: Map[Point2D[Int], MazeTile],
                       playerPosition: Point2D[Int],
-                      winner: Option[Player]
+                      winner: Option[Player],
+                      solution: List[Point2D[Int]]
                     ) extends MinigameState
 
 object MazeState:
@@ -19,5 +20,6 @@ object MazeState:
       timeRequired = 0L,
       maze = Map.empty,
       playerPosition = Point2D(0, 0),
-      winner = None
+      winner = None,
+      solution = List.empty
     )

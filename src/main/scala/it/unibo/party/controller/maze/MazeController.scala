@@ -10,26 +10,29 @@ private val startingWinTime = 60000L // 60 seconds
 
 object MazeController:
 
-  def apply(game: MazeGame, challenger: Player): MiniController =
-    MazeControllerImpl(game, challenger, 0L, startingWinTime, MazeState.empty)
+  def apply(game: MazeGame, challenger: Player, challenged: Player): MiniController =
+    MazeControllerImpl(game, challenger, challenged, 0L, startingWinTime, MazeState.empty)
 
   private case class MazeControllerImpl(
                                          game: MazeGame,
-                                         player: Player,
+                                         challenger: Player,
+                                         challenged: Player,
                                          startTime: Long,
                                          winTime: Long,
                                          state: MazeState) extends TimedMiniController:
 
     override def start(): MiniController =
+      val generatedGame = game.generateMaze()
       copy(
-        game = game.generateMaze(),
+        game = generatedGame.generateMaze(),
         startTime = System.currentTimeMillis(),
         state = MazeState(
           phase = MinigamePhase.Playing,
           timeRequired = winTime,
-          maze = game.maze.layout.map((point, tile) => (point.toPoint2D, tile)),
-          playerPosition = game.player.toPoint2D,
-          winner = Option.empty
+          maze = generatedGame.maze.layout.map((point, tile) => (point.toPoint2D, tile)),
+          playerPosition = generatedGame.player.toPoint2D,
+          winner = Option.empty,
+          solution = generatedGame.maze.solution.getOrElse(List()).map(_.toPoint2D)
         )
       )
 
@@ -43,7 +46,7 @@ object MazeController:
               phase = if movedGame.reachedEnd() || isTimeUp then MinigamePhase.GameOver else state.phase,
               maze = movedGame.maze.layout.map((point, tile) => (point.toPoint2D, tile)),
               playerPosition = movedGame.player.toPoint2D,
-              winner = if movedGame.reachedEnd() then Some(player) else if isTimeUp then Option.empty else state.winner
+              winner = if movedGame.reachedEnd() then Some(challenger) else if isTimeUp then Some(challenged) else state.winner
             )
           )
         case _ => copy()  
