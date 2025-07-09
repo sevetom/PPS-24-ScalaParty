@@ -21,3 +21,9 @@ class MemoryTest extends AnyFlatSpec:
     val memory = Memory(Map(genericFigure -> genericCouplePoints))
     memory.layout should contain key genericFigure
 
+  it should "return true for two equal memories" in:
+    val memory = Memory(Map(genericFigure -> genericCouplePoints))
+    memory.check(genericCouplePoints) shouldBe true
+
+
+

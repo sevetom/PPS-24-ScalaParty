@@ -7,6 +7,9 @@ trait Memory:
 
   def isEmpty: Boolean = layout.isEmpty
 
+  def check(couple: (Point2D[Int], Point2D[Int])): Boolean =
+    layout.values.exists(_ == couple)
+
 object Memory:
   def apply(data: Map[Figure, (Point2D[Int], Point2D[Int])]): Memory = MemoryImpl(data)
 
