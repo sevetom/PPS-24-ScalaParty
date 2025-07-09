@@ -7,10 +7,8 @@ import it.unibo.party.controller.PlayingAgent
 import it.unibo.party.controller.pubsub.Subscriber
 import it.unibo.party.view.panes.{EndPane, MinigamePane, PartyPane, StartPane}
 import scalafx.Includes.*
-import scalafx.animation.PauseTransition
 import scalafx.scene.Scene
 import scalafx.scene.layout.{Pane, StackPane}
-import scalafx.util.Duration
 
 
 class GameView(playingAgent: PlayingAgent) extends Subscriber[State]:

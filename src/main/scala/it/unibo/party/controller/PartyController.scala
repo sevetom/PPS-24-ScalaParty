@@ -1,15 +1,13 @@
 package it.unibo.party.controller
 
-import it.unibo.party.common.PartyPhase
-import it.unibo.party.common.{PartyState, Player}
-import it.unibo.party.controller.Moves.{Move, PartyMove}
+import it.unibo.party.common.{PartyPhase, PartyState, Player}
 import it.unibo.party.controller.Moves.PartyMove.*
+import it.unibo.party.controller.Moves.{Move, PartyMove}
 import it.unibo.party.controller.managers.{DiceChallengeManager, PartyTurnManager}
-import it.unibo.party.controller.pubsub.{Publisher, Subscriber}
 import it.unibo.party.geometry.Direction
+import it.unibo.party.model.items.CollectableOperations.getType
 import it.unibo.party.model.items.CollectableType.{MonadType, RungType}
 import it.unibo.party.model.partyGame.{MovementResult, PartyGame}
-import it.unibo.party.model.items.CollectableOperations.getType
 
 private val stepsPerPlayer: Int = 1
 private val winRungs: Int = 5

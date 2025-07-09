@@ -1,15 +1,15 @@
 package it.unibo.party.view.panes
 
-import it.unibo.party.common.{PartyPhase, PartyState, Player}
+import it.unibo.party.common.{PartyPhase, PartyState}
 import it.unibo.party.controller.Moves.PartyMove
-import it.unibo.party.model.items.CollectableOperations.*
 import it.unibo.party.controller.PlayingAgent
+import it.unibo.party.model.items.CollectableOperations.*
 import it.unibo.party.model.items.CollectableType.RungType
 import it.unibo.party.view.components.{Board, Pocket, SideBoxes}
 import it.unibo.party.view.input.InputHandler
 import scalafx.scene.control.Label
-import scalafx.scene.layout.{BorderPane, HBox, Pane, VBox}
 import scalafx.scene.input.InputIncludes.jfxKeyEvent2sfx
+import scalafx.scene.layout.{BorderPane, HBox, Pane, VBox}
 
 object PartyPane:
 
