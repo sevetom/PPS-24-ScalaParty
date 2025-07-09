@@ -1,6 +1,6 @@
 package it.unibo.party.controller
 
-import it.unibo.party.controller.Moves.{Move, PartyMove}
+import it.unibo.party.controller.Moves.Move
 
 trait PlayingAgent:
   def id: Int

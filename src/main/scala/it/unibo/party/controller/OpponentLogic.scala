@@ -8,6 +8,8 @@ import it.unibo.party.geometry.{Direction, Point2D}
 import it.unibo.party.model.items.Collectable
 import it.unibo.party.model.items.CollectableType.MonadType
 import it.unibo.party.{RichFile, extractTerm, mkPrologEngine, openTheoryFile}
+import scalafx.animation.PauseTransition
+import scalafx.util.Duration
 
 trait OpponentLogic extends Subscriber[State]
 
@@ -23,10 +25,15 @@ object OpponentLogic:
         case ps: PartyState if ps.currentPlayer.id == playingAgent.id =>
           ps.phase match
             case PartyPhase.PlayerMoving =>
-              val dir = chooseDirection(ps.board, ps.itemsPositions, ps.playersPositions(player), ps.itemsCollected(player).countByType(MonadType))
-              playingAgent.makeMove(PartyMove.Movement(playingAgent.id, dir.getOrElse(ps.possibleDirections.get.head)))
+              val delay = PauseTransition(Duration(300))
+              delay.onFinished = _ =>
+                val dir = chooseDirection(ps.board, ps.itemsPositions, ps.playersPositions(player), ps.itemsCollected(player).countByType(MonadType))
+                playingAgent.makeMove(PartyMove.Movement(playingAgent.id, dir.getOrElse(ps.possibleDirections.get.head)))
+              delay.play()
             case PartyPhase.DiceRoll | PartyPhase.StartingRoll =>
-              playingAgent.makeMove(PartyMove.DiceRoll(playingAgent.id))
+              val delay = PauseTransition(Duration(800))
+              delay.onFinished = _ => playingAgent.makeMove(PartyMove.DiceRoll(playingAgent.id))
+              delay.play()
             case _ =>
         case _ =>
 

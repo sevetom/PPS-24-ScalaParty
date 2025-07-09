@@ -1,9 +1,8 @@
 package it.unibo.party.controller
 
-import it.unibo.party.common.{MinigameState, PartyPhase, PartyState, Player, State}
+import it.unibo.party.common.{MinigameState, PartyPhase, Player, State}
 import it.unibo.party.controller.Moves.*
 import it.unibo.party.controller.pubsub.{Publisher, Subscriber}
-import it.unibo.party.model.partyGame.PartyGame
 
 import scala.util.Random
 
