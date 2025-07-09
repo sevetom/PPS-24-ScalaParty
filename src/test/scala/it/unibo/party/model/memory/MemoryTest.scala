@@ -16,3 +16,8 @@ class MemoryTest extends AnyFlatSpec:
   it should "allow adding figures" in:
     val memory = Memory(Map(genericFigure -> genericCouplePoints))
     memory.isEmpty shouldBe false
+
+  it should "contain the added figure" in:
+    val memory = Memory(Map(genericFigure -> genericCouplePoints))
+    memory.layout should contain key genericFigure
+
