@@ -40,4 +40,10 @@ class MazeTest extends AnyFlatSpec:
       W | * | W | W | W | W | * | W | * | W
       W | * | * | * | * | W | * | * | * | W
       W | W | W | W | X | W | W | W | W | W
-    maze.solution shouldBe defined
+    maze.solution.get shouldBe List(
+      MazePosition(4, 0), MazePosition(4, 1), MazePosition(3, 1), MazePosition(2, 1),
+      MazePosition(1, 1), MazePosition(1, 2), MazePosition(1, 3), MazePosition(1, 4),
+      MazePosition(1, 5), MazePosition(2, 5), MazePosition(2, 6), MazePosition(2, 7),
+      MazePosition(1, 7), MazePosition(1, 8), MazePosition(1, 9), MazePosition(2, 9),
+      MazePosition(3, 9), MazePosition(4, 9), MazePosition(4, 10)
+    )
