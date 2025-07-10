@@ -58,3 +58,4 @@ object PuzzleUtils:
 
   def isValidSolution(solution: Set[Set[PuzzlePosition]], width: Int, height: Int, pieceSize: Int): Boolean =
     ???
+    
