@@ -76,3 +76,8 @@
     -fx-padding: 30pt;
     -fx-spacing: 30pt;
 }
+
+.memory-box-covered {
+  -fx-fill: #AAAAAA;
+  -fx-cursor: hand;
+}

@@ -8,4 +8,4 @@ enum Figure:
   case Pentagon
   case Hexagon
   case Diamond
-  case Flower
+  case Heart

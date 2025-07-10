@@ -48,7 +48,12 @@ object MemoryController:
                 val newState = state.copy(game = updatedGame, phase = phase, winner = winner, firstSelection = None)
                 copy(state = newState)
               else
-                val newState = state.copy(firstSelection = None, mismatchedPair = Some((firstPos, pos)))
+                val newState = state.copy(
+                  game = updatedGame,
+                  firstSelection = None,
+                  mismatchedPair = Some((firstPos, pos))
+                )
                 copy(state = newState)
-
-
+        case _ =>
+          val newState = state.copy(mismatchedPair = None)
+          copy(state = newState)

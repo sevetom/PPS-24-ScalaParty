@@ -6,6 +6,7 @@ import it.unibo.party.controller.Moves.MemoryMove
 import it.unibo.party.controller.PlayingAgent
 import it.unibo.party.geometry.Point2D
 import it.unibo.party.model.memory.{Figure, MemoryBox}
+import it.unibo.party.view.components.MemoryItems.figureIcon
 import it.unibo.party.view.input.MemoryInputHandler
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.{Button, Label}
@@ -20,21 +21,8 @@ object MemoryPane:
   private val GRID_SIZE = 4
   private val BOX_SIZE = 100
 
-  private def memoryBox(size: Int, figure: Figure): Rectangle =
-    new Rectangle:
-      styleClass += "memory-box"
-      styleClass ++= (figure match
-        case Figure.Circle   => Seq("circle")
-        case Figure.Square   => Seq("square")
-        case Figure.Triangle => Seq("triangle")
-        case Figure.Star     => Seq("star")
-        case Figure.Flower   => Seq("heart")
-        case Figure.Diamond  => Seq("diamond")
-        case Figure.Pentagon => Seq("pentagon")
-        case Figure.Hexagon  => Seq("hexagon")
-        )
-      width = size
-      height = size
+  private def memoryBox(figure: Figure) =
+    figureIcon(figure, 1.5)
 
   def apply(state: MemoryState, agent: PlayingAgent, onExit: () => Unit): Pane =
     new BorderPane:
@@ -68,21 +56,23 @@ object MemoryPane:
             val isMismatched = state.mismatchedPair.exists(p => p._1 == currentPos || p._2 == currentPos)
             val isShown = isPermanentlyShown || isFirstSelection || isMismatched
 
-            val cardPane = if isShown && boxOnGrid.isDefined then
-              val figure = state.game.layout.find((_, pair) => pair._1.pos == currentPos || pair._2.pos == currentPos).map(_._1).get
-              new StackPane:
-                children = memoryBox(BOX_SIZE, figure)
-            else
-              new StackPane:
-                children = new Rectangle:
-                  width = BOX_SIZE
-                  height = BOX_SIZE
-                  styleClass += "memory-box-covered"
+            val cardPane =
+              if isShown && boxOnGrid.isDefined then
+                val figure = state.game.layout
+                  .find((_, pair) => pair._1.pos == currentPos || pair._2.pos == currentPos)
+                  .map(_._1)
+                  .get
+                new StackPane:
+                  children = figureIcon(figure, 1.5)
+              else
+                new StackPane:
+                  onMouseClicked = _ =>
+                    MemoryInputHandler.handleCardClick(currentPos, state.phase, agent)
 
-                onMouseClicked = _ =>
-                  MemoryInputHandler.handleCardClick(currentPos, state.phase, agent)
-
-
+                  children = new Rectangle:
+                    width = BOX_SIZE
+                    height = BOX_SIZE
+                    styleClass += "memory-box-covered"
             add(cardPane, x, y)
 
       right = new VBox:
