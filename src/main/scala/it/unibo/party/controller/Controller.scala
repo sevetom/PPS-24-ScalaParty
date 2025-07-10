@@ -55,9 +55,9 @@ object Controller:
   
           if miniControllers(Minigame.Party).state.phase == PartyPhase.PlayingMinigame && currentMinigame == Minigame.Party then
             minigameKey = Random.nextInt(miniControllers.size - 1) match
-              case 0 => Minigame.Maze
+              case 0 => Minigame.Memory
               case 1 => Minigame.Memory
-              case 2 => Minigame.Puzzle
+              case 2 => Minigame.Memory
             miniControllers = miniControllers.updatedWith(minigameKey)(_.map(_.start()))
 
       currentMinigame = minigameKey

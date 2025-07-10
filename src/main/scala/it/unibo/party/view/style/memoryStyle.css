@@ -1,0 +1,78 @@
+.memory-grid {
+    -fx-hgap: 10pt;
+    -fx-vgap: 10pt;
+    -fx-alignment: center;
+    -fx-padding: 20pt;
+}
+
+.memory-box {
+    -fx-width: 100px;
+    -fx-height: 100px;
+    -fx-arc-height: 10px;
+    -fx-arc-width: 10px;
+    -fx-fill: #FFFFFF;
+    -fx-stroke: #222222;
+    -fx-stroke-width: 2px;
+}
+
+.memory-box-covered {
+    -fx-fill: #888888;
+    -fx-arc-height: 10px;
+    -fx-arc-width: 10px;
+    -fx-stroke: #444444;
+    -fx-stroke-width: 1.5px;
+}
+
+
+.circle {
+    -fx-fill: #E57373;
+}
+
+.square {
+    -fx-fill: #64B5F6;
+}
+
+.triangle {
+    -fx-fill: #81C784;
+}
+
+.star {
+    -fx-fill: #FFD54F;
+}
+
+.heart {
+    -fx-fill: #F06292;
+}
+
+.diamond {
+    -fx-fill: #BA68C8;
+}
+
+.pentagon {
+    -fx-fill: #4DB6AC;
+}
+
+.hexagon {
+    -fx-fill: #A1887F;
+}
+
+.title-label-container {
+    -fx-padding: 15pt;
+    -fx-alignment: center;
+}
+
+.exit-button {
+    -fx-font-family: "Poppins";
+    -fx-font-size: 20pt;
+}
+
+.side-box {
+    -fx-min-height: 100pt;
+    -fx-background-radius: 10pt;
+    -fx-padding: 2pt;
+}
+
+.side-container {
+    -fx-padding: 30pt;
+    -fx-spacing: 30pt;
+}

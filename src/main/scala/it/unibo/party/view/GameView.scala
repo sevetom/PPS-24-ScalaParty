@@ -23,6 +23,7 @@ class GameView(playingAgent: PlayingAgent) extends Subscriber[State]:
   container.children.add(StartPane(() => playingAgent.makeMove(StartMove())))
 
   override def notify(event: State): Unit =
+    val memoryStyleSheet = getClass.getResource("./style/memoryStyle.css").toExternalForm
     scalafx.application.Platform.runLater:
       container.children.clear()
       val pane: Pane = event match
@@ -37,5 +38,12 @@ class GameView(playingAgent: PlayingAgent) extends Subscriber[State]:
             case _ =>
               scene.stylesheets = Seq(commonStyleSheet, partyStyleSheet, boardStyleSheet)
               PartyPane(e, playingAgent)
-        case e: MinigameState => MinigamePane(() => playingAgent.makeMove(PartyMove.Resume))
+        case e: MinigameState =>
+          scene.stylesheets = Seq(commonStyleSheet, memoryStyleSheet)
+
+          e match
+            case mem: MemoryState =>
+              it.unibo.party.view.panes.MemoryPane(mem, playingAgent, () => playingAgent.makeMove(PartyMove.Resume))
+            case _ =>
+              MinigamePane(() => playingAgent.makeMove(PartyMove.Resume))
       container.children.add(pane)
