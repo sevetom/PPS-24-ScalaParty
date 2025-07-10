@@ -43,6 +43,10 @@ trait Memory:
 
     Memory(figureMap)
 
+  def isOver: Boolean =
+    layout.values.forall:
+      case (box1, box2) => box1.isShow && box2.isShow
+
 object Memory:
   def apply(data: Map[Figure, (MemoryBox, MemoryBox)]): Memory = MemoryImpl(data)
 
