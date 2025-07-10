@@ -22,15 +22,7 @@ object PuzzleController:
   private case class PuzzleControllerImpl(startTime: Long, winTime: Long, state: PuzzleState) extends TimedMiniController:
     override def start(): MiniController = this
     override def handleMove(move: Move): MiniController = this
-    
-object MemoryController:
 
-  def apply(startTime: Long, winTime: Long, state: MemoryState): MiniController = MemoryControllerImpl(startTime, winTime, state)
-  
-  private case class MemoryControllerImpl(startTime: Long, winTime: Long, state: MemoryState) extends TimedMiniController:
-    override def start(): MiniController = this
-    override def handleMove(move: Move): MiniController = this
-    
 object MazeController:
   
   def apply(startTime: Long, winTime: Long, state: MazeState): MiniController = MazeControllerImpl(startTime, winTime, state)

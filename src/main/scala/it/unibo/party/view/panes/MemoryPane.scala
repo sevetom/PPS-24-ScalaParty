@@ -13,7 +13,7 @@ import scalafx.scene.control.{Button, Label}
 import scalafx.scene.input.MouseEvent
 import scalafx.scene.layout.*
 import scalafx.scene.paint.Color
-import scalafx.scene.shape.Rectangle
+import scalafx.scene.shape.{Circle, Rectangle}
 import scalafx.scene.text.Font
 
 object MemoryPane:
@@ -33,7 +33,7 @@ object MemoryPane:
         children +=
           new Label:
             text = state.phase match
-              case Playing  => "Find all the matches!"
+              case Playing => "Find all the matches!"
               case GameOver => if agent.id == state.winner.getOrElse(-1) then "You Won!" else "Game Over!"
             font = Font("Poppins", 30)
             textFill = Color.White
@@ -63,7 +63,13 @@ object MemoryPane:
                   .map(_._1)
                   .get
                 new StackPane:
-                  children = figureIcon(figure, 1.5)
+                  if figure == Figure.Circle then
+                    new Circle:
+                      margin = Insets(5)
+                      radius = 8
+                      fill = Color.DeepSkyBlue
+                  else
+                    children = figureIcon(figure, 1.5)
               else
                 new StackPane:
                   onMouseClicked = _ =>
