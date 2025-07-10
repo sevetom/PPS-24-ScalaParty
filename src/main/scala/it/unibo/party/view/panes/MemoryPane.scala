@@ -1,8 +1,7 @@
 package it.unibo.party.view.panes
 
-import it.unibo.party.common.MinigamePhase.{GameOver, Playing}
 import it.unibo.party.common.MemoryState
-import it.unibo.party.controller.Moves.MemoryMove
+import it.unibo.party.common.MinigamePhase.{GameOver, Playing}
 import it.unibo.party.controller.PlayingAgent
 import it.unibo.party.geometry.Point2D
 import it.unibo.party.model.memory.{Figure, MemoryBox}
@@ -10,7 +9,6 @@ import it.unibo.party.view.components.MemoryItems.figureIcon
 import it.unibo.party.view.input.MemoryInputHandler
 import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.{Button, Label}
-import scalafx.scene.input.MouseEvent
 import scalafx.scene.layout.*
 import scalafx.scene.paint.Color
 import scalafx.scene.shape.{Circle, Rectangle}
