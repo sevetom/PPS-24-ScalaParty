@@ -50,9 +50,9 @@ object Maze:
     private def computeSolution(): Option[List[MazePosition]] =
       val prologFacts = layout.map((p, t) =>
         t match
-          case MazeTile.Passage => s"walkable(${p.x}, ${p.y})."
-          case MazeTile.Entry => s"entry(${p.x}, ${p.y})." + s" walkable(${p.x}, ${p.y})."
-          case MazeTile.Exit => s"exit(${p.x}, ${p.y})." + s" walkable(${p.x}, ${p.y})."
+          case MazeTile.Passage => s"passage(${p.x}, ${p.y})."
+          case MazeTile.Entry => s"entry(${p.x}, ${p.y})."
+          case MazeTile.Exit => s"exit(${p.x}, ${p.y})."
           case _ => ""
       ).mkString("\n")
       var prologRules = ""

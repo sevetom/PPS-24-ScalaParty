@@ -1,3 +1,7 @@
+walkable(X, Y) :- passage(X, Y).
+walkable(X, Y) :- entry(X, Y).
+walkable(X, Y) :- exit(X, Y).
+
 move((X,Y), (X1,Y)) :- X1 is X+1, walkable(X1,Y).
 move((X,Y), (X1,Y)) :- X1 is X-1, walkable(X1,Y).
 move((X,Y), (X,Y1)) :- Y1 is Y+1, walkable(X,Y1).
