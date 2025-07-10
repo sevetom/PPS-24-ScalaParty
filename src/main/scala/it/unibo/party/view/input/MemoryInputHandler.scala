@@ -1,0 +1,14 @@
+package it.unibo.party.view.input
+
+import it.unibo.party.common.MinigamePhase
+import it.unibo.party.controller.Moves.MemoryMove
+import it.unibo.party.controller.PlayingAgent
+import it.unibo.party.geometry.Point2D
+
+object MemoryInputHandler:
+
+  def handleCardClick(pos: Point2D[Int], phase: MinigamePhase, agent: PlayingAgent): Unit =
+    phase match
+      case MinigamePhase.Playing =>
+        agent.makeMove(MemoryMove.FlipCard(pos))
+      case _ => ()
