@@ -6,3 +6,6 @@ enum Figure:
   case Triangle
   case Star
   case Pentagon
+  case Hexagon
+  case Diamond
+  case Flower
