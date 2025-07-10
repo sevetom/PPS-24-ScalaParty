@@ -64,9 +64,9 @@ object MemoryPane:
                   .get
                 new StackPane:
                   if figure == Figure.Circle then
-                    new Circle:
+                    children = new Circle:
                       margin = Insets(5)
-                      radius = 8
+                      radius = BOX_SIZE / 2
                       fill = Color.DeepSkyBlue
                   else
                     children = figureIcon(figure, 1.5)
