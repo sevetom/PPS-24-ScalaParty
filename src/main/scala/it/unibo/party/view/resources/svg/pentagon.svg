@@ -2,18 +2,20 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="36.570892mm"
-   height="36.570892mm"
-   viewBox="0 0 36.570892 36.570892"
+   width="58.423828mm"
+   height="55.663269mm"
+   viewBox="0 0 58.423828 55.663269"
    version="1.1"
    id="svg5"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
-
   <defs
      id="defs2" />
+     id="layer1"
+     transform="translate(-118.45427,-136.82885)">
   <path
-     id="square"
+     id="pentagon"
      style="fill:#000000;fill-opacity:1;stroke-width:1;stroke-linejoin:round;paint-order:stroke markers fill"
-     d="M 147.66592,21.425566 V 57.99646 h 36.5709 V 21.425566 Z" />
+     d="m 111.02181,181.69154 -29.095382,21.38422 11.346078,34.27905 36.107874,-0.19792 10.96987,-34.40204 z"
+     transform="translate(36.52784,-44.862683)" />
 </svg>
