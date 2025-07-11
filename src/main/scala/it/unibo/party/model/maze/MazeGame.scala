@@ -3,8 +3,8 @@ package it.unibo.party.model.maze
 import it.unibo.party.geometry.Direction
 import it.unibo.party.model.maze.MazePosition.MazePosition
 
-private def width: Int = 13
-private def height: Int = 13
+private def width: Int = 17
+private def height: Int = 17
 
 trait MazeGame:
   def player: MazePosition

@@ -49,7 +49,7 @@ object MazePane:
             (point, tile) =>
               val stack = new StackPane:
                 styleClass += "maze-box-stack"
-                children += mazeBox(48, tile)
+                children += mazeBox(30, tile)
                 children += new FlowPane:
                   styleClass += "maze-box-content"
                   if state.playerPosition == point then

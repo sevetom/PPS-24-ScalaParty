@@ -42,7 +42,7 @@ object MazeGenerator:
       var maze: Map[MazePosition, MazeTile] =
         (for x <- 0 until width; y <- 0 until height yield
           MazePosition(x, y) -> MazeTile.Wall).toMap
-      val findings = pattern.findAllMatchIn(result)    
+      val findings = pattern.findAllMatchIn(result)
       pattern.findAllMatchIn(result).foreach(m =>
         val pos = to_full_maze_cord(m.group(1).toInt, m.group(2).toInt)
         maze = maze.updated(pos, MazeTile.Passage)
@@ -53,7 +53,8 @@ object MazeGenerator:
           , MazeTile.Passage)
       )
       val entryPosXs = maze.filter((p, t) => p.y == 1 && t == MazeTile.Passage).keys.map(_.x).toSeq
-      val exitPosXs = maze.filter((p, t) => p.y == height - 2 && t == MazeTile.Passage).keys.map(_.x).toSeq
+      val exitPosXs = maze.filter((p, t) => p.y == height - 2 && p.x <= width / 2 && t == MazeTile.Passage)
+        .keys.map(_.x).toSeq
       val entryX = if entryPosXs.nonEmpty then entryPosXs(Random.nextInt(entryPosXs.size))
       else width / 2
       val exitX = if exitPosXs.nonEmpty then exitPosXs(Random.nextInt(exitPosXs.size))
