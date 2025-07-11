@@ -3,8 +3,8 @@ package it.unibo.party.model.maze
 import it.unibo.party.geometry.Direction
 import it.unibo.party.model.maze.MazePosition.MazePosition
 
-private def width: Int = 10
-private def height: Int = 10
+private def width: Int = 13
+private def height: Int = 13
 
 trait MazeGame:
   def player: MazePosition
@@ -22,9 +22,10 @@ object MazeGame:
     MazeGameImpl(player, maze)
 
   private case class MazeGameImpl(player: MazePosition, maze: Maze) extends MazeGame:
+    private def generator = MazeGenerator.NorthEastBinaryTree(width, height)
 
     def generateMaze(): MazeGame = 
-      val newMaze = Maze.standard
+      val newMaze = generator.generate
       val newPlayerPos = newMaze.layout.find(_._2 == MazeTile.Entry).get
       MazeGame(newPlayerPos._1, newMaze)
 

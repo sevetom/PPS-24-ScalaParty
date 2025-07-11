@@ -24,7 +24,7 @@ object MazeController:
     override def start(): MiniController =
       val generatedGame = game.generateMaze()
       copy(
-        game = generatedGame.generateMaze(),
+        game = generatedGame,
         startTime = System.currentTimeMillis(),
         state = MazeState(
           phase = MinigamePhase.Playing,

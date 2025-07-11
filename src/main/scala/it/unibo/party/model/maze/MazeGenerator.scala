@@ -62,7 +62,7 @@ object MazeGenerator:
       maze = maze.updated(MazePosition(exitX, height - 1), MazeTile.Exit)
       MazeBuilder.constructFromList(
         maze.toList.sortBy:
-          case (pos, _) => (pos.x, pos.y)
+          case (pos, _) => (pos.y, pos.x)
       ).build()
 
 
