@@ -33,6 +33,14 @@ class MazeBuilder(val width: Int, val height: Int):
 object MazeBuilder:
   export MazeBuilder.DSL.*
 
+  def constructFromList(layout: List[(MazePosition, MazeTile)]): MazeBuilder =
+    val width = layout.map(_._1.x).max + 1
+    val height = layout.map(_._1.y).max + 1
+    val builder = new MazeBuilder(width, height)
+    layout.foreach:
+      case (pos, tile) => builder + tile
+    builder
+  
   def construct(width: Int, height: Int)(structure: MazeBuilder ?=> MazeBuilder): MazeBuilder =
     given MazeBuilder(width, height)
     structure
