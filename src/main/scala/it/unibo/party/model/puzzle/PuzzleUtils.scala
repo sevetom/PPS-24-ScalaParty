@@ -1,16 +1,16 @@
 package it.unibo.party.model.puzzle
 
+import alice.tuprolog.{Prolog, Theory}
 import it.unibo.party.model.puzzle.PuzzlePosition.PuzzlePosition
-
-import scala.collection.immutable.HashSet
+import it.unibo.party.{RichFile, openTheoryFile}
 import scala.util.Random
 
 object PuzzleUtils:
 
   def generateRandomSolution(width: Int, height: Int, maxPieceSize: Int): Set[Set[PuzzlePosition]] =
-    def getAdiacentPositions(pos: PuzzlePosition): Set[PuzzlePosition] =
+    def getAdjacentPositions(pos: PuzzlePosition): Set[PuzzlePosition] =
       val (x, y) = (pos.x, pos.y)
-      HashSet[PuzzlePosition](
+      Set[PuzzlePosition](
         PuzzlePosition(x - 1, y),
         PuzzlePosition(x + 1, y),
         PuzzlePosition(x, y - 1),
@@ -24,8 +24,8 @@ object PuzzleUtils:
                               ): Set[PuzzlePosition] = pieceSize match
       case 0 => Set.empty
       case _ =>
-        val adiacentPositions = getAdiacentPositions(startingPosition)
-        val positions = availablePositions.intersect(adiacentPositions)
+        val adjacentPositions = getAdjacentPositions(startingPosition)
+        val positions = availablePositions.intersect(adjacentPositions)
         positions match
           case s if s.isEmpty => Set(startingPosition)
           case _ =>
@@ -54,8 +54,14 @@ object PuzzleUtils:
       ).toSet
     generateRandomSolutionRec(initialPositions)
 
-
-
-  def isValidSolution(solution: Set[Set[PuzzlePosition]], width: Int, height: Int, pieceSize: Int): Boolean =
-    ???
-    
+  def isValidSolution(solution: Set[Set[PuzzlePosition]], width: Int, height: Int): Boolean =
+    val mappedSolution = solution.map(p => p.map(pos => pos.y * width + pos.x))
+    println(s"Mapped solution: $mappedSolution")
+    var prologRules = ""
+    openTheoryFile("src/main/resources/prolog/puzzleSolutionValidation.pl").read().foreach(line =>
+      if !line.startsWith("%") || line.trim.nonEmpty then
+        prologRules = prologRules.concat("\n" + line)
+    )
+    val engine = Prolog()
+    engine.setTheory(Theory(prologRules))
+    engine.solve(s"is_valid_solution(${mappedSolution.map(_.mkString("[", ",", "]")).mkString("[", ",", "]")}, $width, $height).").isSuccess
