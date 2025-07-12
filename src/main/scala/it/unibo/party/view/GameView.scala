@@ -5,7 +5,7 @@ import it.unibo.party.common.*
 import it.unibo.party.common.PartyState.*
 import it.unibo.party.controller.PlayingAgent
 import it.unibo.party.controller.Moves.{PartyMove, StartMove}
-import it.unibo.party.view.panes.{EndPane, MinigamePane, PartyPane, StartPane}
+import it.unibo.party.view.panes.{EndPane, MinigamePane, PartyPane, StartPane, PuzzlePane}
 import scalafx.scene.Scene
 import scalafx.scene.layout.{Pane, StackPane}
 import it.unibo.party.controller.pubsub.Subscriber
@@ -39,7 +39,10 @@ class GameView(playingAgent: PlayingAgent) extends Subscriber[State]:
             case _ =>
               scene.stylesheets = Seq(commonStyleSheet, partyStyleSheet, boardStyleSheet)
               PartyPane(e, playingAgent)
-        case e: MinigameState => MinigamePane(() => playingAgent.makeMove(PartyMove.Resume))
+        case e: PuzzleState =>
+          scene.stylesheets = Seq(commonStyleSheet, partyStyleSheet)
+          PuzzlePane(() => playingAgent.makeMove(PartyMove.Resume), e, playingAgent)
+        case _ => MinigamePane(() => playingAgent.makeMove(PartyMove.Resume))
       container.children.add(pane)
     }
   }

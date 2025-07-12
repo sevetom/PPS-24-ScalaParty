@@ -12,7 +12,7 @@ private val standardWidth = 5
 private val standardHeight = 5
 private val maxPieceSize = 5
 
-class PuzzleController:
+object PuzzleController:
 
   def apply(challenger: Player, challenged: Player): MiniController =
     PuzzleControllerImpl(challenger, challenged, 0L, winTime, PuzzleState.empty)
@@ -39,7 +39,9 @@ class PuzzleController:
               .map(_.toPoint2D))
             .zipWithIndex
             .map((piece, index) => index -> piece)
-            .toMap
+            .toMap,
+          width = standardWidth,
+          height = standardHeight
         )
       )
 

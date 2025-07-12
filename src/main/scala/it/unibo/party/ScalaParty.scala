@@ -2,6 +2,7 @@ package it.unibo.party
 
 import it.unibo.party.common.*
 import it.unibo.party.controller.*
+import it.unibo.party.controller.puzzle.PuzzleController
 import it.unibo.party.model.board.GameBoard.GameBoard
 import it.unibo.party.model.partyGame.{Dice, PartyGame}
 import it.unibo.party.view.GameView
@@ -14,7 +15,7 @@ object ScalaParty extends JFXApp3:
     val partyController = PartyController(game, List(Player(0), Player(1)))
     val mazeController = MazeController(0, 0, MazeState(MinigamePhase.Playing, Option(0)))
     val memoryController = MemoryController(0, 0, MemoryState(MinigamePhase.Playing, Option(0)))
-    val puzzleController = PuzzleController(0, 0, PuzzleState.empty)
+    val puzzleController = PuzzleController(Player(1), Player(0))
     val controller = Controller(Map(
       Minigame.Party -> partyController,
       Minigame.Maze -> mazeController,

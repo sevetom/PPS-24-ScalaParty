@@ -14,14 +14,6 @@ trait TimedMiniController extends MiniController:
   def winTime: Long
 
   def isTimeUp: Boolean = System.currentTimeMillis() - startTime >= winTime
-
-object PuzzleController:
-
-  def apply(startTime: Long, winTime: Long, state: PuzzleState): MiniController = PuzzleControllerImpl(startTime, winTime, state)
-  
-  private case class PuzzleControllerImpl(startTime: Long, winTime: Long, state: PuzzleState) extends TimedMiniController:
-    override def start(): MiniController = this
-    override def handleMove(move: Move): MiniController = this
     
 object MemoryController:
 
