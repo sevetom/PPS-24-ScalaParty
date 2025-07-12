@@ -18,6 +18,6 @@ object MemoryItems:
           case Figure.Hexagon  => Color.MediumSlateBlue
           case Figure.Diamond  => Color.Tomato
           case Figure.Heart   => Color.Red
-          case _ => Color.Black
+          case Figure.Circle   => Color.Cyan
         scaleX = scale
         scaleY = scale

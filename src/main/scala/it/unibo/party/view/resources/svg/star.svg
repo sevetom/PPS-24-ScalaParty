@@ -2,20 +2,19 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="51.711052mm"
-   height="49.378899mm"
-   viewBox="0 0 51.711052 49.378899"
+   width="20.000002mm"
+   height="20.000002mm"
+   viewBox="0 0 20.000002 20.000002"
    version="1.1"
    id="svg5"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs2" />
-     id="layer1"
-     transform="translate(-69.822611,-121.31405)">
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs2" />
+
+     id=&quot;layer1&quot;
+     transform=&quot;translate(-69.822611,-121.31405)&quot;&gt;
   <path
-     id="star"
-     style="fill:#000000;fill-opacity:1;stroke-width:1;stroke-linejoin:round;paint-order:stroke markers fill"
-     d="m 56.918414,146.06404 -7.787639,16.28841 -17.833537,2.81895 13.08499,12.44007 -2.830318,17.83147 15.875,-8.59999 16.084289,8.20208 -3.273702,-17.7555 12.770797,-12.76305 -17.898132,-2.37298 z"
-     transform="translate(38.525373,-24.75)" />
+   id="star"
+   style="fill:#000000;fill-opacity:1;stroke-width:0.395793;stroke-linejoin:round;paint-order:stroke markers fill"
+   d="M 9.9093602,-2.1209569e-7 6.8973782,6.5973158 -7.5981095e-7,7.7390788 5.0608082,12.777697 l -1.094666,7.222304 6.1398858,-3.483265 6.220832,3.322099 -1.266152,-7.191534 4.939291,-5.1694352 -6.922362,-0.961131 z" />
 </svg>

@@ -61,13 +61,7 @@ object MemoryPane:
                   .map(_._1)
                   .get
                 new StackPane:
-                  if figure == Figure.Circle then
-                    children = new Circle:
-                      margin = Insets(5)
-                      radius = BOX_SIZE / 2
-                      fill = Color.DeepSkyBlue
-                  else
-                    children = figureIcon(figure, 1.5)
+                    children = figureIcon(figure, 4.0)
               else
                 new StackPane:
                   onMouseClicked = _ =>

@@ -2,9 +2,9 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="36.569855mm"
-   height="42.97361mm"
-   viewBox="0 0 36.569855 42.97361"
+   width="20mm"
+   height="20.106897mm"
+   viewBox="0 0 20 20.106897"
    version="1.1"
    id="svg5"
    xmlns="http://www.w3.org/2000/svg"
@@ -13,6 +13,6 @@
      id="defs2" />
   <path
      id="diamond"
-     style="fill:#000000;fill-opacity:1;stroke-width:0.494832;stroke-linejoin:round;paint-order:stroke markers fill"
-     d="m 36.462891,48.693152 -5.247742,6.52725 18.532202,36.446354 18.037659,-36.693884 -5.248259,-6.27972 z" />
+     style="fill:#ff0000;fill-opacity:1;stroke-width:0.250312;stroke-linejoin:round;paint-order:stroke markers fill"
+     d="M 2.8699825,-2.1000278e-8 3.4058142e-7,3.0540313 10.135234,20.106898 20.000001,2.9382153 17.129737,-2.1000278e-8 Z" />
 </svg>

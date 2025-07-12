@@ -2,20 +2,19 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="58.423828mm"
-   height="55.663269mm"
-   viewBox="0 0 58.423828 55.663269"
+   width="20.000004mm"
+   height="20mm"
+   viewBox="0 0 20.000004 20"
    version="1.1"
    id="svg5"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <defs
-     id="defs2" />
-     id="layer1"
-     transform="translate(-118.45427,-136.82885)">
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs2" />
+
+     id=&quot;layer1&quot;
+     transform=&quot;translate(-118.45427,-136.82885)&quot;&gt;
   <path
-     id="pentagon"
-     style="fill:#000000;fill-opacity:1;stroke-width:1;stroke-linejoin:round;paint-order:stroke markers fill"
-     d="m 111.02181,181.69154 -29.095382,21.38422 11.346078,34.27905 36.107874,-0.19792 10.96987,-34.40204 z"
-     transform="translate(36.52784,-44.862683)" />
+   id="pentagon"
+   style="fill:#000000;fill-opacity:1;stroke-width:0.350712;stroke-linejoin:round;paint-order:stroke markers fill"
+   d="M 9.9601093,-3.1970404e-7 2.6123499e-7,7.6834217 3.8840593,19.999999 16.244727,19.928899 19.999999,7.5681307 Z" />
 </svg>
