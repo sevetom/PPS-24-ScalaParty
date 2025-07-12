@@ -9,9 +9,11 @@ import it.unibo.party.geometry.Point2D
 private val winTime = 30000L // 30 seconds
 
 object MemoryController:
-  def apply(game: Memory): MiniController = MemoryControllerImpl(MemoryState(game, MinigamePhase.Playing, None, None), 0L, winTime)
+  def apply(game: Memory, challenger: Player, challenged: Player): MiniController = MemoryControllerImpl(MemoryState(game, MinigamePhase.Playing, None, None), Player(0), Player(1), 0L, winTime)
 
   private case class MemoryControllerImpl(state: MemoryState,
+                                          challenger: Player,
+                                          challenged: Player,
                                           startTime: Long,
                                           winTime: Long) extends TimedMiniController:
 
@@ -43,8 +45,9 @@ object MemoryController:
               val (isMatch, updatedGame) = state.game.check(coupleToCheck)
 
               if isMatch then
-                val winner = if updatedGame.isOver then Some(Player(0)) else None
-                val phase = if updatedGame.isOver then MinigamePhase.GameOver else MinigamePhase.Playing
+                val hasWonInTime = !isTimeUp && updatedGame.isOver
+                val winner = if hasWonInTime then Some(challenger) else if isTimeUp then Some(challenged) else None
+                val phase = if updatedGame.isOver || isTimeUp then MinigamePhase.GameOver else MinigamePhase.Playing
                 val newState = state.copy(game = updatedGame, phase = phase, winner = winner, firstSelection = None)
                 copy(state = newState)
               else

@@ -5,7 +5,7 @@ import it.unibo.party.common.PartyPhase.GameOver
 import it.unibo.party.controller.Moves.{PartyMove, StartMove}
 import it.unibo.party.controller.PlayingAgent
 import it.unibo.party.controller.pubsub.Subscriber
-import it.unibo.party.view.panes.{EndPane, MinigamePane, PartyPane, StartPane}
+import it.unibo.party.view.panes.{EndPane, MemoryPane, MinigamePane, PartyPane, StartPane}
 import scalafx.Includes.*
 import scalafx.scene.Scene
 import scalafx.scene.layout.{Pane, StackPane}
@@ -42,8 +42,8 @@ class GameView(playingAgent: PlayingAgent) extends Subscriber[State]:
           scene.stylesheets = Seq(commonStyleSheet, memoryStyleSheet)
 
           e match
-            case mem: MemoryState =>
-              it.unibo.party.view.panes.MemoryPane(mem, playingAgent, () => playingAgent.makeMove(PartyMove.Resume))
+            case m: MemoryState =>
+              MemoryPane(m, playingAgent, () => playingAgent.makeMove(PartyMove.Resume))
             case _ =>
               MinigamePane(() => playingAgent.makeMove(PartyMove.Resume))
       container.children.add(pane)

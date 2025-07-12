@@ -11,7 +11,7 @@ import scalafx.geometry.{Insets, Pos}
 import scalafx.scene.control.{Button, Label}
 import scalafx.scene.layout.*
 import scalafx.scene.paint.Color
-import scalafx.scene.shape.{Circle, Rectangle}
+import scalafx.scene.shape.Rectangle
 import scalafx.scene.text.Font
 
 object MemoryPane:
@@ -20,7 +20,7 @@ object MemoryPane:
   private val BOX_SIZE = 100
 
   private def memoryBox(figure: Figure) =
-    figureIcon(figure, 1.5)
+    figureIcon(figure, GRID_SIZE)
 
   def apply(state: MemoryState, agent: PlayingAgent, onExit: () => Unit): Pane =
     new BorderPane:
@@ -31,8 +31,8 @@ object MemoryPane:
         children +=
           new Label:
             text = state.phase match
-              case Playing => "Find all the matches!"
-              case GameOver => if agent.id == state.winner.getOrElse(-1) then "You Won!" else "Game Over!"
+              case Playing => "Find all the matches"
+              case GameOver => if agent.id == state.winner.get.id then "You Won!" else "Game Over!"
             font = Font("Poppins", 30)
             textFill = Color.White
       center =
@@ -61,7 +61,14 @@ object MemoryPane:
                   .map(_._1)
                   .get
                 new StackPane:
-                    children = figureIcon(figure, 4.0)
+                  children = Seq(
+                    new Rectangle:
+                      width = BOX_SIZE
+                      height = BOX_SIZE
+                      styleClass += "memory-box"
+                    ,
+                    figureIcon(figure, 2)
+                    )
               else
                 new StackPane:
                   onMouseClicked = _ =>
