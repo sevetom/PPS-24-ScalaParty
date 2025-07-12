@@ -31,7 +31,7 @@ object MemoryPane:
         children +=
           new Label:
             text = state.phase match
-              case Playing => "Find all the matches"
+              case Playing => s"Find all the matches in ${state.winTime / 1000} seconds!"
               case GameOver => if agent.id == state.winner.get.id then "You Won!" else "Game Over!"
             font = Font("Poppins", 30)
             textFill = Color.White

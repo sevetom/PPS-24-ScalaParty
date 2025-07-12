@@ -9,7 +9,7 @@ import it.unibo.party.geometry.Point2D
 private val winTime = 30000L // 30 seconds
 
 object MemoryController:
-  def apply(game: Memory, challenger: Player, challenged: Player): MiniController = MemoryControllerImpl(MemoryState(game, MinigamePhase.Playing, None, None), Player(0), Player(1), 0L, winTime)
+  def apply(game: Memory, challenger: Player, challenged: Player): MiniController = MemoryControllerImpl(MemoryState(game, MinigamePhase.Playing, None, None, winTime = winTime), Player(0), Player(1), 0L, winTime)
 
   private case class MemoryControllerImpl(state: MemoryState,
                                           challenger: Player,
@@ -20,7 +20,7 @@ object MemoryController:
     override def start(): MiniController =
       val generatedMemory: Memory = state.game.generate
       copy(
-        state = MemoryState(generatedMemory, MinigamePhase.Playing, None, None),
+        state = MemoryState(game = generatedMemory, phase = MinigamePhase.Playing, winner = None, firstSelection = None, winTime = winTime),
         startTime = System.currentTimeMillis()
       )
 

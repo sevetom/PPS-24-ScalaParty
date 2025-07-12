@@ -20,7 +20,8 @@ case class MemoryState(
                         phase: MinigamePhase,
                         winner: Option[Player],
                         firstSelection: Option[Point2D[Int]],
-                        mismatchedPair: Option[(Point2D[Int], Point2D[Int])] = None
+                        mismatchedPair: Option[(Point2D[Int], Point2D[Int])] = None,
+                        winTime: Long
                       ) extends MinigameState
 case class MazeState(phase: MinigamePhase, winner: Option[Player]) extends MinigameState
 
