@@ -11,6 +11,7 @@ import it.unibo.party.model.items.{Collectable, CollectableType}
 import it.unibo.party.model.player.{Pawn, Pocket}
 
 import scala.language.postfixOps
+import scala.util.Random
 
 object GameBoard:
   
@@ -54,16 +55,16 @@ object GameBoard:
     
     def addRandomItems(itemType: CollectableType, count: Int): GameBoard =
       val randomPositions =
-        scala.util.Random.shuffle(board.filter(_._2.isEmpty).keys.toList).take(count)
+        Random.shuffle(board.filter(_._2.isEmpty).keys.toList.diff(pawns.values.map(_.position).toList)).take(count)
       val newBoard = randomPositions.foldLeft(board)((acc, pos) =>
         acc.updated(pos, FullBox(itemType.toCollectable)))
       GameBoard(newBoard, pawns)
 
     def addRandomItem(item: Collectable): GameBoard =
-      val emptyPositions = this.board.filter((_, box) => box.isEmpty).keys.toList
+      val emptyPositions = this.board.filter((_, box) => box.isEmpty).keys.toList.diff(pawns.values.map(_.position).toList)
       if emptyPositions.isEmpty then this
       else
-        val randomPosition = scala.util.Random.shuffle(emptyPositions).head
+        val randomPosition = Random.shuffle(emptyPositions).head
         GameBoard(this.board.updated(randomPosition, FullBox(item)), this.pawns)
 
   def standardBoard() : GameBoard =
