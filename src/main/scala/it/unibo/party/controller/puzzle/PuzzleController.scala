@@ -53,8 +53,8 @@ class PuzzleController:
       )
       case (PuzzleMove.PlacePiece(position), Some(pieceId)) =>
         val newSolution = state.currentSolution.updated(
-          state.currentPiece.get,
-          state.nonPlacedPieces(state.currentPiece.get)
+          pieceId,
+          state.nonPlacedPieces(pieceId)
             .map(
               p => Point2D[Int](
                 position.x + p.x,
