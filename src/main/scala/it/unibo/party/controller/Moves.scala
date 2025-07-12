@@ -14,7 +14,10 @@ object Moves:
     case Resume
 
   enum PuzzleMove extends Move:
-    case CheckSolution(solution: Set[Set[Int]])
+    case SelectPiece(pieceId: Int)
+    case PlacePiece(position: Point2D[Int])
+    case RemovePiece
+    
 
   enum MazeMove extends Move:
     case Movement(direction: Direction)

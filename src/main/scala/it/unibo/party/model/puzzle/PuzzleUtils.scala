@@ -65,3 +65,11 @@ object PuzzleUtils:
     val engine = Prolog()
     engine.setTheory(Theory(prologRules))
     engine.solve(s"is_valid_solution(${mappedSolution.map(_.mkString("[", ",", "]")).mkString("[", ",", "]")}, $width, $height).").isSuccess
+  
+    
+  def normalizePiece(piece: Set[PuzzlePosition]): Set[PuzzlePosition] =
+    if piece.isEmpty then piece
+    else
+      val minX = piece.map(_.x).min
+      val minY = piece.map(_.y).min
+      piece.map(pos => PuzzlePosition(pos.x - minX, pos.y - minY))

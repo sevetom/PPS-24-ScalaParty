@@ -13,7 +13,18 @@ trait MinigameState extends State:
   override def phase: MinigamePhase
   def winnerId: Option[Int]
 
-case class PuzzleState(phase: MinigamePhase, winnerId: Option[Int]) extends MinigameState
+case class PuzzleState(
+                        phase: MinigamePhase, 
+                        winnerId: Option[Int], 
+                        currentSolution: Map[Int, Set[Point2D[Int]]],
+                        currentPiece: Option[Int],
+                        nonPlacedPieces: Map[Int, Set[Point2D[Int]]]
+                      ) extends MinigameState
+
+object PuzzleState:
+  def empty: PuzzleState =
+    PuzzleState(MinigamePhase.Playing, None, Map.empty, None, Map.empty)
+
 case class MemoryState(phase: MinigamePhase, winnerId: Option[Int]) extends MinigameState
 case class MazeState(phase: MinigamePhase, winnerId: Option[Int]) extends MinigameState
 
