@@ -5,7 +5,8 @@ import it.unibo.party.controller.Moves.PuzzleMove.*
 import it.unibo.party.controller.PlayingAgent
 import it.unibo.party.geometry.Point2D
 import scalafx.scene.control.Button
-import scalafx.scene.layout.{BorderPane, FlowPane, GridPane, Pane}
+import scalafx.scene.layout.{BackgroundFill, BorderPane, FlowPane, GridPane, Pane}
+import scalafx.scene.paint.Color
 
 object PuzzlePane:
 
@@ -42,7 +43,7 @@ object PuzzlePane:
 
       bottom = new FlowPane:
         alignment = scalafx.geometry.Pos.Center
-        hgap = 2
+        hgap = 4
         state.nonPlacedPieces
           .map(_ match
             case (pieceId, piece) => (pieceId, piece.map(pos => Point2D(pos.x - piece.map(_.x).min, pos.y - piece.map(_.y).min))
