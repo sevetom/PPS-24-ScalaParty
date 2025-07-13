@@ -1,0 +1,35 @@
+.piece-button {
+    -fx-background-radius: 10;
+    -fx-border-color: transparent;
+    -fx-padding: 0px;
+}
+
+#piece-empty {
+    -fx-background-color: #BEBEBE;
+}
+
+#piece-1 {
+    -fx-background-color: #FF0000;
+}
+#piece-2 {
+    -fx-background-color: #00FF00;
+}
+#piece-3 {
+    -fx-background-color: #0000FF;
+}
+#piece-4 {
+    -fx-background-color: #FFFF00;
+}
+#piece-5 {
+    -fx-background-color: #FF00FF;
+}
+#piece-6 {
+    -fx-background-color: #00FFFF;
+}
+#piece-7 {
+    -fx-background-color: #FFA500;
+}
+#piece-8 {
+    -fx-background-color: #800080;
+}
+

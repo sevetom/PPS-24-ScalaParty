@@ -17,17 +17,24 @@ object PuzzlePane:
       case (pieceId, piece) => piece.map(pos => ((pos.x, pos.y), pieceId)
     ))
     new BorderPane:
+      onMouseClicked = _ => playingAgent.makeMove(RemovePiece)
       center = new GridPane:
         alignment = scalafx.geometry.Pos.Center
         grid.foreach(_ match
           case ((x, y), pieceId) if pieceId == emptyId =>
-            add(new Button(""):
-              id = s"piece-$emptyId"
+            add(new Button:
+              id = s"piece-empty"
+              styleClass += "piece-button"
+              minWidth = 50
+              minHeight = 50
               onAction = _ => playingAgent.makeMove(PlacePiece(x, y))
             , x, y)
           case ((x, y), pieceId) =>
-            add(new Button(s"Piece $pieceId"):
+            add(new Button:
               id = s"piece-$pieceId"
+              styleClass += "piece-button"
+              minWidth = 50 
+              minHeight = 50
               onAction = _ => playingAgent.makeMove(SelectPiece(pieceId))
             , x, y)
         )
@@ -42,8 +49,11 @@ object PuzzlePane:
                 alignment = scalafx.geometry.Pos.Center
                 piece.foreach(pos =>
                   add(
-                    new Button(s"Piece $pieceId"):
+                    new Button:
                       id = s"piece-$pieceId"
+                      styleClass += "piece-button"
+                      minWidth = 50
+                      minHeight = 50
                       onAction = _ => playingAgent.makeMove(SelectPiece(pieceId))
                     , pos.x, pos.y
                   )

@@ -17,6 +17,7 @@ class GameView(playingAgent: PlayingAgent) extends Subscriber[State]:
   private val commonStyleSheet = getClass.getResource("./style/commonStyle.css").toExternalForm
   private val partyStyleSheet = getClass.getResource("./style/partyStyle.css").toExternalForm
   private val boardStyleSheet = getClass.getResource("./style/boardStyle.css").toExternalForm
+  private val puzzleStyleSheet = getClass.getResource("./style/puzzleStyle.css").toExternalForm
   val scene: Scene = new Scene {
     stylesheets += commonStyleSheet
     root = container
@@ -40,7 +41,7 @@ class GameView(playingAgent: PlayingAgent) extends Subscriber[State]:
               scene.stylesheets = Seq(commonStyleSheet, partyStyleSheet, boardStyleSheet)
               PartyPane(e, playingAgent)
         case e: PuzzleState =>
-          scene.stylesheets = Seq(commonStyleSheet, partyStyleSheet)
+          scene.stylesheets = Seq(commonStyleSheet, puzzleStyleSheet)
           PuzzlePane(() => playingAgent.makeMove(PartyMove.Resume), e, playingAgent)
         case _ => MinigamePane(() => playingAgent.makeMove(PartyMove.Resume))
       container.children.add(pane)
