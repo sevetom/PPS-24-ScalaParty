@@ -52,11 +52,12 @@ object PuzzleUtils:
             y <- 0 until height
         yield PuzzlePosition(x, y)
       ).toSet
-    generateRandomSolutionRec(initialPositions)
+    val sol = generateRandomSolutionRec(initialPositions)
+    println(sol)
+    sol
 
   def isValidSolution(solution: Set[Set[PuzzlePosition]], width: Int, height: Int): Boolean =
     val mappedSolution = solution.map(p => p.map(pos => pos.y * width + pos.x))
-    println(s"Mapped solution: $mappedSolution")
     var prologRules = ""
     openTheoryFile("src/main/resources/prolog/puzzleSolutionValidation.pl").read().foreach(line =>
       if !line.startsWith("%") || line.trim.nonEmpty then
@@ -69,7 +70,8 @@ object PuzzleUtils:
     
   def normalizePiece(piece: Set[PuzzlePosition]): Set[PuzzlePosition] =
     if piece.isEmpty then piece
-    else
-      val minX = piece.map(_.x).min
-      val minY = piece.map(_.y).min
-      piece.map(pos => PuzzlePosition(pos.x - minX, pos.y - minY))
+    else {
+      val minPos = piece.filter(pos => pos.y == piece.map(_.y).min).minBy(_.x)
+      piece.map(pos => PuzzlePosition(pos.x - minPos.x, pos.y - minPos.y))
+    }
+

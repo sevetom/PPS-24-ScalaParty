@@ -35,10 +35,8 @@ object PuzzleController:
           currentSolution = Map.empty,
           currentPiece = None,
           nonPlacedPieces = pieces
-            .map(normalizePiece(_)
-              .map(_.toPoint2D))
             .zipWithIndex
-            .map((piece, index) => index -> piece)
+            .map((piece, index) => index -> normalizePiece(piece.map(p => PuzzlePosition(p.x, p.y))).map(_.toPoint2D))
             .toMap,
           width = standardWidth,
           height = standardHeight
@@ -56,7 +54,8 @@ object PuzzleController:
       case (PuzzleMove.PlacePiece(position), Some(pieceId)) =>
         val newSolution = state.currentSolution.updated(
           pieceId,
-          state.nonPlacedPieces(pieceId)
+          PuzzleUtils.normalizePiece((state.nonPlacedPieces ++ state.currentSolution)(pieceId)
+              .map(p => PuzzlePosition(p.x, p.y)))
             .map(
               p => Point2D[Int](
                 position.x + p.x,
@@ -78,7 +77,7 @@ object PuzzleController:
           winnerId = if isValidSolution then Some(challenged.id) else if isTimeUp then Some(challenger.id) else None
         )
       )
-      case (PuzzleMove.RemovePiece, Some(pieceId)) => copy(
+      case (PuzzleMove.RemovePiece, Some(pieceId)) if state.currentSolution.contains(pieceId) => copy(
         state = state.copy(
           phase = if isTimeUp then MinigamePhase.GameOver else MinigamePhase.Playing,
           nonPlacedPieces = state.nonPlacedPieces.updated(
