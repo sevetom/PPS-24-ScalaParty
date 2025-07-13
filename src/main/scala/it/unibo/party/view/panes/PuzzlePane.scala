@@ -1,12 +1,14 @@
 package it.unibo.party.view.panes
 
+import it.unibo.party.common.MinigamePhase.GameOver
 import it.unibo.party.common.PuzzleState
 import it.unibo.party.controller.Moves.PuzzleMove.*
 import it.unibo.party.controller.PlayingAgent
 import it.unibo.party.geometry.Point2D
+import scalafx.geometry.Insets
 import scalafx.scene.control.Button
-import scalafx.scene.layout.{BackgroundFill, BorderPane, FlowPane, GridPane, Pane}
-import scalafx.scene.paint.Color
+import scalafx.scene.layout.{BorderPane, FlowPane, GridPane, Pane}
+
 
 object PuzzlePane:
 
@@ -19,7 +21,7 @@ object PuzzlePane:
       case (pieceId, piece) => piece.map(pos => ((pos.x, pos.y), pieceId)
     ))
     new BorderPane:
-      onMouseClicked = _ => playingAgent.makeMove(RemovePiece)
+      onMouseClicked = _ => if state.phase != GameOver then playingAgent.makeMove(RemovePiece)
       center = new GridPane:
         alignment = scalafx.geometry.Pos.Center
         grid.foreach(_ match
@@ -27,23 +29,25 @@ object PuzzlePane:
             add(new Button:
               id = s"piece-empty"
               styleClass += "piece-button"
-              minWidth = 50
-              minHeight = 50
-              onAction = _ => playingAgent.makeMove(PlacePiece(x, y))
+              minWidth = 70
+              minHeight = 70
+              onAction = _ => if state.phase != GameOver then playingAgent.makeMove(PlacePiece(x, y))
             , x, y)
           case ((x, y), pieceId) =>
-            add(new Button:
-              id = s"piece-$pieceId"
-              styleClass += "piece-button"
-              minWidth = 50 
-              minHeight = 50
-              onAction = _ => playingAgent.makeMove(SelectPiece(pieceId))
-            , x, y)
+            if x >= 0 && y >= 0 then
+              add(new Button:
+                id = s"piece-$pieceId"
+                styleClass += "piece-button"
+                minWidth = 70
+                minHeight = 70
+                onAction = _ => playingAgent.makeMove(SelectPiece(pieceId))
+              , x, y)
         )
 
       bottom = new FlowPane:
         alignment = scalafx.geometry.Pos.Center
-        hgap = 4
+        hgap = 20
+        padding = Insets(0, 0, 40, 0)
         state.nonPlacedPieces
           .map(_ match
             case (pieceId, piece) => (pieceId, piece.map(pos => Point2D(pos.x - piece.map(_.x).min, pos.y - piece.map(_.y).min))
@@ -58,9 +62,11 @@ object PuzzlePane:
                     new Button:
                       id = s"piece-$pieceId"
                       styleClass += "piece-button"
-                      minWidth = 50
-                      minHeight = 50
-                      onAction = _ => playingAgent.makeMove(SelectPiece(pieceId))
+                      minWidth = 40
+                      maxWidth = 40
+                      minHeight = 40
+                      maxHeight = 40
+                      onAction = _ => if state.phase != GameOver then playingAgent.makeMove(SelectPiece(pieceId))
                     , pos.x, pos.y
                   )
             )
