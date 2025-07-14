@@ -9,6 +9,8 @@ import it.unibo.party.model.items.CollectableOperations.getType
 import it.unibo.party.model.items.CollectableType.{MonadType, RungType}
 import it.unibo.party.model.partyGame.{MovementResult, PartyGame}
 
+import scala.runtime.LazyVals.Waiting
+
 private val stepsPerPlayer: Int = 1
 private val winRungs: Int = 5
 
@@ -67,7 +69,7 @@ object PartyController:
             case PartyPhase.StartingRoll => handleStartingRoll(ctx)
             case PartyPhase.DiceRoll => handleDiceRoll(ctx)
             case _ => ctx
-        case Resume => ctx.copy(turnManager = ctx.turnManager.nextTurn())
+        case Resume | StartMinigame => ctx.copy(turnManager = ctx.turnManager.nextTurn())
         case _ => ctx
       val postWinCtx = checkWinCondition(updatedCtx)
       val regeneratedCtx = regenerateBoard(postWinCtx)

@@ -11,6 +11,7 @@ object Moves:
   enum PartyMove extends Move:
     case DiceRoll(playerId: Int)
     case Movement(playerId: Int, direction: Direction)
+    case StartMinigame
     case Resume
 
   enum PuzzleMove extends Move:

@@ -1,5 +1,6 @@
 package it.unibo.party.view.panes
 
+import it.unibo.party.common.PartyPhase.WaitingMinigame
 import it.unibo.party.common.{PartyPhase, PartyState}
 import it.unibo.party.controller.Moves.PartyMove
 import it.unibo.party.controller.PlayingAgent
@@ -7,7 +8,7 @@ import it.unibo.party.model.items.CollectableOperations.*
 import it.unibo.party.model.items.CollectableType.RungType
 import it.unibo.party.view.components.{Board, Pocket, SideBoxes}
 import it.unibo.party.view.input.InputHandler
-import scalafx.scene.control.Label
+import scalafx.scene.control.{Button, Label}
 import scalafx.scene.input.InputIncludes.jfxKeyEvent2sfx
 import scalafx.scene.layout.{BorderPane, HBox, Pane, VBox}
 
@@ -54,6 +55,9 @@ object PartyPane:
             (state.phase == PartyPhase.DiceRoll ||
               state.phase == PartyPhase.StartingRoll)
         )
+        if state.phase == WaitingMinigame then
+          children += new Button("Ready!"):
+            onAction = _ => playingAgent.makeMove(PartyMove.StartMinigame)
 
       onKeyPressed = event => InputHandler(event, state, playingAgent)
       focusTraversable = true

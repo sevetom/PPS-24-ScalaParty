@@ -32,8 +32,9 @@ object PartyTurnManager:
           else (currentIndex + 1, StartingRoll)
         case DiceRoll => (currentIndex, PlayerMoving)
         case PlayerMoving =>
-          if currentIndex + 1 >= players.size then (0, PlayingMinigame)
+          if currentIndex + 1 >= players.size then (0, WaitingMinigame)
           else (currentIndex + 1, DiceRoll)
+        case WaitingMinigame => (0, PlayingMinigame)
         case PlayingMinigame => (currentIndex, DiceRoll)
         case GameOver => (currentIndex, GameOver)
       this.copy(currentIndex = index, currentPhase = phase)
