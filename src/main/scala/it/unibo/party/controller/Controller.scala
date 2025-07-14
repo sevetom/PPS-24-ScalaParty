@@ -22,6 +22,7 @@ object Controller:
   private class ControllerImpl(private var miniControllers: Map[Minigame, MiniController]) extends Controller:
     private var statePublisher: Publisher[State] = Publisher(List.empty)
     private var currentMinigame: Minigame = Minigame.Party
+    private var minigameIndex: Int = 0
 
     override def addViewListener(listener: Subscriber[State]): Unit =
       statePublisher = statePublisher.subscribeFirst(listener)
@@ -53,10 +54,12 @@ object Controller:
           miniControllers = miniControllers.updatedWith(minigameKey)(_.map(_.handleMove(move)))
   
           if miniControllers(Minigame.Party).state.phase == PartyPhase.PlayingMinigame && currentMinigame == Minigame.Party then
-            minigameKey = Random.nextInt(miniControllers.size - 1) match
+            minigameKey = minigameIndex match
               case 0 => Minigame.Maze
               case 1 => Minigame.Memory
               case 2 => Minigame.Puzzle
+            minigameIndex += 1
+            minigameIndex = if minigameIndex >= miniControllers.size - 1 then 0 else minigameIndex
             miniControllers = miniControllers.updatedWith(minigameKey)(_.map(_.start()))
 
       currentMinigame = minigameKey
