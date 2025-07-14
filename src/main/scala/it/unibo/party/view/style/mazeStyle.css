@@ -1,0 +1,67 @@
+.maze {
+    -fx-hgap: 2pt;
+    -fx-vgap: 3pt;
+    -fx-alignment: center;
+}
+
+.maze-box {
+    -fx-arc-height: 10px;
+    -fx-arc-width: 10px;
+}
+
+.maze-box-content {
+    -fx-min-width: 100%;
+    -fx-alignment: center;
+    -fx-padding: 0;
+    -fx-hgap: 4;
+}
+
+.maze-box-stack {
+    -fx-min-width: 100%;
+}
+
+.maze-box-wall {
+    -fx-fill: #4A4A4A;
+}
+
+.maze-box-passage {
+    -fx-fill: #BEBEBE;
+}
+
+.maze-box-entry {
+    -fx-fill: #3CB371;
+}
+
+.maze-box-exit {
+    -fx-fill: #FF6347;
+}
+
+.pawn {
+    -fx-stroke-width: 0;
+}
+
+.title-label-container {
+    -fx-padding: 15pt;
+    -fx-alignment: center;
+}
+
+.exit-button {
+    -fx-font-family: "Poppins";
+    -fx-font-size: 20pt;
+}
+
+.side-box-title {
+    -fx-alignment: center;
+    -fx-padding: 5pt;
+}
+
+.side-box {
+    -fx-min-height: 100pt;
+    -fx-background-radius: 10pt;
+    -fx-padding: 2pt;
+}
+
+.side-container {
+    -fx-padding: 30pt;
+    -fx-spacing: 30pt;
+}
