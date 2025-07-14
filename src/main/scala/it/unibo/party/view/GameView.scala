@@ -6,6 +6,7 @@ import it.unibo.party.common.state.MazeState
 import it.unibo.party.controller.Moves.{PartyMove, StartMove}
 import it.unibo.party.controller.PlayingAgent
 import it.unibo.party.controller.pubsub.Subscriber
+import it.unibo.party.view.panes.{EndPane, MemoryPane, MinigamePane, PartyPane, StartPane}
 import it.unibo.party.view.panes.*
 import scalafx.Includes.*
 import scalafx.scene.Scene
@@ -17,6 +18,7 @@ class GameView(playingAgent: PlayingAgent) extends Subscriber[State]:
   private val partyStyleSheet = getClass.getResource("./style/partyStyle.css").toExternalForm
   private val boardStyleSheet = getClass.getResource("./style/boardStyle.css").toExternalForm
   private val mazeStyleSheet = getClass.getResource("./style/mazeStyle.css").toExternalForm
+  private val memoryStyleSheet = getClass.getResource("./style/memoryStyle.css").toExternalForm
   val scene: Scene = new Scene:
     stylesheets += commonStyleSheet
     root = container
@@ -40,8 +42,12 @@ class GameView(playingAgent: PlayingAgent) extends Subscriber[State]:
               PartyPane(e, playingAgent)
         case e: MinigameState =>
           e match
-            case e: MazeState =>
+            case maze: MazeState =>
               scene.stylesheets = Seq(commonStyleSheet, mazeStyleSheet)
-              MazePane(e, playingAgent, () => playingAgent.makeMove(PartyMove.Resume))
-            case _ => MinigamePane(() => playingAgent.makeMove(PartyMove.Resume))
+              MazePane(maze, playingAgent, () => playingAgent.makeMove(PartyMove.Resume))
+            case memory: MemoryState =>
+              scene.stylesheets = Seq(commonStyleSheet, memoryStyleSheet)
+              MemoryPane(memory, playingAgent, () => playingAgent.makeMove(PartyMove.Resume))
+            case _ =>
+              MinigamePane(() => playingAgent.makeMove(PartyMove.Resume))
       container.children.add(pane)

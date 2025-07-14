@@ -2,7 +2,7 @@ package it.unibo.party.common
 
 import it.unibo.party.geometry.{Direction, Point2D}
 import it.unibo.party.model.items.Collectable
-import it.unibo.party.model.maze.MazeTile
+import it.unibo.party.model.memory.Memory
 import it.unibo.party.model.partyGame.PartyGame
 import it.unibo.party.model.player.Pocket
 
@@ -15,7 +15,14 @@ trait MinigameState extends State:
   def winner: Option[Player]
 
 case class PuzzleState(phase: MinigamePhase, winner: Option[Player]) extends MinigameState
-case class MemoryState(phase: MinigamePhase, winner: Option[Player]) extends MinigameState
+case class MemoryState(
+                        game: Memory,
+                        phase: MinigamePhase,
+                        winner: Option[Player],
+                        firstSelection: Option[Point2D[Int]],
+                        mismatchedPair: Option[(Point2D[Int], Point2D[Int])] = None,
+                        winTime: Long
+                      ) extends MinigameState
 
 case class PartyState(
                        phase: PartyPhase,
