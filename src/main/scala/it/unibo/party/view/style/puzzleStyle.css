@@ -4,6 +4,18 @@
     -fx-padding: 0px;
 }
 
+.puzzle-label {
+    -fx-font-size: 40px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.end-label {
+    -fx-font-size: 30px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
 #piece-empty {
     -fx-background-color: #BEBEBE;
 }

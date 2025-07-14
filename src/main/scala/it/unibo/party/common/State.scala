@@ -20,12 +20,13 @@ case class PuzzleState(
                         currentPiece: Option[Int],
                         nonPlacedPieces: Map[Int, Set[Point2D[Int]]],
                         width: Int,
-                        height: Int
+                        height: Int,
+                        maxTime: Long
                       ) extends MinigameState
 
 object PuzzleState:
   def empty: PuzzleState =
-    PuzzleState(MinigamePhase.Playing, None, Map.empty, None, Map.empty, 0, 0)
+    PuzzleState(MinigamePhase.Playing, None, Map.empty, None, Map.empty, 0, 0, 0L)
 
 case class MemoryState(phase: MinigamePhase, winnerId: Option[Int]) extends MinigameState
 case class MazeState(phase: MinigamePhase, winnerId: Option[Int]) extends MinigameState

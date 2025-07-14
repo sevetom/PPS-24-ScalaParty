@@ -6,8 +6,8 @@ import it.unibo.party.controller.Moves.PuzzleMove.*
 import it.unibo.party.controller.PlayingAgent
 import it.unibo.party.geometry.Point2D
 import scalafx.geometry.Insets
-import scalafx.scene.control.Button
-import scalafx.scene.layout.{BorderPane, FlowPane, GridPane, Pane}
+import scalafx.scene.control.{Button, Label}
+import scalafx.scene.layout.{BorderPane, FlowPane, GridPane, Pane, VBox}
 
 
 object PuzzlePane:
@@ -22,6 +22,43 @@ object PuzzlePane:
     ))
     new BorderPane:
       onMouseClicked = _ => if state.phase != GameOver then playingAgent.makeMove(RemovePiece)
+
+      // aggiungi in alto un semplice pannello con una scritta
+      top = new FlowPane:
+        alignment = scalafx.geometry.Pos.Center
+        hgap = 20
+        padding = Insets(20, 0, 0, 0)
+        children.add(
+          new Label:
+            text = s"Puzzle - ${state.maxTime/1000} seconds to complete"
+            styleClass += "puzzle-label"
+            minWidth = 200
+            minHeight = 50
+        )
+
+      if state.phase == GameOver then
+        right =
+          new VBox:
+            alignment = scalafx.geometry.Pos.Center
+            padding = Insets(20, 100, 0, 0)
+            children.add(
+              new Label:
+                text = s"Game Over!"
+                styleClass += "end-label"
+            )
+            children.add(
+              new Label:
+                text = if state.winnerId.contains(playingAgent.id) then "You Win!" else "You Lose!"
+                styleClass += "end-label"
+            )
+            children.add(
+              new Button:
+                text = "Exit"
+                onAction = _ => onFinish()
+            )
+
+
+
       center = new GridPane:
         alignment = scalafx.geometry.Pos.Center
         grid.foreach(_ match

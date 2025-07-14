@@ -7,7 +7,7 @@ import it.unibo.party.geometry.Point2D
 import it.unibo.party.model.puzzle.{PuzzlePosition, PuzzleUtils}
 import it.unibo.party.model.puzzle.PuzzleUtils.normalizePiece
 
-private val winTime = 15000L // 15 seconds
+private val winTime = 60000L // 60 seconds
 private val standardWidth = 5
 private val standardHeight = 5
 private val maxPieceSize = 5
@@ -39,7 +39,8 @@ object PuzzleController:
             .map((piece, index) => index -> normalizePiece(piece.map(p => PuzzlePosition(p.x, p.y))).map(_.toPoint2D))
             .toMap,
           width = standardWidth,
-          height = standardHeight
+          height = standardHeight,
+          maxTime = winTime
         )
       )
 

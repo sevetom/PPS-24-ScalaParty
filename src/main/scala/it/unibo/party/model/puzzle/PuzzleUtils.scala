@@ -52,9 +52,7 @@ object PuzzleUtils:
             y <- 0 until height
         yield PuzzlePosition(x, y)
       ).toSet
-    val sol = generateRandomSolutionRec(initialPositions)
-    println(sol)
-    sol
+    generateRandomSolutionRec(initialPositions)
 
   def isValidSolution(solution: Set[Set[PuzzlePosition]], width: Int, height: Int): Boolean =
     val mappedSolution = solution.map(p => p.map(pos => pos.y * width + pos.x))
