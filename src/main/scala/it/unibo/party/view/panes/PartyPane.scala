@@ -8,6 +8,7 @@ import it.unibo.party.model.items.CollectableOperations.*
 import it.unibo.party.model.items.CollectableType.RungType
 import it.unibo.party.view.components.{Board, Pocket, SideBoxes}
 import it.unibo.party.view.input.InputHandler
+import scalafx.geometry.Pos
 import scalafx.scene.control.{Button, Label}
 import scalafx.scene.input.InputIncludes.jfxKeyEvent2sfx
 import scalafx.scene.layout.{BorderPane, HBox, Pane, VBox}
@@ -46,6 +47,7 @@ object PartyPane:
 
       right = new VBox:
         styleClass += "side-container"
+        alignment = Pos.TopCenter
         children += SideBoxes.rungPrice(state.itemsPositions.find((k, v) => v.getType == RungType).get._2.getPrice)
         children += SideBoxes.diceBox(
           userId,
