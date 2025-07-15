@@ -18,6 +18,7 @@ object MazeGenerator:
    *
    * @param width  the width of the maze, must be an odd number greater than 2
    * @param height the height of the maze, must be an odd number greater than 2
+   * @throws IllegalArgumentException if width or height are not valid
    */
   class NorthEastBinaryTree(width: Int, height: Int):
     require(width > 2 && height > 2, "Width and height must be greater than 2")

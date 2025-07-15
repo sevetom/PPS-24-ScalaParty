@@ -37,6 +37,7 @@ class MazeBuilder(val width: Int, val height: Int):
    *  - The maze must be solvable.
    *
    * @return the constructed Maze instance
+   * @throws IllegalArgumentException if any of the conditions are not met
    */
   def build(): Maze =
     require(currentIndex == width * height, "Maze must have the correct number of tiles")
