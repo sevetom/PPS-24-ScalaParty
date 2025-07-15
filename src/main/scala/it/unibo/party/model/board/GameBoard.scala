@@ -45,13 +45,7 @@ object GameBoard:
         yield dir
       ).toSet
       
-    def clearItems: GameBoard =
-      GameBoard(
-        this.board.map((_, _) match
-          case (pos, _) => (pos, EmptyBox)
-        ),
-        this.pawns
-      )
+    def clearItems: GameBoard = copy(board = board.view.mapValues(_ => EmptyBox).toMap)
     
     def addRandomItems(itemType: CollectableType, count: Int): GameBoard =
       val randomPositions =
