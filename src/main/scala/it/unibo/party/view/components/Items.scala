@@ -14,7 +14,7 @@ object Items:
 
   def rung(scale: Double) : SVGPath = new SVGPath:
     styleClass += "pawn"
-    content = loadSvgPath("./../resources/svg/rung.svg", "rung")
+    content = loadSvgPath("/svg/rung.svg", "rung")
     fill = Color.web("DB7500")
     rotate = 45
     scaleX = scale

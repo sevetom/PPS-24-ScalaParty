@@ -15,12 +15,12 @@ import scalafx.scene.layout.{Pane, StackPane}
 
 class GameView(playingAgent: PlayingAgent) extends Subscriber[State]:
   private val container = new StackPane()
-  private val commonStyleSheet = getClass.getResource("./style/commonStyle.css").toExternalForm
-  private val partyStyleSheet = getClass.getResource("./style/partyStyle.css").toExternalForm
-  private val boardStyleSheet = getClass.getResource("./style/boardStyle.css").toExternalForm
-  private val puzzleStyleSheet = getClass.getResource("./style/puzzleStyle.css").toExternalForm
-  private val mazeStyleSheet = getClass.getResource("./style/mazeStyle.css").toExternalForm
-  private val memoryStyleSheet = getClass.getResource("./style/memoryStyle.css").toExternalForm
+  private val commonStyleSheet = getClass.getResource("/style/commonStyle.css").toExternalForm
+  private val partyStyleSheet = getClass.getResource("/style/partyStyle.css").toExternalForm
+  private val boardStyleSheet = getClass.getResource("/style/boardStyle.css").toExternalForm
+  private val puzzleStyleSheet = getClass.getResource("/style/puzzleStyle.css").toExternalForm
+  private val mazeStyleSheet = getClass.getResource("/style/mazeStyle.css").toExternalForm
+  private val memoryStyleSheet = getClass.getResource("/style/memoryStyle.css").toExternalForm
   val scene: Scene = new Scene:
     stylesheets += commonStyleSheet
     root = container

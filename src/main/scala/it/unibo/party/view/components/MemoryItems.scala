@@ -9,7 +9,7 @@ object MemoryItems:
 
   def figureIcon(figure: Figure, scale: Double = 1.0): SVGPath =
       new SVGPath:
-        content = loadSvgPath(s"./../resources/svg/${figure.toString.toLowerCase}.svg", figure.toString.toLowerCase)
+        content = loadSvgPath(s"/svg/${figure.toString.toLowerCase}.svg", figure.toString.toLowerCase)
         fill = figure match
           case Figure.Square   => Color.ForestGreen
           case Figure.Triangle => Color.Coral
