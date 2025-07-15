@@ -7,6 +7,11 @@ import scalafx.scene.text.Font
 
 object MinigamePane:
 
+  /**
+   * Creates a standard minigame UI pane with a title and a button.
+   * @param onClick the action to perform when the button is clicked
+   * @return a StackPane containing the minigame UI elements
+   */
   def apply(onClick: () => Unit): Pane = new StackPane {
     children = Seq(
       new VBox {
