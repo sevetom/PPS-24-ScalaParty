@@ -6,12 +6,15 @@ import it.unibo.party.controller.Moves.{MazeMove, Move}
 import it.unibo.party.controller.{MiniController, TimedMiniController}
 import it.unibo.party.model.maze.MazeGame
 
-private val startingWinTime = 15000L // 15 seconds
+private val winTime = 15000L // 15 seconds
 
+/**
+ * Controller for the Maze minigame.
+ */
 object MazeController:
 
   def apply(game: MazeGame, challenger: Player, challenged: Player): MiniController =
-    MazeControllerImpl(game, challenger, challenged, 0L, startingWinTime, MazeState.empty)
+    MazeControllerImpl(game, challenger, challenged, 0L, winTime, MazeState.empty)
 
   private case class MazeControllerImpl(
                                          game: MazeGame,
