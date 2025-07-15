@@ -9,16 +9,24 @@ import it.unibo.party.model.items.CollectableOperations.getType
 import it.unibo.party.model.items.CollectableType.{MonadType, RungType}
 import it.unibo.party.model.partyGame.{MovementResult, PartyGame}
 
-import scala.runtime.LazyVals.Waiting
-
 private val stepsPerPlayer: Int = 1
 private val winRungs: Int = 5
 
+/**
+ * Controller for managing the game state and player interactions in the Party game.
+ */
 trait PartyController extends MiniController:
   override def state: PartyState
 
   override def handleMove(move: Move): MiniController
 
+  /**
+   * Sets the next player to roll two dice in the next turn.
+   * Valid only for the next turn of the specified player.
+   * 
+   * @param player the player who will roll two dice next
+   * @return a new PartyController instance with the updated doubleRoller
+   */
   def doubleRollNextTurn(player: Player): PartyController
 
 object PartyController:
@@ -40,7 +48,7 @@ object PartyController:
                                           turnManager: PartyTurnManager,
                                           startingChallenge: DiceChallengeManager,
                                           doubleRoller: Option[Player],
-                                          remainingSteps: Int
+                                          remainingStepsAfterRoll: Int
                                         ) extends PartyController:
 
     override def start(): MiniController =
@@ -57,7 +65,7 @@ object PartyController:
     override def handleMove(move: Move): MiniController =
       val ctx = copy(
         state = state.copy(
-          diceResult = Some((turnManager.currentPlayer, remainingSteps)),
+          diceResult = Some((turnManager.currentPlayer, remainingStepsAfterRoll)),
           possibleDirections = Option.empty
         )
       )
@@ -84,14 +92,21 @@ object PartyController:
         game = regeneratedCtx.game,
         turnManager = regeneratedCtx.turnManager,
         startingChallenge = regeneratedCtx.startingChallenge,
-        remainingSteps = regeneratedCtx.remainingSteps
+        remainingStepsAfterRoll = regeneratedCtx.remainingStepsAfterRoll
       )
 
+    /**
+     * Handles the movement of the current player in the game.
+     * 
+     * @param ctx the current party controller context
+     * @param direction the direction in which the player wants to move
+     * @return a new PartyControllerImpl instance with the updated game state
+     */
     private def handleMovement(ctx: PartyControllerImpl, direction: Direction): PartyControllerImpl =
       val result = ctx.game.movePlayer(turnManager.currentPlayer.id, direction, stepsPerPlayer)
       result match
-        case MovementResult.Moved(updatedGame) if ctx.remainingSteps > 0 =>
-          val remaining = ctx.remainingSteps - stepsPerPlayer
+        case MovementResult.Moved(updatedGame) if ctx.remainingStepsAfterRoll > 0 =>
+          val remaining = ctx.remainingStepsAfterRoll - stepsPerPlayer
           val nextTurnManager =
             if remaining <= 0 then ctx.turnManager.nextTurn() else ctx.turnManager
           ctx.copy(
@@ -100,11 +115,17 @@ object PartyController:
               diceResult = Some((turnManager.currentPlayer, remaining))
             ),
             game = updatedGame,
-            remainingSteps = remaining,
+            remainingStepsAfterRoll = remaining,
             turnManager = nextTurnManager
           )
         case _ => ctx
 
+    /**
+     * Handles the starting challenge roll for the current player.
+     * 
+     * @param ctx the current party controller context
+     * @return a new PartyControllerImpl instance with the updated game state
+     */
     private def handleStartingRoll(ctx: PartyControllerImpl): PartyControllerImpl =
       val dicePlayer = ctx.turnManager.currentPlayer
       val newChallenge = ctx.startingChallenge.newRoll(dicePlayer)
@@ -122,6 +143,12 @@ object PartyController:
         turnManager = orderedTurnManager,
       )
 
+    /**
+     * Handles the dice roll for the current player.
+     * 
+     * @param ctx the current party controller context
+     * @return a new PartyControllerImpl instance with the updated game state
+     */
     private def handleDiceRoll(ctx: PartyControllerImpl): PartyControllerImpl =
       val (dices, checkedDoubleRoller) =
         if ctx.doubleRoller.contains(ctx.turnManager.currentPlayer) then (2, Option.empty)
@@ -133,17 +160,29 @@ object PartyController:
           diceResult = Some((ctx.turnManager.currentPlayer, rolls.sum))
         ),
         game = rolledGame,
-        remainingSteps = rolls.sum,
+        remainingStepsAfterRoll = rolls.sum,
         turnManager = ctx.turnManager.nextTurn(),
         doubleRoller = checkedDoubleRoller
       )
 
+    /**
+     * Checks if any player has won the game by collecting enough rungs.
+     * 
+     * @param ctx the current party controller context
+     * @return a new PartyControllerImpl instance with the game ended if a player has won
+     */
     private def checkWinCondition(ctx: PartyControllerImpl): PartyControllerImpl =
       ctx.game.getPockets.find((_, v) => v.countByType(RungType) >= winRungs) match
         case Some((playerId, _)) =>
           ctx.copy(turnManager = ctx.turnManager.end(Player(playerId)))
         case _ => ctx
 
+    /**
+     * Regenerates the game board if empty of monads or rungs.
+     * 
+     * @param ctx the current party controller context
+     * @return a new PartyControllerImpl instance with the regenerated board if needed
+     */
     private def regenerateBoard(ctx: PartyControllerImpl): PartyControllerImpl =
       val items = ctx.game.getItems.values.map(_.getType)
       if !items.exists(_ == RungType) then

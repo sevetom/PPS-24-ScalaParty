@@ -3,15 +3,41 @@ package it.unibo.party.controller.managers
 import it.unibo.party.common.PartyPhase.*
 import it.unibo.party.common.{PartyPhase, Player}
 
+/**
+ * Manages the turn order and phases of the party game.
+ */
 trait PartyTurnManager:
+  /**
+   * @return the current player whose turn it is.
+   */
   def currentPlayer: Player
 
+  /**
+   * @return the current phase of the party game.
+   */
   def currentPhase: PartyPhase
 
+  /**
+   * Changes the order of players based on the provided map.
+   *
+   * @param order a map where keys are players and values are their new order.
+   * @return a new instance of PartyTurnManager with updated player order.
+   */
   def changePlayerOrder(order: Map[Player, Int]): PartyTurnManager
 
+  /**
+   * Advances to the next turn in the party game.
+   *
+   * @return a new instance of PartyTurnManager with updated current player and phase.
+   */
   def nextTurn(): PartyTurnManager
 
+  /**
+   * Ends the game with the specified winner.
+   *
+   * @param winner the player who won the game.
+   * @return a new instance of PartyTurnManager with the game ended and the winner set.
+   */
   def end(winner: Player): PartyTurnManager
 
 object PartyTurnManager:
