@@ -39,8 +39,8 @@ closest_monad(Start, Target) :-
 	Distances \= [],
 	sort(Distances, [(_, Target)|_]).
 
-closest_rung(Start, Target, Monads) :-
-	Monads >= 5,
+closest_rung(Start, Target, Monads, RC) :-
+	Monads >= RC,
 	findall((D, Pos), (
 		cell(Pos, rung),
 		manhattan(Start, Pos, D)
@@ -50,8 +50,9 @@ closest_rung(Start, Target, Monads) :-
 
 closest_collectable(Start, Target) :-
     monads_owned(N),
-    ( N >= 5 ->
-        closest_rung(Start, Target, N)
+    rung_cost(RC),
+    ( N >= RC ->
+        closest_rung(Start, Target, N, RC)
     ; closest_monad(Start, Target)
     ).
 

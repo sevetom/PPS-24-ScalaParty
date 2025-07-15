@@ -7,6 +7,12 @@ import scalafx.scene.shape.SVGPath
 
 object MemoryItems:
 
+  /**
+   * Creates an SVGPath representing a figure icon.
+   * @param figure the figure to represent
+   * @param scale the scale factor for the icon
+   * @return an SVGPath with the figure icon
+   */
   def figureIcon(figure: Figure, scale: Double = 1.0): SVGPath =
       new SVGPath:
         content = loadSvgPath(s"/svg/${figure.toString.toLowerCase}.svg", figure.toString.toLowerCase)

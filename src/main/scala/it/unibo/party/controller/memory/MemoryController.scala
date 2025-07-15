@@ -1,15 +1,23 @@
 package it.unibo.party.controller.memory
 
-import it.unibo.party.common.{MemoryState, MinigamePhase, Player, State}
-import it.unibo.party.controller.{MiniController, Moves, TimedMiniController}
-import it.unibo.party.model.memory.{Memory, MemoryBox}
+import it.unibo.party.common.{MemoryState, MinigamePhase, Player}
 import it.unibo.party.controller.Moves.MemoryMove
+import it.unibo.party.controller.{MiniController, Moves, TimedMiniController}
 import it.unibo.party.geometry.Point2D
+import it.unibo.party.model.memory.{Memory, MemoryBox}
 
 private val winTime = 30000L // 30 seconds
 
 object MemoryController:
-  def apply(game: Memory, challenger: Player, challenged: Player): MiniController = MemoryControllerImpl(MemoryState(game, MinigamePhase.Playing, None, None, winTime = winTime), Player(0), Player(1), 0L, winTime)
+  /**
+   * Creates a new MemoryController instance.
+   *
+   * @param game the Memory game to be played
+   * @param challenger the player who challenges
+   * @param challenged the player who is challenged
+   * @return a new instance of MemoryController
+   */
+  def apply(game: Memory, challenger: Player, challenged: Player): MiniController = MemoryControllerImpl(MemoryState(game, MinigamePhase.Playing, None, None, winTime = winTime), challenger, challenged, 0L, winTime)
 
   private case class MemoryControllerImpl(state: MemoryState,
                                           challenger: Player,
@@ -20,7 +28,12 @@ object MemoryController:
     override def start(): MiniController =
       val generatedMemory: Memory = state.game.generate
       copy(
-        state = MemoryState(game = generatedMemory, phase = MinigamePhase.Playing, winner = None, firstSelection = None, winTime = winTime),
+        state = MemoryState(
+          game = generatedMemory,
+          phase = MinigamePhase.Playing,
+          winner = None,
+          firstSelection = None,
+          winTime = winTime),
         startTime = System.currentTimeMillis()
       )
 
@@ -37,8 +50,9 @@ object MemoryController:
 
           state.firstSelection match
             case None =>
-              val newState = state.copy(firstSelection = Some(pos), mismatchedPair = None)
-              copy(state = newState)
+              copy(state = state.copy(
+                firstSelection = Some(pos),
+                mismatchedPair = None))
 
             case Some(firstPos) =>
               val coupleToCheck = (MemoryBox(firstPos), MemoryBox(pos))
@@ -46,17 +60,21 @@ object MemoryController:
 
               if isMatch then
                 val hasWonInTime = !isTimeUp && updatedGame.isOver
-                val winner = if hasWonInTime then Some(challenger) else if isTimeUp then Some(challenged) else None
+                val winner = (hasWonInTime, isTimeUp) match
+                  case (true, _) => Some(challenger)
+                  case (_, true) => Some(challenged)
+                  case _ => None
                 val phase = if updatedGame.isOver || isTimeUp then MinigamePhase.GameOver else MinigamePhase.Playing
-                val newState = state.copy(game = updatedGame, phase = phase, winner = winner, firstSelection = None)
-                copy(state = newState)
+                copy(state = state.copy(
+                  game = updatedGame,
+                  phase = phase,
+                  winner = winner,
+                  firstSelection = None))
               else
-                val newState = state.copy(
+                copy(state = state.copy(
                   game = updatedGame,
                   firstSelection = None,
                   mismatchedPair = Some((firstPos, pos))
-                )
-                copy(state = newState)
+                ))
         case _ =>
-          val newState = state.copy(mismatchedPair = None)
-          copy(state = newState)
+          copy(state = state.copy(mismatchedPair = None))
