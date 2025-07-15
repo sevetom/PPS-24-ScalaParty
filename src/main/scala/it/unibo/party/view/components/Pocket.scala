@@ -7,7 +7,13 @@ import scalafx.scene.layout.{FlowPane, HBox, Pane, VBox}
 import scalafx.scene.paint.Color
 
 object Pocket:
-
+  /**
+   * Creates a pane representing a player's pocket, displaying collectable items.
+   * @param title the text to be displayed as the title of the pocket
+   * @param items the sequence of collectable items to be displayed in the pocket
+   * @param styleClassValue the style class to be applied to the pocket pane
+   * @return a Pane containing the pocket representation
+   */
   def apply(title: String, items: Seq[Collectable], styleClassValue: String): Pane =
     new VBox:
       styleClass += styleClassValue

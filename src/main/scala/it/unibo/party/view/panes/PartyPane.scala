@@ -15,6 +15,12 @@ import scalafx.scene.layout.{BorderPane, HBox, Pane, VBox}
 
 object PartyPane:
 
+  /**
+   * Creates a pane representing the party state, displaying the game board, player pockets, and other game elements.
+   * @param state the current state of the party
+   * @param playingAgent the agent controlling the player's actions
+   * @return a Pane containing the game representation
+   */
   def apply(state: PartyState, playingAgent: PlayingAgent): Pane = {
     val userId: Int = playingAgent.id
     val pockets: Seq[Pane] = state.itemsCollected.map((player, pocket) =>

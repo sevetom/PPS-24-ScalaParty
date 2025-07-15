@@ -12,12 +12,25 @@ import scalafx.scene.shape.{Rectangle, SVGPath}
 
 object Board:
 
+  /**
+   * Creates a rectangle representing a board box.
+   * @param size the size of the box
+   * @return a Rectangle with the specified size
+   */
   private def boardBox(size: Int): Rectangle = new Rectangle:
     styleClass += "board-box"
     width = size
     height = size
 
 
+  /**
+   * Creates a Pane representing the game board.
+   * @param board the set of points representing the board
+   * @param playersPositions a map of players and their positions on the board
+   * @param itemsPositions a map of item positions on the board
+   * @param gridSize the size of the grid (default is 10)
+   * @return a Pane containing the board representation
+   */
   def apply(
              board: Set[Point2D[Int]],
              playersPositions: Map[Player, Point2D[Int]],

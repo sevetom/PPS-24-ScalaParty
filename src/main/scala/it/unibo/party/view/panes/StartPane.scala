@@ -7,6 +7,11 @@ import scalafx.scene.text.Font
 
 object StartPane:
 
+  /**
+   * Creates a pane representing the start screen of the game.
+   * @param onClick callback function to be executed when the start button is clicked
+   * @return a Pane containing the start screen representation
+   */
   def apply(onClick: () => Unit): Pane = new StackPane {
     children = Seq(
       new VBox {

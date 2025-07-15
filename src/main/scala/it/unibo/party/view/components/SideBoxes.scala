@@ -9,7 +9,7 @@ import scalafx.scene.paint.Color
 import scalafx.scene.text.{Font, Text}
 
 object SideBoxes:
-
+  
   def rungPrice(price: Int): Pane = new VBox:
     styleClass += "side-box"
     styleClass += "rung-price-box"
@@ -21,6 +21,7 @@ object SideBoxes:
       children += Label(price.toString)
       children += Items.monad(22)
 
+  
   def diceBox(userId: Int, result: Option[(Player, Int)], onRoll: () => Unit, isEnabled: Boolean): Pane = new VBox:
     styleClass += "side-box"
     styleClass += "dice-box"

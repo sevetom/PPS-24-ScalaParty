@@ -12,6 +12,13 @@ import scalafx.scene.layout.{BorderPane, FlowPane, GridPane, Pane, VBox}
 
 object PuzzlePane:
 
+  /**
+   * Creates a pane representing the puzzle game state.
+   * @param onFinish callback function to be executed when the game is over
+   * @param state the current state of the puzzle
+   * @param playingAgent the agent responsible for making moves in the game
+   * @return a Pane containing the puzzle minigame representation
+   */
   def apply(onFinish: () => Unit, state: PuzzleState, playingAgent: PlayingAgent): Pane =
     val emptyId = -1
     val grid = (for
