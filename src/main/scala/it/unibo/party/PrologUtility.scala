@@ -43,6 +43,22 @@ def mkPrologEngine(clauses: String*): Term => LazyList[Term] =
  */
 def openTheoryFile(path: String) = new File(path)
 
+/**
+ * Executes a Prolog program with the given facts and input.
+ * 
+ * @param path the path to the Prolog theory file
+ * @param facts the Prolog facts to be used in the program
+ * @param input the input term for the Prolog program
+ * @return a lazy list of solutions produced by the Prolog engine
+ */
+def executeProlog(path: String, facts: String, input: Struct): LazyList[Term] =
+  var rules = ""
+  openTheoryFile(path).read().foreach(line =>
+    if !line.startsWith("%") || line.trim.nonEmpty then rules = rules.concat("\n" + line))
+  val prologTheory = facts + rules
+  val engine: Term => LazyList[Term] = mkPrologEngine(prologTheory)
+  engine(input)
+
 implicit class RichFile(file: File):
   private val source = Source.fromFile(file)
 
