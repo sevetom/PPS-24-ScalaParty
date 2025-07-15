@@ -3,6 +3,9 @@ package it.unibo.party.model.maze
 import it.unibo.party.geometry.{Direction, Point2D}
 
 object MazePosition:
+  /**
+   * Represents a position in the maze using 2D coordinates.
+   */
   opaque type MazePosition = Point2D[Int]
 
   def apply(x: Int, y: Int): MazePosition = Point2D(x, y)

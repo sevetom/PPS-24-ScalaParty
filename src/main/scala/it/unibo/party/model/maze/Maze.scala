@@ -3,21 +3,58 @@ package it.unibo.party.model.maze
 import alice.tuprolog.{Struct, Term, Var}
 import it.unibo.party.model.maze.MazeBuilder.DSL.*
 import it.unibo.party.model.maze.MazePosition.MazePosition
-import it.unibo.party.{RichFile, extractTerm, mkPrologEngine, openTheoryFile}
+import it.unibo.party.{RichFile, executeProlog, extractTerm, mkPrologEngine, openTheoryFile}
 
+/**
+ * Represents a maze with a layout defined by a map of positions to tiles.
+ */
 trait Maze:
+  /**
+   * @return the layout of the maze as a map where keys are positions and values are tiles.
+   */
   def layout: Map[MazePosition, MazeTile]
 
+  /**
+   * Computes the solution of the maze, if it exists.
+   *
+   * @return an optional list of positions representing the solution path.
+   */
   def solution: Option[List[MazePosition]]
 
+  /**
+   * Adds a tile to the maze at the specified position.
+   *
+   * @param tile a tuple containing the position and the tile to be added.
+   * @return a new Maze instance with the updated layout.
+   */
   def +(tile: (MazePosition, MazeTile)): Maze
 
+  /**
+   * Retrieves the tile at the specified position.
+   *
+   * @param pos the position in the maze.
+   * @return an optional tile at the specified position, if it exists.
+   */
   def get(pos: MazePosition): Option[MazeTile] = layout.get(pos)
 
+  /**
+   * Checks if the maze contains a tile at the specified position.
+   *
+   * @param pos the position to check.
+   * @return true if the maze contains a tile at the specified position, false otherwise.
+   */
   def contains(pos: MazePosition): Boolean = layout.contains(pos)
 
+  /**
+   * Checks if the maze is empty.
+   *
+   * @return true if the maze has no tiles, false otherwise.
+   */
   def isEmpty: Boolean = layout.isEmpty
 
+  /**
+   * @return the number of tiles in the maze.
+   */
   def size: Int = layout.size
 
 object Maze:
@@ -27,7 +64,7 @@ object Maze:
     MazeBuilder.construct(width, height)(architecture).build()
 
   val empty: Maze = Maze(Map.empty)
-  
+
   val standard: Maze = Maze(10, 11):
     W | W | W | W | E | W | W | W | W | W
     W | * | * | * | * | * | * | * | * | W
@@ -55,13 +92,8 @@ object Maze:
           case MazeTile.Exit => s"exit(${p.x}, ${p.y})."
           case _ => ""
       ).mkString("\n")
-      var prologRules = ""
-      openTheoryFile("src/main/resources/prolog/mazeSolutionRules.pl").read().foreach(line =>
-        if !line.startsWith("%") || line.trim.nonEmpty then prologRules = prologRules.concat("\n" + line))
-      val prologTheory = prologFacts + prologRules
-      val engine: Term => LazyList[Term] = mkPrologEngine(prologTheory)
       val input = Struct("solve_maze", Var("Path"))
-      val results = engine(input)
+      val results = executeProlog("src/main/resources/prolog/mazeSolutionRules.pl", prologFacts, input)
       val strOutput = results.map(extractTerm(_, 0)).headOption
       if strOutput.isEmpty then
         Option.empty
