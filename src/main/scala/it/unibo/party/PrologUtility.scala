@@ -10,9 +10,20 @@ object Scala2P:
 
   given Conversion[Seq[_], Term] = _.mkString("[", ",", "]")
 
+/**
+ * Extracts the i-th term from a Prolog term.
+ * @param t the Prolog term, which is expected to be a Struct
+ * @param i the index of the term to extract (0-based)
+ * @return the i-th term from the Prolog term
+ */
 def extractTerm(t: Term, i: Integer): Term =
   t.asInstanceOf[Struct].getArg(i).getTerm
-  
+
+/**
+ * Creates a Prolog engine with the given clauses.
+ * @param clauses the Prolog clauses to be loaded into the engine
+ * @return a function that takes a Prolog goal and returns a lazy list of solutions
+ */
 def mkPrologEngine(clauses: String*): Term => LazyList[Term] =
   val engine = Prolog()
   engine.setTheory(Theory(clauses mkString " "))
@@ -25,8 +36,18 @@ def mkPrologEngine(clauses: String*): Term => LazyList[Term] =
         try solution.getSolution finally solution = engine.solveNext
   .to(LazyList)
 
+/**
+ * Opens a Prolog theory file.
+ * @param path the path to the Prolog theory file
+ * @return a File object representing the Prolog theory file
+ */
 def openTheoryFile(path: String) = new File(path)
 
 implicit class RichFile(file: File):
   private val source = Source.fromFile(file)
+
+  /**
+   * Reads the contents of the file line by line.
+   * @return an iterator over the lines of the file
+   */
   def read(): Iterator[String] = source.getLines()
