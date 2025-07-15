@@ -52,6 +52,14 @@ trait Point2D[N](using num: Numeric[N]):
   def distanceFrom(other: Point2D[N]): Double
 
 object Point2D:
+  /**
+   * Creates a new instance of a Point2D.
+   *
+   * @param x the x coordinate of the point
+   * @param y the y coordinate of the point
+   * @tparam N the numeric type for the coordinates
+   * @return a new Point2D instance with the specified coordinates
+   */
   def apply[N](x: N, y: N)(using num: Numeric[N]): Point2D[N] = Point2DImpl(x, y)
 
   given [N](using num: Numeric[N]): Conversion[(N, N), Point2D[N]] with

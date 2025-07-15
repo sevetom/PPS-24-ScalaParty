@@ -38,6 +38,13 @@ trait Publisher[T]:
   def contains(subscriber: Subscriber[T]): Boolean
 
 object Publisher:
+  /**
+   * Creates a new Publisher instance with the given subscribers.
+   *
+   * @param subscribers the initial list of subscribers
+   * @tparam T the type of events that the publisher can publish
+   * @return a new Publisher instance
+   */
   def apply[T](subscribers: Seq[Subscriber[T]]): Publisher[T] = new PublisherImpl[T](subscribers)
 
   private class PublisherImpl[T](val subscribers: Seq[Subscriber[T]]) extends Publisher[T]:

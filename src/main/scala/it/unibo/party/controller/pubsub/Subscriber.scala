@@ -14,6 +14,13 @@ trait Subscriber[T]:
   def notify(event: T): Unit
 
 object Subscriber:
+  /**
+   * Creates a new Subscriber instance with the given function.
+   *
+   * @param f the function to be called when an event is received
+   * @tparam T the type of events that the subscriber can receive
+   * @return a new Subscriber instance
+   */
   def apply[T](f: T => Unit): Subscriber[T] = SubscriberImpl(f)
 
   private class SubscriberImpl[T](f: T => Unit) extends Subscriber[T]:

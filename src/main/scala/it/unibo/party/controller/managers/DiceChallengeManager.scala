@@ -21,13 +21,21 @@ trait DiceChallengeManager:
   def newRoll(player: Player): DiceChallengeManager
 
 object DiceChallengeManager:
+  /**
+   * Creates a new instance of DiceChallengeManager with the specified dice and initial results.
+   *
+   * @param dice        the dice to be used for rolling
+   * @param diceResults a map containing the initial results of the dice challenge for each player
+   * @return a new instance of DiceChallengeManager
+   */
   def apply(
              dice: Dice = Dice(),
              diceResults: Map[Player, Int] = Map.empty
            ): DiceChallengeManager =
     DiceChallengeManagerImpl(dice, diceResults)
 
-  private case class DiceChallengeManagerImpl(dice: Dice, diceResults: Map[Player, Int]) extends DiceChallengeManager:
+  private case class DiceChallengeManagerImpl(dice: Dice, diceResults: Map[Player, Int]) 
+    extends DiceChallengeManager:
 
     override def newRoll(player: Player): DiceChallengeManager =
       val diceResult = dice.roll()._2.head

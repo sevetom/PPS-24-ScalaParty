@@ -13,6 +13,14 @@ private val winTime = 15000L // 15 seconds
  */
 object MazeController:
 
+  /**
+   * Creates a new instance of the MazeController.
+   *
+   * @param game The MazeGame instance to be used.
+   * @param challenger The player who is challenging.
+   * @param challenged The player who is being challenged.
+   * @return A new instance of MiniController for the Maze minigame.
+   */
   def apply(game: MazeGame, challenger: Player, challenged: Player): MiniController =
     MazeControllerImpl(game, challenger, challenged, 0L, winTime, MazeState.empty)
 

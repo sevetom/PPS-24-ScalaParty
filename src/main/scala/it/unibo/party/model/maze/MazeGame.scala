@@ -43,6 +43,13 @@ trait MazeGame:
   def reachedEnd(): Boolean
 
 object MazeGame:
+  /**
+   * Creates a new MazeGame instance with the specified player position and maze.
+   * 
+   * @param player the initial position of the player in the maze.
+   * @param maze the initial maze in which the player will navigate.
+   * @return a new MazeGame instance.
+   */
   def apply(player: MazePosition, maze: Maze): MazeGame =
     MazeGameImpl(player, maze)
 

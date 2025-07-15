@@ -87,6 +87,12 @@ trait Pocket:
   def size: Int
 
 object Pocket:
+  /**
+   * Creates a new Pocket instance with the specified collectable items.
+   *
+   * @param items the collectable items to initialize the pocket with.
+   * @return a new Pocket instance containing the specified items.
+   */
   def apply(items: Seq[Collectable]): Pocket = PocketImpl(items)
 
   private case class PocketImpl(items: Seq[Collectable]) extends Pocket:

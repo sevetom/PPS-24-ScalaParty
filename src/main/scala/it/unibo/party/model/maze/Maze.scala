@@ -58,8 +58,22 @@ trait Maze:
   def size: Int = layout.size
 
 object Maze:
-  def apply(path: Map[MazePosition, MazeTile]): Maze = MazeImpl(path)
+  /**
+   * Creates a Maze instance from a map of positions to tiles.
+   * 
+   * @param layout a map where keys are MazePosition and values are MazeTile.
+   * @return a Maze instance with the specified layout.
+   */
+  def apply(layout: Map[MazePosition, MazeTile]): Maze = MazeImpl(layout)
 
+  /**
+   * Constructs a Maze using the provided width, height, and architecture.
+   *
+   * @param width the width of the maze.
+   * @param height the height of the maze.
+   * @param architecture a function that provides a MazeBuilder in the context of DSL.
+   * @return a Maze instance built according to the specified parameters.
+   */
   def apply(width: Int, height: Int)(architecture: MazeBuilder ?=> MazeBuilder): Maze =
     MazeBuilder.construct(width, height)(architecture).build()
 

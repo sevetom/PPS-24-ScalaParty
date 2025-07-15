@@ -23,13 +23,20 @@ trait PartyController extends MiniController:
   /**
    * Sets the next player to roll two dice in the next turn.
    * Valid only for the next turn of the specified player.
-   * 
+   *
    * @param player the player who will roll two dice next
    * @return a new PartyController instance with the updated doubleRoller
    */
   def doubleRollNextTurn(player: Player): PartyController
 
 object PartyController:
+  /**
+   * Creates a new instance of PartyController with the initial game state.
+   *
+   * @param game the PartyGame instance representing the game
+   * @param players the list of players participating in the game
+   * @return
+   */
   def apply(game: PartyGame, players: List[Player]): PartyController =
     PartyControllerImpl(
       PartyState.empty,
@@ -97,8 +104,8 @@ object PartyController:
 
     /**
      * Handles the movement of the current player in the game.
-     * 
-     * @param ctx the current party controller context
+     *
+     * @param ctx       the current party controller context
      * @param direction the direction in which the player wants to move
      * @return a new PartyControllerImpl instance with the updated game state
      */
@@ -122,7 +129,7 @@ object PartyController:
 
     /**
      * Handles the starting challenge roll for the current player.
-     * 
+     *
      * @param ctx the current party controller context
      * @return a new PartyControllerImpl instance with the updated game state
      */
@@ -145,7 +152,7 @@ object PartyController:
 
     /**
      * Handles the dice roll for the current player.
-     * 
+     *
      * @param ctx the current party controller context
      * @return a new PartyControllerImpl instance with the updated game state
      */
@@ -167,7 +174,7 @@ object PartyController:
 
     /**
      * Checks if any player has won the game by collecting enough rungs.
-     * 
+     *
      * @param ctx the current party controller context
      * @return a new PartyControllerImpl instance with the game ended if a player has won
      */
@@ -179,7 +186,7 @@ object PartyController:
 
     /**
      * Regenerates the game board if empty of monads or rungs.
-     * 
+     *
      * @param ctx the current party controller context
      * @return a new PartyControllerImpl instance with the regenerated board if needed
      */

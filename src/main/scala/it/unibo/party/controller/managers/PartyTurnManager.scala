@@ -41,10 +41,19 @@ trait PartyTurnManager:
   def end(winner: Player): PartyTurnManager
 
 object PartyTurnManager:
+  /**
+   * Creates a new instance of PartyTurnManager with the specified players, current index, and phase.
+   *
+   * @param players      the list of players in the party game
+   * @param currentIndex the index of the current player in the players list
+   * @param currentPhase the current phase of the party game
+   * @return a new instance of PartyTurnManager
+   */
   def apply(players: List[Player], currentIndex: Int, currentPhase: PartyPhase): PartyTurnManager =
     PartyTurnManagerImpl(players, currentIndex, currentPhase)
 
-  private case class PartyTurnManagerImpl(players: List[Player], currentIndex: Int, currentPhase: PartyPhase) extends PartyTurnManager:
+  private case class PartyTurnManagerImpl(players: List[Player], currentIndex: Int, currentPhase: PartyPhase) 
+    extends PartyTurnManager:
 
     override def currentPlayer: Player = players(currentIndex)
 
