@@ -10,8 +10,21 @@ enum Minigame:
   case Party, Maze, Memory, Puzzle
 
 trait Controller:
+  /**
+   * Adds a view listener to the controller that will be notified of state changes.
+   * @param listener The listener to be added.
+   */
   def addViewListener(listener: Subscriber[State]): Unit
+
+  /**
+   * Adds a move listener to the controller that will be notified of state changes.
+   * @param listener The listener to be added.
+   */
   def addMoveListener(listener: Subscriber[State]): Unit
+  /**
+   * Handles a move, updates the state accordingly and publishes the new state.
+   * @param move The move to be handled.
+   */
   def handleMove(move: Move): Unit
 
 

@@ -33,6 +33,7 @@ object GameBoard:
      * Moves a pawn to a new position on the board.
      * @param pawnId the ID of the pawn to move.
      * @param position the new position to move the pawn to.
+     * @throws IllegalArgumentException if the pawn ID is not found or the position is not valid.
      * @return a new GameBoard with the pawn moved to the specified position.
      */
     def movePawn(pawnId: Int, position: BoardPosition): GameBoard = this match
