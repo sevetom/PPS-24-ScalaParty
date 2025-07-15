@@ -9,7 +9,6 @@ import it.unibo.party.model.player.Pocket
 trait State:
   def phase: Phase
 
-
 trait MinigameState extends State:
   override def phase: MinigamePhase
   def winner: Option[Player]
@@ -38,6 +37,18 @@ case class MemoryState(
                         winTime: Long
                       ) extends MinigameState
 
+/**
+ * Represents the state of the party game.
+ * 
+ * @param phase the current phase of the party game
+ * @param currentPlayer the player whose turn it is
+ * @param diceResult the result of the dice roll, if needed
+ * @param possibleDirections the possible directions the current player can move, if needed
+ * @param itemsCollected a map of players and their collected items
+ * @param board the set of points representing the game board
+ * @param playersPositions a map of players and their positions on the board
+ * @param itemsPositions a map of item positions on the board
+ */
 case class PartyState(
                        phase: PartyPhase,
                        currentPlayer: Player,
@@ -50,6 +61,16 @@ case class PartyState(
                      ) extends State
 
 object PartyState:
+  /**
+   * Utility for creating a PartyState from a PartyGame instance.
+   * 
+   * @param game the PartyGame instance
+   * @param gamePhase the current phase of the game
+   * @param playerTurn the player whose turn it is
+   * @param diceResult the result of the dice roll, if needed
+   * @param possibleDirections the possible directions the current player can move, if needed
+   * @return
+   */
   def fromGame(
                 game: PartyGame,
                 gamePhase: PartyPhase,
@@ -69,7 +90,7 @@ object PartyState:
       itemsPositions = game.getItems.map((pos, item) => pos.toPoint2D -> item)
     )
     
-  val emptyPartyState: PartyState = 
+  val empty: PartyState = 
     PartyState(
       phase = PartyPhase.StartingRoll,
       currentPlayer = Player(0),

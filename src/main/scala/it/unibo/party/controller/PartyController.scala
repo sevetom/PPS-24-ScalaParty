@@ -24,7 +24,7 @@ trait PartyController extends MiniController:
 object PartyController:
   def apply(game: PartyGame, players: List[Player]): PartyController =
     PartyControllerImpl(
-      PartyState.emptyPartyState,
+      PartyState.empty,
       game,
       players,
       PartyTurnManager.fromTheStart(players),
