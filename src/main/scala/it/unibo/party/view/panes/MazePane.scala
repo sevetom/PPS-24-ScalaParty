@@ -29,6 +29,14 @@ object MazePane:
       width = size
       height = size
 
+  /**
+   * Creates a MazePane for displaying the maze game state.
+   * 
+   * @param state the current state of the maze game
+   * @param agent the playing agent used to handle input
+   * @param onExit callback to be executed when the exit button is pressed
+   * @return a Pane containing the maze game UI
+   */
   def apply(state: MazeState, agent: PlayingAgent, onExit: () => Unit): Pane =
     new BorderPane:
       top = new HBox:
