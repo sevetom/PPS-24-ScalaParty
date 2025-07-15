@@ -44,12 +44,15 @@ object PuzzleController:
         )
       )
 
-    override def handleMove(move: Move): MiniController = (move, state.currentPiece) match
+    override def handleMove(move: Move): MiniController = { 
+      def nextPhase = if isTimeUp then MinigamePhase.GameOver else MinigamePhase.Playing
+      def winner = if isTimeUp then Some(challenger) else None
+      (move, state.currentPiece) match
       case (PuzzleMove.SelectPiece(pieceId), _) => copy(
         state = state.copy(
           currentPiece = Some(pieceId),
-          phase = if isTimeUp then MinigamePhase.GameOver else MinigamePhase.Playing,
-          winner = if isTimeUp then Some(challenger) else None
+          phase = nextPhase,
+          winner = winner
         )
       )
       case (PuzzleMove.PlacePiece(position), Some(pieceId)) =>
@@ -74,25 +77,26 @@ object PuzzleController:
           nonPlacedPieces = state.nonPlacedPieces - pieceId,
           currentPiece = None,
           currentSolution = newSolution,
-          phase = if isValidSolution || isTimeUp then MinigamePhase.GameOver else MinigamePhase.Playing,
-          winner = if isValidSolution then Some(challenged) else if isTimeUp then Some(challenger) else None
+          phase = if isValidSolution then MinigamePhase.GameOver else nextPhase,
+          winner = if isValidSolution then Some(challenged) else winner
         )
       )
       case (PuzzleMove.RemovePiece, Some(pieceId)) if state.currentSolution.contains(pieceId) => copy(
         state = state.copy(
-          phase = if isTimeUp then MinigamePhase.GameOver else MinigamePhase.Playing,
+          phase = nextPhase,
           nonPlacedPieces = state.nonPlacedPieces.updated(
             pieceId,
             PuzzleUtils
               .normalizePiece(state.currentSolution(pieceId).map(p => PuzzlePosition(p.x, p.y))).map(_.toPoint2D)),
           currentPiece = None,
           currentSolution = state.currentSolution - pieceId,
-          winner = if isTimeUp then Some(challenger) else None
+          winner = winner
         )
       )
       case _ => copy(
         state = state.copy(
-          phase = if isTimeUp then MinigamePhase.GameOver else MinigamePhase.Playing,
-          winner = if isTimeUp then Some(challenger) else None
+          phase = nextPhase,
+          winner = winner
         )
       )
+    }
