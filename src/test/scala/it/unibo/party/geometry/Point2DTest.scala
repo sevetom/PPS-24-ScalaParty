@@ -37,3 +37,8 @@ class Point2DTest extends AnyFlatSpec:
   "A Pair of numbers" should "be convertible to Point2D" in:
     val p: Point2D[Int] = (1, 2)
     (p.x, p.y) shouldEqual (1, 2)
+    
+  "A Point2D" should "be convertible to a pair of numbers" in:
+    val p: Point2D[Int] = Point2D(1, 2)
+    val pair: (Int, Int) = p
+    pair shouldEqual (1, 2) 
