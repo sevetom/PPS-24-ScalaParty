@@ -1,11 +1,31 @@
 package it.unibo.party.model.player
 
+/**
+ * Represents a Pawn in the game, which has a position and a pocket.
+ * @tparam P the type of the position, which can be any type that represents a game position.
+ */
 trait Pawn[P]:
+  /**
+   * @return the position of the pawn.
+   */
   def position: P
+  /**
+   * @return the pocket of the pawn.
+   */
   def pocket: Pocket
 
+  /**
+   * Moves the pawn to a new position.
+   * @param newPosition the new position to move to.
+   * @return a new Pawn instance with the updated position.
+   */
   def moveTo(newPosition: P): Pawn[P]
 
+  /**
+   * Updates the pocket of the pawn.
+   * @param newPocket the new pocket to set.
+   * @return a new Pawn instance with the updated pocket.
+   */
   def withPocket(newPocket: Pocket): Pawn[P]
 
 object Pawn:

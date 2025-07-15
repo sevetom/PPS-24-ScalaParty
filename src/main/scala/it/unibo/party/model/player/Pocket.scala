@@ -3,25 +3,87 @@ package it.unibo.party.model.player
 import it.unibo.party.model.items.{Collectable, CollectableType}
 import it.unibo.party.model.items.CollectableOperations.getType
 
+/**
+ * Represents a container that can hold collectable items.
+ */
 trait Pocket:
+  /**
+   * Retrieves all collectable items in the pocket.
+   *
+   * @return a sequence of all collectable items.
+   */
   def getAll: Seq[Collectable]
   
+  /**
+   * Retrieves collectable items of a specific type.
+   *
+   * @param itemType the type of collectable items to retrieve.
+   * @return a sequence of collectable items of the specified type.
+   */
   def getByType(itemType: CollectableType): Seq[Collectable]
 
+  /**
+   * Adds a collectable item to the pocket.
+   *
+   * @param item the collectable item to add.
+   * @return a new Pocket instance with the item added.
+   */
   def add(item: Collectable): Pocket
 
+  /**
+   * Removes a collectable item from the pocket.
+   *
+   * @param item the collectable item to remove.
+   * @return a new Pocket instance with the item removed.
+   */
   def remove(item: Collectable): Pocket
 
+  /**
+   * Adds multiple instances of a collectable item to the pocket.
+   *
+   * @param item  the collectable item to add.
+   * @param count the number of instances to add.
+   * @return a new Pocket instance with the items added.
+   */
   def addMultiple(item: Collectable, count: Int): Pocket
 
+  /**
+   * Removes multiple instances of collectable items of a specific type from the pocket.
+   *
+   * @param itemType the type of collectable items to remove.
+   * @param count    the number of instances to remove.
+   * @return a new Pocket instance with the items removed.
+   */
   def removeMultipleByType(itemType: CollectableType, count: Int): Pocket
 
+  /**
+   * Checks if the pocket contains a specific collectable item.
+   *
+   * @param item the collectable item to check for.
+   * @return true if the item is in the pocket, false otherwise.
+   */
   def contains(item: Collectable): Boolean
 
+  /**
+   * Counts the number of collectable items of a specific type in the pocket.
+   *
+   * @param itemType the type of collectable items to count.
+   * @return the number of collectable items of the specified type.
+   */
   def countByType(itemType: CollectableType): Int
 
+  /**
+   * Checks if the pocket is empty.
+   *
+   * @return true if the pocket is empty, false otherwise.
+   */
   def isEmpty: Boolean
 
+  /**
+   * Gets the total number of collectable items in the pocket.
+   *
+   * @return the size of the pocket.
+   */
   def size: Int
 
 object Pocket:
