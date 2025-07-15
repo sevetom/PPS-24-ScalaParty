@@ -22,6 +22,13 @@ object MemoryPane:
   private def memoryBox(figure: Figure) =
     figureIcon(figure, GRID_SIZE)
 
+  /**
+   * Creates a Memory game pane.
+   * @param state the current state of the Memory game
+   * @param agent the agent of the player who is playing
+   * @param onExit a callback function to be called when the player exits the game
+   * @return a Pane representing the Memory game
+   */
   def apply(state: MemoryState, agent: PlayingAgent, onExit: () => Unit): Pane =
     new BorderPane:
       focusTraversable = true
