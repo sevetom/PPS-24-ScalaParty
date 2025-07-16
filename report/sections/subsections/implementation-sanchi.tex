@@ -11,12 +11,13 @@ lavorato su:
 La logica dell'avversario è stata implementata in modo tale che l'avversario si potesse muovere in modo completamente autonomo,
 senza necessità di input esterni ed in modo coerente allo stato del gioco. Per fare ciò ho implementato un algoritmo in prolog
 che utlizza come fatti la posizione dell'avversario, le monadi che ha a disposizione, il numero di monadi necessarie per conquistare
-un rung e tutte le posizioni delle celle espresse come tupla di coordinate e contenuto della cella. Successivamente, tramite le
-regole, vengono definite le azioni con cui viene scelto il percorso migliore. L'algoritmo valuta innanzitutto quale sia l'oggetto
-collezionabile più vicino all'avversario tramite il metodo di manhattan e successivamente calcola il percorso migliore per
-raggiungerlo. Ciò avviene tramite un algorimto di ricerca bfs (breadth-first search). Durante la ricerca, l'alogritmo tiene conto
-solo delle celle valite (ovvero quelle definite nei fatti) sapendo di poter costruire un percorso solo con esse e passando su celle
-tra loro adiacenti. Infine l'algoritmo restituisce la lista di celle da percorrere per raggiungere l'oggetto collezionabile.
+un rung e tutte le posizioni delle celle espresse come tupla di coordinate e contenuto della cella (monade, rung o vuota).
+Successivamente, tramite le regole, vengono definite le azioni con cui viene scelto il percorso migliore. L'algoritmo valuta
+innanzitutto quale sia l'oggetto collezionabile più vicino all'avversario tramite il metodo di manhattan e successivamente calcola
+il percorso migliore per raggiungerlo. Ciò avviene tramite un algorimto di ricerca bfs (breadth-first search). Durante la ricerca,
+l'alogritmo tiene conto solo delle celle valide (ovvero quelle definite nei fatti) sapendo di poter costruire un percorso solo con
+esse e passando su celle tra loro adiacenti. Infine l'algoritmo restituisce la lista di celle da percorrere per raggiungere l'oggetto
+collezionabile.
 
 Il goal prolog viene invocato dal controller tante volte quanti sono i passi possibili da fare in base al risultato del dado; in 
 questo modo l'avversario si muove sempre considerando una versione aggiornata dello stato del gioco. Il risultato del goal viene
@@ -29,20 +30,20 @@ dover passare il dado come parametro ad ogni metodo che lo utilizza. Il dado è 
 lanciato, viene restituito un nuovo dado con il nuovo stato senza modificare quello precedente.
 
 \subsubsection{Modellazione del gioco}
-La modellazione del gioco è stata efefttuata da tutti e tre i membri del gruppo, ma in particolare ho lavorato sulla gestione
+La modellazione del gioco è stata effettuata da tutti e tre i membri del gruppo, ma in particolare ho lavorato sulla gestione
 dei movimenti dei giocatori sulla scacchiera e sul tiro dei dadi. Per quanto riguarda il tiro dei dati, non c'è molto di più
 da dire rispetto a quanto già detto nella sezione precedente.
 
 Per quanto riguarda i movimenti dei giocatori, viene gestito tramite una funzione chiamata movePlayer, che consente a un giocatore
 di eseguire un certo numero di passi nella direzione specificata.
-L'intera funzione è scritta in stile funzionale, senza modificare direttamente lo stato del gioco; quindia d ogni passo:
-\textbf{calcolo la posizione successiva},\textbf{controllo se è valida}, \textbf{eseguo il movimento} tramite la funzione movePawn,
+L'intera funzione è scritta in stile funzionale, senza modificare direttamente lo stato del gioco; quindi ad ogni passo:
+\textbf{calcolo la posizione successiva}, \textbf{controllo se è valida}, \textbf{eseguo il movimento} tramite la funzione movePawn,
 che è estesa con una given extension su PartyGame. Anche movePawn è immutabile: costruisce una nuova board con la nuova posizione e
 restituisce un nuovo PartyGame. Se un oggetto viene raccolto (come una monade o una rung), il sistema rileva il cambiamento
 comparando le tasche del giocatore prima e dopo lo spostamento. Questo approccio sfrutta pattern come Option, Try, foldLeft e match
 anziché strutture imperative.
 
-\subsection{Minigioco Memory}
+\subsubsection{Minigioco Memory}
 Come spiegato precedentemente, ogni membro del gruppo ha lavorato su un minigioco. Io ho lavorato sul minigioco memory utilizzando
 la struttura MVC come per il resto del progetto. Questo minigioco non sfrutta le potenzialità di prolog (ad esempio per generare
 le coppie di carte), ma è stato implementato in modo da essere facilmente estendibile e modificabile. Come il resto del progetto,
