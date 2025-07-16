@@ -11,3 +11,7 @@
 
 # Bloop
 .bsp
+
+# Sbt files ignored in report branch
+project
+target
