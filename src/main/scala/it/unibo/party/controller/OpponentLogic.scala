@@ -87,8 +87,9 @@ object OpponentLogic:
       Some(computeDirection(opponentPosition, nextPoint2D))
 
     private def computeDirection(from: Point2D[Int], to: Point2D[Int]): Direction =
-      if to - from == Point2D(0, -1) then Direction.Up
-      else if to - from == Point2D(1, 0) then Direction.Right
-      else if to - from == Point2D(0, 1) then Direction.Down
-      else if to - from == Point2D(-1, 0) then Direction.Left
-      else throw new IllegalArgumentException(s"Invalid direction from $from to $to")
+      (to - from) match
+        case Point2D(0, -1) => Direction.Up
+        case Point2D(1, 0) => Direction.Right
+        case Point2D(0, 1) => Direction.Down
+        case Point2D(-1, 0) => Direction.Left
+        case _ => throw new IllegalArgumentException(s"Invalid direction from $from to $to")

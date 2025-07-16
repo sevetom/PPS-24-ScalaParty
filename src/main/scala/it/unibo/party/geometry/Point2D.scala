@@ -62,6 +62,16 @@ object Point2D:
    */
   def apply[N](x: N, y: N)(using num: Numeric[N]): Point2D[N] = Point2DImpl(x, y)
 
+  /**
+   * Extractor for Point2D, allowing pattern matching on Point2D instances.
+   *
+   * @param p the Point2D instance to extract coordinates from
+   * @tparam N the numeric type of the coordinates
+   * @return a tuple containing the x and y coordinates of the point
+   */
+  def unapply[N](p: Point2D[N])(using num: Numeric[N]): (N, N) =
+    (p.x, p.y)
+
   given [N](using num: Numeric[N]): Conversion[(N, N), Point2D[N]] with
     def apply(t: (N, N)): Point2D[N] =
       Point2D(t._1, t._2)
