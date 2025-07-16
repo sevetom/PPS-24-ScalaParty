@@ -37,18 +37,46 @@ in caso sia verificata la partita termina.
 \end{figure}
 
 \subsubsection{Diagramma delle classi} \label{sec:design-choices:class-diagram}
-Il diagramma delle classi presentato a figura \ref{fig:class-diagram} è un ampliamento del diagramma presentato precedentemente
-(figura \ref{fig:domain-class-diagram}), a cui sono stati aggiunti alcuni dettagli e, soprattutto, le classi di Controller e View.
-In particolare la View espone solo il metodo di repaint in quanto il resto delle operazioni, come la gestione degli eventi e dell'input,
-viene gestito dal Controller. Quest'ultimo, a sua volta, si occupa di comunicare con il Model per ottenere le informazioni necessareie
-e aggiornarne lo stato, che successivamente verrà comunicato alla View. In più sono presenti alcune classi di utility che, nonstante
-non siano connesse direttamente ad altre classi, sono riportate per completezza di informazione. Direction e Turn sono due Enum che
-rappresentano rispettivamente le direzioni in cui può muoversi una pedina e il turno di gioco e le fasi del gioco. P2d è invece una classe
-che rappresenta un punto bidimensionale, utile per rappresentare le coordinate di una pedina o di un oggetto nel tabellone senza 
-dover utilizzare una coppia di variabili.
+Il diagramma delle classi presentato in figura \ref{fig:class-diagram} cerca di essere una visione
+generale che dei componenti principali del progetto e le loro relazioni. Il Controller si pone al
+centro dell'architettura e ha la funzione di intermediario tra l'Input che giunge dai giocatori e 
+l'Output delle varie logiche di gioco. Infatti, l'implementazione effettiva del gioco principale 
+e dei minigiochi è suddivisa equamente tra: model, Controller, Input e Output. 
+Questa scelta di design è mirata verso una possibile completa, o quasi, modularità dell'intera 
+applicazione in modo che si possano facilmente aggiungere in futuro nuovi minigiochi o modificare 
+le regole del gioco principale senza dover riscrivere l'intero progetto.
+
+La modularità è al centro dell'intero design in quanto il Controller si avvale anche del pattern 
+Pub-Sub per comunicare gli aggiornamenti ricavati dal Model. Questo permette al Controller di 
+non conoscere le fonti di Input e facilmente accostare, allo stesso livello, la View del giocatore 
+reale e l'Input pilotato dal computer in base allo stato del gioco. In questo modo si avrà la
+possibilità in futuro di aggiungere anche più giocatori pilotati dal computer o anche reali 
+senza dover modificare l'architettura già esistente.
+
+Gli Input vengono rappresentati dalle possibili mosse che un giocatore può compiere, come 
+rappresentato dal diagramma dei casi d'uso, e vengono definiti chiaramente all'interno del diagramma.
+Le classi utilizzate per l'Output del Model invece non hanno un implementazione diretta, ma sono
+rappresentate da classi vuote in quanto sarà poi compito del design di ogni gioco andare a definire
+quali siano le informazioni da mostrare al giocatore. In questo modo si ha la possibilità di
+avere un Output personalizzato per ogni gioco.
+
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=\textwidth]{figures/ClassDiagram_ScalaParty.png}
-    \caption{Diagramma delle classi per il tabellone}
+    \includegraphics[width=\textwidth]{figures/class-diagram.png}
+    \caption{Diagramma delle classi generale}
     \label{fig:class-diagram}
+\end{figure}
+
+Nella figura \ref{fig:party-class-diagram} è presentato il design del gioco Party in quanto più
+complesso e alla base di qualsiasi altro minigioco, per questo richiede un design più accurato.
+Inoltre, come nel caso dei minigiochi scelti nel progetto, può essere facilmente utilizzato come 
+spunto per ogni gioco che si serve di una struttura a scacchiera. Nel diagramma si possono 
+riconoscere tutti i componenti già citati nella descrizione del gioco e sono stati pensati per
+avvicinarsi il più possibile a quelli della realtà.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{figures/party-class-diagram.png}
+    \caption{Diagramma delle classi Party}
+    \label{fig:party-class-diagram}
 \end{figure}
