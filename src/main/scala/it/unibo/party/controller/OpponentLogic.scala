@@ -1,6 +1,6 @@
 package it.unibo.party.controller
 
-import alice.tuprolog.{Struct, Term, Var}
+import alice.tuprolog.{Struct, Var}
 import it.unibo.party.common.{PartyPhase, PartyState, Player, State}
 import it.unibo.party.controller.Moves.PartyMove
 import it.unibo.party.controller.pubsub.Subscriber
@@ -8,7 +8,7 @@ import it.unibo.party.geometry.{Direction, Point2D}
 import it.unibo.party.model.items.Collectable
 import it.unibo.party.model.items.Collectable.Rung
 import it.unibo.party.model.items.CollectableType.MonadType
-import it.unibo.party.{RichFile, extractTerm, mkPrologEngine, openTheoryFile}
+import it.unibo.party.{executeProlog, extractTerm}
 import scalafx.animation.PauseTransition
 import scalafx.util.Duration
 
@@ -66,16 +66,8 @@ object OpponentLogic:
         $strMonads
         $strRungCost
         """
-      val prologRules =
-        openTheoryFile("src/main/resources/prolog/opponentLogicRules.pl")
-          .read()
-          .filter(line => !line.startsWith("%") && line.trim.nonEmpty)
-          .mkString("\n")
-      val prologTheory = prologFacts + prologRules
       // Invoke the Prolog engine to find the best path
-      val engine: Term => LazyList[Term] = mkPrologEngine(prologTheory)
-      val input = Struct("best_path", Var("Path"))
-      val results = engine(input)
+      val results = executeProlog("src/main/resources/prolog/opponentLogicRules.pl", prologFacts, Struct("best_path", Var("Path")))
       // Convert the Prolog result to a Direction
       val strOutput = results.map(extractTerm(_, 0)).headOption.get.toString
       val pattern = """\((\d+),(\d+)\)""".r
@@ -87,7 +79,7 @@ object OpponentLogic:
       Some(computeDirection(opponentPosition, nextPoint2D))
 
     private def computeDirection(from: Point2D[Int], to: Point2D[Int]): Direction =
-      (to - from) match
+      to - from match
         case Point2D(0, -1) => Direction.Up
         case Point2D(1, 0) => Direction.Right
         case Point2D(0, 1) => Direction.Down
