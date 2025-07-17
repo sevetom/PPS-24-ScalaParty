@@ -1,9 +1,9 @@
 \section{Testing} \label{sec:testing}
 
 \subsection{Tecnologie usate} \label{subsec:testing-technologies}
-Le tecnologie utilizzata per il testing del progetto è \verb|org.scalatest| che permette di scrivere test in modo semplice e 
-chiaro in modo che i test siano facilmente comprensibili. La libreria è inoltre supportata da IntelliJ (l'IDE utilizzato per lo
-sviluppo) e permette di eseguire i test direttamente dall'IDE, rendendo il processo di testing più veloce.
+Le tecnologie utilizzata per il testing del progetto è \verb|org.scalatest| insieme a \verb|AnyFlatSpec| che permette di scrivere
+test in modo semplice e  chiaro in modo che i test siano facilmente comprensibili. La libreria è inoltre supportata da IntelliJ
+e permette di eseguire i test direttamente dall'IDE, rendendo il processo di testing più veloce.
 
 \subsection{Grado di copertura} \label{subsec:testing-coverage}
 Il grado di copertura dei test è del 33\%, come mostrato anche a Figura \ref{fig:coverage-report}. Analizzando meglio il report,
@@ -26,5 +26,6 @@ un commit dopo ogni completamento di un ciclo. Solo le classi di model e di util
 mentre le classi di controller hanno seguito un approccio più classico, scrivendo prima il codice e poi i test.
 
 \subsection{Esempi rilevanti} \label{subsec:testing-examples}
-
+Un esempio rilevante di test è quello del \verb|MazeBuilderTest| che utilizza tecniche di DSL per testare la costruizione di un 
+labirinto per il minigioco maze.
 \subsection{Altri elementi utili} \label{subsec:testing-other-elements}

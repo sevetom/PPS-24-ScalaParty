@@ -35,6 +35,38 @@
   breakatwhitespace=false
 }
 
+\lstdefinelanguage{Prolog}{
+  morekeywords={:-, is, not, mod, div, fail, repeat, true, false, retract, asserta, assertz, clause, consult, dynamic, static, multifile, discontiguous},
+  sensitive=true,
+  alsoother={_},
+  morecomment=[l]{\%},
+  morestring=[b]',
+  moredelim=[is][\color{blue}\bfseries]{\{}{\}},
+}
+
+\lstset{
+  language=Prolog,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{red},
+  identifierstyle=\color{black},
+  numbers=left,
+  numberstyle=\tiny,
+  stepnumber=1,
+  numbersep=5pt,
+  backgroundcolor=\color{white},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  frame=single,
+  tabsize=2,
+  captionpos=b,
+  breaklines=true,
+  breakatwhitespace=false
+}
+
+
 \newcommand{\emailaddr}[1]{\href{mailto:#1}{\texttt{#1}}}
 
 \title{\LARGE Scala Party}
