@@ -1,71 +1,8 @@
-\documentclass[10pt, a4paper]{article}
+\documentclass[12pt, a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{hyperref}
 \usepackage{graphicx}
-\usepackage{listings}
-\usepackage{xcolor}
 \usepackage[italian]{babel}
-
-\lstdefinelanguage{Scala}{
-  morekeywords={abstract,case,catch,class,def,do,else,extends,false,final,finally,for,if,implicit,import,match,new,null,object,override,package,private,protected,return,sealed,super,this,throw,trait,true,try,type,val,var,while,with,yield},
-  sensitive=true,
-  morecomment=[l]{//},
-  morecomment=[n]{/*}{*/},
-  morestring=[b]",
-}
-
-\lstset{
-  language=Scala,
-  basicstyle=\ttfamily\small,
-  keywordstyle=\color{blue}\bfseries,
-  commentstyle=\color{gray}\itshape,
-  stringstyle=\color{red},
-  numbers=left,
-  numberstyle=\tiny,
-  stepnumber=1,
-  numbersep=5pt,
-  backgroundcolor=\color{white},
-  showspaces=false,
-  showstringspaces=false,
-  showtabs=false,
-  frame=single,
-  tabsize=2,
-  captionpos=b,
-  breaklines=true,
-  breakatwhitespace=false
-}
-
-\lstdefinelanguage{Prolog}{
-  morekeywords={:-, is, not, mod, div, fail, repeat, true, false, retract, asserta, assertz, clause, consult, dynamic, static, multifile, discontiguous},
-  sensitive=true,
-  alsoother={_},
-  morecomment=[l]{\%},
-  morestring=[b]',
-  moredelim=[is][\color{blue}\bfseries]{\{}{\}},
-}
-
-\lstset{
-  language=Prolog,
-  basicstyle=\ttfamily\small,
-  keywordstyle=\color{blue}\bfseries,
-  commentstyle=\color{gray}\itshape,
-  stringstyle=\color{red},
-  identifierstyle=\color{black},
-  numbers=left,
-  numberstyle=\tiny,
-  stepnumber=1,
-  numbersep=5pt,
-  backgroundcolor=\color{white},
-  showspaces=false,
-  showstringspaces=false,
-  showtabs=false,
-  frame=single,
-  tabsize=2,
-  captionpos=b,
-  breaklines=true,
-  breakatwhitespace=false
-}
-
 
 \newcommand{\emailaddr}[1]{\href{mailto:#1}{\texttt{#1}}}
 
@@ -113,11 +50,5 @@ culpa qui officia deserunt mollit anim id est laborum.
 
 \input{sections/implementation.tex}
 \newpage
-
-\input{sections/testing.tex}
-\newpage
-
-\bibliographystyle{plain}
-\bibliography{references}
 
 \end{document}
