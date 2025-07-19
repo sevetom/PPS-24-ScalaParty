@@ -3,18 +3,18 @@ Durante lo sviluppo di questo progetto ho lavorato ai seguenti aspetti implement
 \begin{itemize}
     \item Modellazione del tabellone di gioco
     \item Gestione delle mosse dei giocatori tramite PlayingAgent e Controller
+    \item Implementazione dei componenti principali dell'interfaccia grafica
+    \item Implementazione pagina iniziale dell'applicazione
+    \item Implementazione pagina di gioco principale
     \item Minigioco Puzzle per intero
 \end{itemize}
+di seguito si discutono i dettagli implementativi più rilevanti.
 
 \subsubsection{Modellazione del tabellone di gioco}
 Il tabellone di gioco è stato implementato come una case class che contiene due mappe, 
 la prima contiene le celle del tabellone indicizzate dalla loro posizione, mentre la seconda contiene
 le pedine dei giocatori indicizzate dal loro ID. Di seguito elenco gli aspetti più rilevanti nell'implementazione:
 \begin{itemize}
-    \item \textbf{BoardPosition come opaque type}\par
-    La posizione delle celle del tabellone è stata implementata come un tipo opaco che incapsula un generico punto2D.
-    tramite extension method sono stati aggiunti i metodi utili per la manipolazione delle posizioni, in particolare
-    è stato aggiunto un metodo che permette di sommare una direzione alla posizione corrente.
     \item \textbf{BoardBox come algebric data type}\par
     Le celle del gioco possono essere vuote o possono contenere un item al loro interno, per questo sono
     state rappresentate come un algebric data type che somma le due possibilità: emptyBox o FullBox(item).
@@ -53,15 +53,24 @@ le pedine dei giocatori indicizzate dal loro ID. Di seguito elenco gli aspetti p
 \subsubsection{Gestione delle mosse dei giocatori tramite PlayingAgent e Controller}
 Il componente del controller funge da punto di snodo tra gli agenti dei giocatori (sia che essi siano umani, quindi comandati tramite interfaccia grafica
 sia che siano automatizzati) e il resto del sistema. Un aspetto importante da notare è che il controller è l'unico componente dell'architettura principale
-a fare uso di mutabilità, tutti gli altri componenti infatti sono oggetti immutabili che vengono aggiornati tramite la creazione di nuove istanze.
+a fare uso di mutabilità, tutti gli altri componenti infatti sono oggetti immutabili che vengono aggiornati tramite la creazione di nuove istanze. Ciascuna
+tipologia di mossa che sia essa una mossa di ScalaParty o una mossa di un minigioco, è stata modellata come ADT in cui ciascun sottotipo rappresentate
+una mossa e contiene i dati necessari per eseguire la mossa stessa.
+    \begin{lstlisting}[language=Scala]
+    enum PartyMove extends Move:
+        case DiceRoll(playerId: Int)
+        case Movement(playerId: Int, direction: Direction)
+        case StartMinigame
+        case Resume
+    \end{lstlisting}
 
 \subsubsection{Minigioco Puzzle}
 Gli aspetti imlementativi più importanti per quanto riguarda il minigioco Puzzle che ho realizzato sono i seguenti:
 \begin{itemize}
     \item \textbf{Creazione ricorsiva di una soluzione valida}\par
-    Il fulcro per quanto riguarda la generazione un insieme di pezzi validi per il minigioco è la funzione \texttt{generateRandomSolution}
+    Il fulcro per quanto riguarda la generazione di un insieme di pezzi validi per il minigioco è la funzione \texttt{generateRandomSolution}
     essa prende in ingresso la larghezza, l'altezza del puzzle e la grandezza massima dei pezzi, e genera ricorsivamente un puzzle valido. 
-    si può notare l'utilizzo di un \texttt{for-yeld} per la genrazione di tutte le posizioni iniziali. 
+    Si può notare l'utilizzo di un \texttt{for-yeld} per la genrazione di tutte le posizioni iniziali. 
     \begin{lstlisting}[language=Scala]
     (
     for x <- 0 until width
@@ -69,10 +78,10 @@ Gli aspetti imlementativi più importanti per quanto riguarda il minigioco Puzzl
     yield PuzzlePosition(x, y)
     ).toSet
     \end{lstlisting}
-    \item \textbf{Validazione delle soluzioni tramite prolog}\par
-    Per la validazione delle soluzioni dell'utente è stato sfruttato il linguaggio prolog,
+    \item \textbf{Validazione delle soluzioni tramite Prolog}\par
+    Per la validazione delle soluzioni dell'utente è stato sfruttato il linguaggio Prolog,
     in particolare è stato implementato un predicato che verifica se una soluzione è valida o meno.
-    il predicato prende in ingresso, l'altezza, la larghezza del puzzle e una soluzione che è stata 
+    Il predicato prende in ingresso, l'altezza, la larghezza del puzzle e una soluzione che è stata
     precedentemente mappata in una partizione di un insieme di interi secondo la regola mostrata nella figura \ref{fig:puzzle-prolog-mapping}.
     \begin{figure}[ht!]
         \centering
@@ -80,11 +89,28 @@ Gli aspetti imlementativi più importanti per quanto riguarda il minigioco Puzzl
         \caption{Mapping della soluzione del puzzle in Prolog}
         \label{fig:puzzle-prolog-mapping}
     \end{figure}
-    l'algoritmo utilizza la meta programmazione in prolog per definire tramite assert le regole di adiacenza tra i numeri,
+    L'algoritmo utilizza la teoria dinamica in Prolog per definire tramite assert le regole di adiacenza tra i numeri,
     successivamente verifica le seguenti tre proprietà che la partizione deve avere:
     \begin{enumerate}
         \item \textbf{Ciascun insieme della partizione rappresenta un pezzo valido}\par
         ovvero ciascun elemento deve essere adiacente ad almeno un altro elemento dell'insieme
+        \begin{lstlisting}
+    contains_valid_pieces([]).
+    contains_valid_pieces([H|T]) :-
+	    piece_is_valid(H),
+	    contains_valid_pieces(T).
+
+    piece_is_valid(P) :- length(P, 1), !.
+    piece_is_valid(P) :-
+	    findall(X, (member(X, P), is_adiacent(X, P)), L),
+	    length(L, LEN),
+	    length(P, N),
+	    LEN =:= N.
+
+    is_adiacent(X, P) :-
+	    member(Y, P),
+	    are_adiacent(X, Y), !.
+        \end{lstlisting}
         \item \textbf{Gli insiemi della partizione sono disgiunti}
         \item \textbf{La partizione è completa}\par
         ovvero l'unione degli insiemi che la compongono contiene tutti gli elementi da zero incluso a width*height escluso
