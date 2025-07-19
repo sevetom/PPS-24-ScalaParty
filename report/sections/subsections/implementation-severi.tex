@@ -29,11 +29,11 @@ trait Point2D[N](using num: Numeric[N]):
     def distanceFrom(other: Point2D[N]): Double
 \end{lstlisting}
 Grazie all'uso del tipo generico e del type class Numeric, è possibile
-utilizzare qualsiasi tipo numerico per rappresentare le coordinate, senza dover riscrivere 
-il codice per ogni tipo. Inoltre, grazie all'uso di using, è possibile utilizzare le operazioni 
+utilizzare qualsiasi tipo numerico per rappresentare le coordinate, non dovendo riscrivere 
+il codice per ogni tipo. Inoltre, grazie all'uso di using, si possono utilizzare le operazioni 
 aritmetiche sui numeri senza dover specificare il tipo numerico ogni volta.
-Inoltre, sfruttando la conversione implicita, è possibile convertire un Poin2D in una tupla
-senza bisogno di cast espliciti:
+Sfruttando, infine, la conversione implicita, un Point2D può essere facilmente convertito in una 
+tupla non usando di cast espliciti:
 \begin{lstlisting}[language=Scala]
 given [N](using num: Numeric[N]): Conversion[(N, N), Point2D[N]] with
     def apply(t: (N, N)): Point2D[N] =
@@ -43,9 +43,9 @@ given [N](using Numeric[N]): Conversion[Point2D[N], (N, N)] with
   def apply(p: Point2D[N]): (N, N) =
     (p.x, p.y)
 \end{lstlisting}
-Questo ha permesso poi di poter creare, a seconda del gioco, il proprio tipo di Point2D. Inoltre,
-grazie ai tipi opachi di Scala, non è necessario esporre il tipo numerico, ad esempio nel caso di
-MazePosition:
+Questo ha permesso poi di poter creare, a seconda del gioco, il proprio tipo di Point2D. Anche
+grazie ai tipi opachi di Scala, usando i quali non è necessario esporre il tipo numerico scelto, 
+come ad esempio nel caso di MazePosition:
 \begin{lstlisting}[language=Scala]
 object MazePosition:
   opaque type MazePosition = Point2D[Int]
@@ -58,7 +58,7 @@ object MazePosition:
       val (dx, dy) = dir.offset
       MazePosition(bp.x + dx, bp.y + dy)
 \end{lstlisting}
-Grazie poi agli extension methods, è possibile decidere quali funzionalità di Point2D esporre.
+Grazie poi agli extension methods, è possibile decidere quali funzionalità di Point2D mostrare.
 
 \subsubsection{Pocket e Collectables Funzionali}
 Sebbene non fosse pensato nel design iniziale, ho decido di porre una differenza tra i Collectbles:
@@ -77,7 +77,7 @@ Per questo motivo ho deciso di implementare una Pocket che potesse effettuare op
 di oggetti collezionabili, come ad esempio rimuovere un certo numero di oggetti di un certo tipo
 o aggiungerne un certo numero. Questa funzionalità non è stata sfruttata a pieno nel progetto attuale,
 se non a livello di View, ma ho ritenuto potesse essere utile per sviluppi futuri. Per esempio,
-se si volesse implementare l'idea di poter perdere un oggetto dopo averlo raccolto.
+se si volesse implementare l'idea di poter perdere uno, o più, oggetti dopo averli raccolti.
 \begin{lstlisting}[language=Scala]
 trait Pocket:
   def getAll: Seq[Collectable]
@@ -106,7 +106,7 @@ Infatti, ho reputato che un labirinto potesse essere definito tale se:
 \end{itemize}
 Per motivi di testing e semplificazione della costruzione di labirinti leggibili, ho deciso di 
 prendere esempio da il progetto di Jahrim Gabriele Cesario\cite{pps22chess}, che ha implementato un generatore di
-scacchiere. Il mio codice adattato per la DSL (Domain Specific Langauge) del labirinto è il seguente:
+scacchiere. Il mio codice adattato per la DSL (Domain Specific Language) del labirinto è il seguente:
 \begin{lstlisting}[language=Scala]
 object DSL:
     def W(using b: MazeBuilder): MazeBuilder = b + MazeTile.Wall
@@ -159,7 +159,7 @@ struttura, ho deciso di optare per un algoritmo semplice che si adattasse bene a
 Prolog. Per questo, ho implementato il Binary Tree Algorithm, come descritto da Jamis Buck\cite{buck2015mazes},
 che richiede una memoria minima e permette un buon livello di casualità e velocità di generazione.
 Sebbene non sia il più difficile da risolvere, con grandi dimensioni non diventa banale.
-Nello specifico, si tratta di un North-East Tree, e ha questo punto di entrata:
+Nello specifico, si tratta di un North-East Tree, e ha questo punto di entrata in Prolog:
 \begin{lstlisting}[language=Prolog]
 generate_ne_maze(Width, Height, Randoms, RemovedWalls) :-
     Right is Width-1, Bottom is Height-1,
