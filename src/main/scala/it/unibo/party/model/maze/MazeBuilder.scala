@@ -4,6 +4,7 @@ import it.unibo.party.model.maze.MazePosition.MazePosition
 
 /**
  * Builder for constructing a maze with a specified width and height.
+ * Inspired by https://github.com/jahrim/PPS-22-chess/blob/master/chess/src/main/scala/io/github/chess/engine/model/board/ChessBoardBuilder.scala
  *
  * @param width  the width of the maze
  * @param height the height of the maze
