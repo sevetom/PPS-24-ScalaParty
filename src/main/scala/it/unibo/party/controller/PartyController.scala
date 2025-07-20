@@ -136,9 +136,9 @@ object PartyController:
      */
     private def handleStartingRoll(ctx: PartyControllerImpl): PartyControllerImpl =
       val dicePlayer = ctx.turnManager.currentPlayer
-      val newChallenge = ctx.startingChallenge.newRoll(dicePlayer)
+      val newChallenge = ctx.startingChallenge.roll(dicePlayer)
       val diceRes = newChallenge.diceResults(dicePlayer)
-      val nextTurnManager = ctx.turnManager.nextTurn()
+      val nextTurnManager = if newChallenge.tie then ctx.turnManager else ctx.turnManager.nextTurn()
       val orderedTurnManager =
         if nextTurnManager.currentPhase != PartyPhase.StartingRoll then
           nextTurnManager.changePlayerOrder(newChallenge.diceResults.map((p, r) => (p, -r)))

@@ -18,7 +18,14 @@ trait DiceChallengeManager:
    * @param player the player who is rolling the dice.
    * @return a new instance of DiceChallengeManager with updated results.
    */
-  def newRoll(player: Player): DiceChallengeManager
+  def roll(player: Player): DiceChallengeManager
+
+  /**
+   * Checks if there is a tie in the dice challenge.
+   *
+   * @return true if there is a tie, false otherwise.
+   */
+  def tie: Boolean
 
 object DiceChallengeManager:
   /**
@@ -37,6 +44,9 @@ object DiceChallengeManager:
   private case class DiceChallengeManagerImpl(dice: Dice, diceResults: Map[Player, Int]) 
     extends DiceChallengeManager:
 
-    override def newRoll(player: Player): DiceChallengeManager =
+    override def roll(player: Player): DiceChallengeManager =
       val diceResult = dice.roll()._2.head
       this.copy(diceResults = diceResults + (player -> diceResult))
+
+    override def tie: Boolean =
+      diceResults.nonEmpty && diceResults.values.toSet.size < diceResults.keys.size
