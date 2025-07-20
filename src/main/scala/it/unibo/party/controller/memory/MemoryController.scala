@@ -1,6 +1,7 @@
 package it.unibo.party.controller.memory
 
-import it.unibo.party.common.{MemoryState, MinigamePhase, Player}
+import it.unibo.party.common.state.MemoryState
+import it.unibo.party.common.{MinigamePhase, Player}
 import it.unibo.party.controller.Moves.MemoryMove
 import it.unibo.party.controller.{MiniController, Moves, TimedMiniController}
 import it.unibo.party.geometry.Point2D

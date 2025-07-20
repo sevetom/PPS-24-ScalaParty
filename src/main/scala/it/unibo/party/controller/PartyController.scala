@@ -1,6 +1,7 @@
 package it.unibo.party.controller
 
-import it.unibo.party.common.{PartyPhase, PartyState, Player}
+import it.unibo.party.common.state.PartyState
+import it.unibo.party.common.{PartyPhase, Player}
 import it.unibo.party.controller.Moves.PartyMove.*
 import it.unibo.party.controller.Moves.{Move, PartyMove}
 import it.unibo.party.controller.managers.{DiceChallengeManager, PartyTurnManager}

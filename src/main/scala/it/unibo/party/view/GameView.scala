@@ -2,7 +2,7 @@ package it.unibo.party.view
 
 import it.unibo.party.common.*
 import it.unibo.party.common.PartyPhase.GameOver
-import it.unibo.party.common.state.MazeState
+import it.unibo.party.common.state.{MazeState, MemoryState, PartyState, PuzzleState}
 import it.unibo.party.controller.Moves.{PartyMove, StartMove}
 import it.unibo.party.controller.PlayingAgent
 import it.unibo.party.controller.pubsub.Subscriber

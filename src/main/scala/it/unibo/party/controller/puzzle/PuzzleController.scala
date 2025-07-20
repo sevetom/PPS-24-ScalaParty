@@ -1,6 +1,7 @@
 package it.unibo.party.controller.puzzle
 
-import it.unibo.party.common.{MinigamePhase, Player, PuzzleState}
+import it.unibo.party.common.state.PuzzleState
+import it.unibo.party.common.{MinigamePhase, Player}
 import it.unibo.party.controller.Moves.{Move, PuzzleMove}
 import it.unibo.party.controller.{MiniController, Moves, TimedMiniController}
 import it.unibo.party.geometry.Point2D

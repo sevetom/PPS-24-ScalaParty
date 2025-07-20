@@ -1,7 +1,8 @@
 package it.unibo.party.controller
 
 import alice.tuprolog.{Struct, Var}
-import it.unibo.party.common.{PartyPhase, PartyState, Player, State}
+import it.unibo.party.common.state.PartyState
+import it.unibo.party.common.{PartyPhase, Player, State}
 import it.unibo.party.controller.Moves.PartyMove
 import it.unibo.party.controller.pubsub.Subscriber
 import it.unibo.party.geometry.{Direction, Point2D}

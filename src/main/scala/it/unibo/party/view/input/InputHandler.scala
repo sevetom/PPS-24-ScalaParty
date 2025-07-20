@@ -1,6 +1,7 @@
 package it.unibo.party.view.input
 
-import it.unibo.party.common.{PartyPhase, PartyState}
+import it.unibo.party.common.PartyPhase
+import it.unibo.party.common.state.PartyState
 import it.unibo.party.controller.Moves.PartyMove
 import it.unibo.party.controller.PlayingAgent
 import it.unibo.party.geometry.Direction

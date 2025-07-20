@@ -1,7 +1,8 @@
 package it.unibo.party.view.panes
 
 import it.unibo.party.common.MinigamePhase.GameOver
-import it.unibo.party.common.{Player, PuzzleState}
+import it.unibo.party.common.Player
+import it.unibo.party.common.state.PuzzleState
 import it.unibo.party.controller.Moves.PuzzleMove.*
 import it.unibo.party.controller.PlayingAgent
 import it.unibo.party.geometry.Point2D

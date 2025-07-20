@@ -1,7 +1,7 @@
 package it.unibo.party.view.panes
 
-import it.unibo.party.common.MemoryState
 import it.unibo.party.common.MinigamePhase.{GameOver, Playing}
+import it.unibo.party.common.state.MemoryState
 import it.unibo.party.controller.PlayingAgent
 import it.unibo.party.geometry.Point2D
 import it.unibo.party.model.memory.{Figure, MemoryBox}
