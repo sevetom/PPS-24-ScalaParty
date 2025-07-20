@@ -24,3 +24,8 @@
     -fx-background-color: derive(#009688, 20%);
     -fx-cursor: hand;
 }
+
+.scroll-pane {
+    -fx-background: #2B2B2B;
+    -fx-border-color: transparent;
+}

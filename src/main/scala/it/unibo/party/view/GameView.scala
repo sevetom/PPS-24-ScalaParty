@@ -9,12 +9,29 @@ import it.unibo.party.controller.pubsub.Subscriber
 import it.unibo.party.view.panes.{EndPane, MemoryPane, MinigamePane, PartyPane, StartPane}
 import it.unibo.party.view.panes.*
 import scalafx.Includes.*
-import it.unibo.party.view.panes.{EndPane, MinigamePane, PartyPane, StartPane, PuzzlePane}
+import it.unibo.party.view.panes.{EndPane, MinigamePane, PartyPane, PuzzlePane, StartPane}
+import scalafx.geometry.Insets
 import scalafx.scene.Scene
-import scalafx.scene.layout.{Pane, StackPane}
+import scalafx.scene.control.Button
+import scalafx.scene.layout.{BorderPane, Pane, StackPane}
 
 class GameView(playingAgent: PlayingAgent) extends Subscriber[State]:
   private val container = new StackPane()
+
+  private val infoButton = new Button("ℹ"):
+    onAction = _ => showRules()
+
+  private val floatingRulesPane = new BorderPane():
+    padding = Insets(10)
+    right = infoButton
+    pickOnBounds = false
+
+  private def showRules(): Unit =
+    var rulesPane: Pane = Pane()
+    rulesPane =
+      RulesPane("src/main/resources/rules.json", onClose = () => container.children.remove(rulesPane))
+    container.children.add(rulesPane)
+
   private val commonStyleSheet = getClass.getResource("/style/commonStyle.css").toExternalForm
   private val partyStyleSheet = getClass.getResource("/style/partyStyle.css").toExternalForm
   private val boardStyleSheet = getClass.getResource("/style/boardStyle.css").toExternalForm
@@ -25,7 +42,7 @@ class GameView(playingAgent: PlayingAgent) extends Subscriber[State]:
     stylesheets += commonStyleSheet
     root = container
 
-  container.children.add(StartPane(() => playingAgent.makeMove(StartMove())))
+  container.children.addAll(StartPane(() => playingAgent.makeMove(StartMove())), floatingRulesPane)
 
   override def notify(event: State): Unit =
     scalafx.application.Platform.runLater:
@@ -54,4 +71,4 @@ class GameView(playingAgent: PlayingAgent) extends Subscriber[State]:
               scene.stylesheets = Seq(commonStyleSheet, puzzleStyleSheet)
               PuzzlePane(() => playingAgent.makeMove(PartyMove.Resume), puzzle, playingAgent)
             case _ => MinigamePane(() => playingAgent.makeMove(PartyMove.Resume))
-      container.children.add(pane)
+      container.children.addAll(pane, floatingRulesPane)

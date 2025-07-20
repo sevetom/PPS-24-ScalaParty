@@ -19,8 +19,9 @@ lazy val root = project
           "it.unibo.alice.tuprolog" % "tuprolog" % "3.3.0",
           "org.scalatest" %% "scalatest" % "3.2.19" % "test",
           "org.scala-lang.modules" %% "scala-xml" % "2.2.0",
-          "org.scalafx" %% "scalafx" % "21.0.0-R32"
-      ),
+          "org.scalafx" %% "scalafx" % "21.0.0-R32",
+          "com.typesafe.play" %% "play-json" % "2.10.7"
+),
 
       assembly / assemblyJarName := "PPS-24-ScalaParty-fatjar.jar",
       assembly / mainClass := Some("it.unibo.party.ScalaParty"),

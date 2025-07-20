@@ -1,0 +1,18 @@
+{
+    "party": {
+        "title": "Scala Party",
+        "rules": "Press start to play!\nFirst thing first you will be asked to throw your dice to decide who goes first. After deciding who goes first, when it gets to your turn, you will be asked to throw the dice again to decide how many steps to take.\nYou can move in any nearby tile until you get out of steps using your direction keys. While you can move you should look for Monads since you will need the amount shown to pick up a Rung.\nAfter everyone made it's move it's time for a minigame! Do everything you can to win the challenge imposed by your opponent and throw two dices in the your next turn.\nWhen you get to 5 rungs you'll win, but pay attention since everyone wants to complete his ladder and reach for the higher shelf!"
+    },
+    "maze": {
+        "title": "Maze",
+        "rules": "Use the keys on your keyboard to find the exit in time, but be quick since you have a time limit!"
+    },
+    "memory": {
+        "title": "Memory",
+        "rules": "Click on any card to flip it and reveal the symbol on it. You need to find and reveal every matching shape in pairs of you want to win. Can you do it before the time runs out?"
+    },
+    "puzzle": {
+        "title": "Puzzle",
+        "rules": "Click on any shape and click again to place it to try to fill the box, be aware that you need to strictly follow the borders imposed and no shape can be stacked with one another. Solve it in time to win!"
+    }
+}
