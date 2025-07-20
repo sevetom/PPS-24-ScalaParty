@@ -9,6 +9,6 @@ object Svg:
       .find(node => (node \ "@id").text == elementId)
       .map(node => (node \ "@d").text.trim)
       .getOrElse(
-        throw new RuntimeException(s"Path id='$elementId' non trovato in $resourcePath")
+        throw new RuntimeException(s"Path id='$elementId' not found in $resourcePath")
       )
 

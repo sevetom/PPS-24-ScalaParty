@@ -5,13 +5,14 @@ import it.unibo.party.controller.*
 import it.unibo.party.controller.maze.MazeController
 import it.unibo.party.controller.memory.MemoryController
 import it.unibo.party.controller.puzzle.PuzzleController
-import it.unibo.party.model.board.GameBoard.GameBoard
 import it.unibo.party.model.partyGame.{Dice, PartyGame}
 import it.unibo.party.view.GameView
 import scalafx.application.JFXApp3
 import it.unibo.party.model.board.GameBoard.standardBoard
 import it.unibo.party.model.maze.MazeGame
 import it.unibo.party.model.memory.Memory
+import it.unibo.party.view.utils.Svg.loadSvgPath
+import scalafx.scene.image.Image
 
 object ScalaParty extends JFXApp3:
   override def start(): Unit =
@@ -38,3 +39,4 @@ object ScalaParty extends JFXApp3:
       height = 720
       resizable = false
       scene = gameView.scene
+      icons += new Image(getClass.getResource("/icons/scala.png").toExternalForm)
