@@ -78,6 +78,7 @@ di oggetti collezionabili, come ad esempio rimuovere un certo numero di oggetti 
 o aggiungerne un certo numero. Questa funzionalità non è stata sfruttata a pieno nel progetto attuale,
 se non a livello di View, ma ho ritenuto potesse essere utile per sviluppi futuri. Per esempio,
 se si volesse implementare l'idea di poter perdere uno, o più, oggetti dopo averli raccolti.
+\newpage
 \begin{lstlisting}[language=Scala]
 trait Pocket:
   def getAll: Seq[Collectable]
@@ -107,6 +108,7 @@ Infatti, ho reputato che un labirinto potesse essere definito tale solo se:
 Per motivi di testing e semplificazione della costruzione di labirinti leggibili, ho deciso di 
 prendere esempio dal progetto di Jahrim Gabriele Cesario\cite{pps22chess}, che ha implementato un generatore di
 scacchiere. Il mio codice adattato per la DSL (Domain Specific Language) del labirinto è il seguente:
+\newpage
 \begin{lstlisting}[language=Scala]
 object DSL:
     def W(using b: MazeBuilder): MazeBuilder = b + MazeTile.Wall
@@ -118,7 +120,6 @@ object DSL:
       def |(b: MazeBuilder): MazeBuilder = b
 \end{lstlisting}
 Un esempio di utilizzo della DSL:
-\newpage
 \begin{lstlisting}[language=Scala]
 val standard: Maze = Maze(10, 11):
     W | W | W | W | E | W | W | W | W | W
@@ -138,6 +139,7 @@ Per la risoluzione del labirinto ho fatto un primo utilizzo di Prolog, sfruttand
 algoritmo di BFS (Breadth-First Search) per trovare il percorso più breve tra l'ingresso e l'uscita.
 Ogni coordinata del labirinto è caricata come fatto, in modo che l'algoritmo possa
 riconoscere facilmente in quale direzione può muoversi.
+\newpage
 \begin{lstlisting}[language=Prolog]
 lazy val solution: Option[List[MazePosition]] = computeSolution()
 
