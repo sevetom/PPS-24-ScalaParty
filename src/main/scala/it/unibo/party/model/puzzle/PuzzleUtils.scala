@@ -72,7 +72,7 @@ object PuzzleUtils:
   def isValidSolution(solution: Set[Set[PuzzlePosition]], width: Int, height: Int): Boolean =
     val mappedSolution = solution.map(p => p.map(pos => pos.y * width + pos.x))
     var prologRules = ""
-    openTheoryFile("src/main/resources/prolog/puzzleSolutionValidation.pl").read().foreach(line =>
+    openTheoryFile("/prolog/puzzleSolutionValidation.pl").read().foreach(line =>
       if !line.startsWith("%") || line.trim.nonEmpty then
         prologRules = prologRules.concat("\n" + line)
     )

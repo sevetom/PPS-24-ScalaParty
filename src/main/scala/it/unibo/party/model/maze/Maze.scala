@@ -107,7 +107,7 @@ object Maze:
           case _ => ""
       ).mkString("\n")
       val input = Struct("solve_maze", Var("Path"))
-      val results = executeProlog("src/main/resources/prolog/mazeSolutionRules.pl", prologFacts, input)
+      val results = executeProlog("/prolog/mazeSolutionRules.pl", prologFacts, input)
       val strOutput = results.map(extractTerm(_, 0)).headOption
       if strOutput.isEmpty then
         Option.empty

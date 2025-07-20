@@ -38,7 +38,7 @@ object MazeGenerator:
       val seedsLength = pathWidth * pathHeight * 2
       val seeds: Seq[Int] = for i <- 0 until seedsLength yield Random.nextInt(2)
       val input = Struct("generate_ne_maze", PInt(pathWidth), PInt(pathHeight), seeds, Var("Walls"))
-      val results = executeProlog("src/main/resources/prolog/mazeGenerationRules.pl", "", input)
+      val results = executeProlog("/prolog/mazeGenerationRules.pl", "", input)
       convertToMaze(results.map(extractTerm(_, 3)).headOption.get.toString)
 
     private def convertToMaze(result: String): Maze =

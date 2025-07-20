@@ -41,7 +41,7 @@ def mkPrologEngine(clauses: String*): Term => LazyList[Term] =
  * @param path the path to the Prolog theory file
  * @return a File object representing the Prolog theory file
  */
-def openTheoryFile(path: String) = new File(path)
+def openTheoryFile(path: String) = path
 
 /**
  * Executes a Prolog program with the given facts and input.
@@ -59,8 +59,10 @@ def executeProlog(path: String, facts: String, input: Struct): LazyList[Term] =
   val engine: Term => LazyList[Term] = mkPrologEngine(prologTheory)
   engine(input)
 
-implicit class RichFile(file: File):
-  private val source = Source.fromFile(file)
+implicit class RichFile(filePath: String):
+  private val stream = getClass.getResourceAsStream(filePath)
+  require(stream != null, s"File not found: $filePath")
+  private val source = Source.fromInputStream(stream)
 
   /**
    * Reads the contents of the file line by line.

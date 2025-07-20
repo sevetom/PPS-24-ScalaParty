@@ -68,7 +68,7 @@ object OpponentLogic:
         $strRungCost
         """
       // Invoke the Prolog engine to find the best path
-      val results = executeProlog("src/main/resources/prolog/opponentLogicRules.pl", prologFacts, Struct("best_path", Var("Path")))
+      val results = executeProlog("/prolog/opponentLogicRules.pl", prologFacts, Struct("best_path", Var("Path")))
       // Convert the Prolog result to a Direction
       val strOutput = results.map(extractTerm(_, 0)).headOption.get.toString
       val pattern = """\((\d+),(\d+)\)""".r
