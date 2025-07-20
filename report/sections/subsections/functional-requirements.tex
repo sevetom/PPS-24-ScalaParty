@@ -1,0 +1,99 @@
+\subsection{Requisiti Funzionali} \label{sec:functional-requirements}
+Ogni requisito è stato pensato con l'obiettivo di specificare il comportamento atteso
+del gioco durante una partita, sono suddivisi tra ciò che è visibile all'utente e
+le funzionalità interne del sistema. Ogni parte è un elenco di requisiti considerati
+necessari affinché l'applicazione funzioni come previsto.
+
+\subsubsection{Utente} \label{sec:functional-requirements:user}
+Funzionalità accessibili dall'utente:
+\begin{itemize}
+      \item L'utente può iniziare una nuova partita.
+      \item L'utente può lanciare un dado, all'inizio della partita, per determinare il 
+            primo giocatore del turno.
+      \item L'utente può in ogni momento visualizzare la posizione attuale di ogni giocatore
+            sulla plancia.
+      \item L'utente può lanciare uno o due dadi, durante il proprio turno, per muovere il proprio
+            personaggio.
+      \item L'utente, durante il movimento, può scegliere la direzione da prendere.
+      \item L'utente può in ogni momento visualizzare la posizione delle tessere speciali sulla
+            plancia che possono assegnare un piolo o delle monadi.
+      \item L'utente può in ogni momento visualizzare il costo per ottenere il piolo.
+      \item L'utente può ottenere automaticamente una monade quando finisce sulla tessera 
+            corrispondente.
+      \item L'utente può ottenere automaticamente un piolo quando finisce sulla tessera 
+            corrispondente se possiede sufficienti monadi da scambiare.
+      \item L'utente può in ogni momento visualizzare il numero di pioli e monadi raccolti 
+            da ciascun giocatore.
+      \item L'utente può partecipare a un minigioco alla fine di ogni ciclo di turni.
+      \item L'utente può visualizzare le regole di ogni minigioco in ogni momento.
+      \item L'utente può visualizzare il proprio progresso, dipendente dalle regole, durante
+            un minigioco.
+      \item L'utente può visualizzare l'esito di un minigioco al termine di esso.
+      \item L'utente può visualizzare l'esito del gioco al termine di una partita.
+\end{itemize}
+
+\subsubsection{Sistema} \label{sec:functional-requirements:system}
+Reazioni automatiche del sistema, che non richiedono l'intervento
+diretto dell'utente ma sono una risposta a esso o riguardano la logica interna del gioco.
+\begin{itemize}
+      \item Il sistema può creare una nuova partita.
+      \item Il sistema può simulare, all'inizio della partita, il lancio di un dado a 6 
+            facce per determinare il primo giocatore del turno.
+      \item Il sistema può gestire l'assegnazione dei turni ai giocatori in modo che possano
+            effettuare la loro mossa.
+      \item Il sistema può simulare il lancio di dadi a 6 facce per determinare il numero di
+            passi che un giocatore potrà compiere.
+      \item Il sistema può aggiornare la posizione di ciascun giocatore sulla plancia.
+      \item Il sistema può simulare un comportamento competitivo del giocatore avversario 
+            all'utente, muovendosi sulla plancia in modo da raccogliere sufficienti monadi
+            per vincere i pioli e il gioco.
+      \item Il sistema può generare un numero predefinito di tessere monadi e un solo piolo 
+      per volta da posizionare sulla plancia.
+      \item Il sistema può mostrare una plancia che soddisfa le regole. 
+      \item Il sistema può premiare un giocatore con una monade quando passa sulla tessera 
+            corrispondente.
+      \item Il sistema può premiare un giocatore, se possiede abbastanza monadi, con un
+            piolo quando passa sulla tessera corrispondente, rimuovendo al giocatore il
+            numero di monadi necessarie per ottenerlo.
+      \item Il sistema può aggiornare il numero di pioli e monadi raccolti da ciascun giocatore.
+      \item Il sistema può avviare un minigioco dopo che tutti i giocatori hanno concluso
+            il proprio turno.
+      \item Il sistema può aggiornare i progressi, dipendenti dalle regole, del giocatore 
+            durante un minigioco.
+      \item Il sistema può determinare il vincitore di un minigioco.
+      \item Il sistema può assegnare un dado aggiuntivo valido solo per il turno successivo al
+            vincitore di un minigioco.
+      \item Il sistema può determinare il vincitore del gioco in base al numero di pioli raccolti.
+\end{itemize}
+
+\subsubsection{Minigiochi} \label{sec:functional-requirements:minigames}
+In particolare il sistema ha i seguenti requisiti per i minigiochi:
+\begin{itemize}
+      \item \textbf{Maze}\par
+            \begin{itemize}
+                  \item Il sistema può gestire la logica della generazione di un labirinto 
+                  casuale conforme alle regole del minigioco.
+                  \item Il sistema può riconoscere se il giocatore è riuscito a raggiungere 
+                  l'uscita in tempo.
+                  \item Il sistema può generare il percorso di partenza e di arrivo del 
+                  labirinto. 
+            \end{itemize}
+      \item \textbf{Memory}\par
+            \begin{itemize}
+                  \item Il sistema può generare un insieme di forme casuali da posizionare sulla griglia che siano 
+                        tra loro uguali a coppie.
+                  \item Il sistema può consentire all'utente di selezionare due forme alla volta
+                        per cercare di trovare una coppia.
+                  \item Il sistema può verificare se le due forme selezionate dall'utente sono uguali.
+                  \item Il sistema può rivelare le forme selezionate se sono uguali, altrimenti le nasconde di nuovo.
+                  \item Il sistema può terminare il minigioco quando tutte le coppie sono state trovate o quando il tempo massimo
+                        è stato raggiunto.
+            \end{itemize}
+      \item \textbf{Puzzle} \par
+            \begin{itemize}
+                  \item Il sistema può generare un setup di gioco valido per il minigioco Puzzle.
+                  \item Il sistema può verificare se una soluzione è corretta.
+                  \item Il sistema può verificare se il giocatore ha completato il puzzle entro il tempo limite.
+                  \item Il sistema permette di posizionare e spostare i pezzi del puzzle. 
+            \end{itemize}
+\end{itemize}

@@ -1,0 +1,179 @@
+\subsection{Severi Tommaso} \label{sec:implementation-severi}
+Mi sono occupato della progettazione e implementazione di componenti appartenenti a ogni
+dominio del progetto, nello specifico mi sono occupato di:
+\begin{itemize}
+    \item Modellazione di Point2D
+    \item Modellazione dei Pawns e dunque delle Pocket e dei Collectables
+    \item Implementazione del PartyController e dei relativi managers per gestire il tiro dei dadi
+          iniziale e il susseguirsi dei turni
+    \item Implementazione delle classi relative al Pub-Sub
+    \item Implementazione della pagina finale del Party
+    \item Ogni aspetto implementativo riguardante il minigioco Labirinto
+    \item Scrittura logica Scala per la generazione e risoluzione del labirinto
+\end{itemize}
+
+Nelle sezioni seguenti ci sono quegli aspetti che ritengo più significativi e che espandono o si
+discostano maggiormente dal design iniziale, sfruttando le potenzialità di Scala.
+
+\subsubsection{Point2D Generico}
+Sebbene non sia un aspetto principale è sicuramente un interessante esempio di come si possano
+sfruttare le potenzialità del linguaggio. Si serve di due costrutti principali in modo da rimanere
+il quanto più generico possibile rispetto alla rappresentazione interna:
+\begin{lstlisting}[language=Scala]
+trait Point2D[N](using num: Numeric[N]):
+    def x: N
+    def y: N
+    def +(other: Point2D[N]): Point2D[N]
+    def -(other: Point2D[N]): Point2D[N]
+    def isZero: Boolean
+    def distanceFrom(other: Point2D[N]): Double
+\end{lstlisting}
+Grazie all'uso del tipo generico e del type class Numeric, è possibile
+utilizzare qualsiasi tipo numerico per rappresentare le coordinate, non dovendo riscrivere 
+il codice per ogni tipo. Inoltre, grazie all'uso di using, si possono utilizzare le operazioni 
+aritmetiche sui numeri senza dover specificare il tipo numerico ogni volta.
+Sfruttando, infine, la conversione implicita, un Point2D può essere facilmente convertito in una 
+tupla e viceversa senza usare cast espliciti:
+\begin{lstlisting}[language=Scala]
+given [N](using num: Numeric[N]): Conversion[(N, N), Point2D[N]] with
+    def apply(t: (N, N)): Point2D[N] =
+      Point2D(t._1, t._2)
+
+given [N](using Numeric[N]): Conversion[Point2D[N], (N, N)] with
+  def apply(p: Point2D[N]): (N, N) =
+    (p.x, p.y)
+\end{lstlisting}
+Questo ha permesso poi di poter creare, a seconda del gioco, il proprio tipo di Point2D. Anche
+grazie ai tipi opachi di Scala, usando i quali non è necessario esporre il tipo numerico scelto, 
+come ad esempio nel caso di MazePosition:
+\begin{lstlisting}[language=Scala]
+object MazePosition:
+  opaque type MazePosition = Point2D[Int]
+  def apply(x: Int, y: Int): MazePosition = Point2D(x, y)
+  extension (bp: MazePosition)
+    def x: Int = bp.x
+    def y: Int = bp.y
+    def toPoint2D: Point2D[Int] = bp
+    def +(dir: Direction): MazePosition =
+      val (dx, dy) = dir.offset
+      MazePosition(bp.x + dx, bp.y + dy)
+\end{lstlisting}
+Grazie poi agli extension methods, è possibile decidere quali funzionalità di Point2D mostrare.
+
+\subsubsection{Pocket e Collectables Funzionali}
+Sebbene non fosse pensato nel design iniziale, ho decido di porre una differenza tra i Collectbles:
+quelli definiti come oggetto univoco e il gruppo a cui appartengono. 
+\begin{lstlisting}[language=Scala]
+enum Collectable:
+  case Monad()
+  case Rung(monadsNeeded: Int)
+
+enum CollectableType:
+  case MonadType, RungType  
+\end{lstlisting}
+Questa distinzione nasce dalla natura delle Pocket, in quanto non pongono nessuna differenza
+negli oggetti collezionati, la loro univocità è garantita solo fino a che si trovano sul tabellone.
+Per questo motivo ho deciso di implementare una Pocket che potesse effettuare operazioni sui gruppi
+di oggetti collezionabili, come ad esempio rimuovere un certo numero di oggetti di un certo tipo
+o aggiungerne un certo numero. Questa funzionalità non è stata sfruttata a pieno nel progetto attuale,
+se non a livello di View, ma ho ritenuto potesse essere utile per sviluppi futuri. Per esempio,
+se si volesse implementare l'idea di poter perdere uno, o più, oggetti dopo averli raccolti.
+\newpage
+\begin{lstlisting}[language=Scala]
+trait Pocket:
+  def getAll: Seq[Collectable]
+  def getByType(itemType: CollectableType): Seq[Collectable]
+  def add(item: Collectable): Pocket
+  def remove(item: Collectable): Pocket
+  def addMultiple(item: Collectable, count: Int): Pocket
+  def removeMultipleByType(itemType: CollectableType, count: Int): Pocket
+  def contains(item: Collectable): Boolean
+  def countByType(itemType: CollectableType): Int
+  def isEmpty: Boolean
+  def size: Int
+\end{lstlisting}
+
+\subsubsection{Generazione e Costruzione del Labirinto}
+Parte estensiva del mio lavoro è stata dedicata alla generazione e risoluzione del labirinto,
+integrando nel modo più naturale la logica Prolog con Scala.
+
+Il primo aspetto è stato quello di realizzare un costruttore di Maze che potesse assicurare la
+corretta generazione del labirinto, soddisfacendo dei requisiti specifici da me imposti.
+Infatti, ho reputato che un labirinto potesse essere definito tale solo se:
+\begin{itemize}
+    \item Il labirinto ha esattamente un ingresso e un'uscita.
+    \item L'ingresso e l'uscita sono posti sui bordi del labirinto.
+    \item Il labirinto è risolvibile.
+\end{itemize}
+Per motivi di testing e semplificazione della costruzione di labirinti leggibili, ho deciso di 
+prendere esempio dal progetto di Jahrim Gabriele Cesario\cite{pps22chess}, che ha implementato un generatore di
+scacchiere. Il mio codice adattato per la DSL (Domain Specific Language) del labirinto è il seguente:
+\newpage
+\begin{lstlisting}[language=Scala]
+object DSL:
+    def W(using b: MazeBuilder): MazeBuilder = b + MazeTile.Wall
+    def *(using b: MazeBuilder): MazeBuilder = b + MazeTile.Passage
+    def E(using b: MazeBuilder): MazeBuilder = b + MazeTile.Entry
+    def X(using b: MazeBuilder): MazeBuilder = b + MazeTile.Exit
+
+    extension (builder: MazeBuilder)
+      def |(b: MazeBuilder): MazeBuilder = b
+\end{lstlisting}
+Un esempio di utilizzo della DSL:
+\begin{lstlisting}[language=Scala]
+val standard: Maze = Maze(10, 11):
+    W | W | W | W | E | W | W | W | W | W
+    W | * | * | * | * | * | * | * | * | W
+    W | * | W | W | W | W | W | W | * | W
+    W | * | W | * | * | * | * | W | * | W
+    W | * | W | W | * | W | * | W | * | W
+    W | * | * | W | * | W | * | * | * | W
+    W | W | * | W | * | W | * | W | W | W
+    W | * | * | W | * | W | * | W | * | W
+    W | * | W | W | W | W | * | W | * | W
+    W | * | * | * | * | W | * | * | * | W
+    W | W | W | W | X | W | W | W | W | W
+\end{lstlisting}
+
+Per la risoluzione del labirinto ho fatto un primo utilizzo di Prolog, sfruttando un semplice 
+algoritmo di BFS (Breadth-First Search) per trovare il percorso più breve tra l'ingresso e l'uscita.
+Ogni coordinata del labirinto è caricata come fatto, in modo che l'algoritmo possa
+riconoscere facilmente in quale direzione può muoversi.
+\newpage
+\begin{lstlisting}[language=Prolog]
+lazy val solution: Option[List[MazePosition]] = computeSolution()
+
+private def computeSolution(): Option[List[MazePosition]] =
+  val prologFacts = layout.map((p, t) =>
+    t match
+      case MazeTile.Passage => s"passage(${p.x}, ${p.y})."
+      case MazeTile.Entry => s"entry(${p.x}, ${p.y})."
+      case MazeTile.Exit => s"exit(${p.x}, ${p.y})."
+      case _ => ""
+  ).mkString("\n")
+  ...
+\end{lstlisting}
+Inoltre, il costrutto di Scala "lazy" permette di calcolare la soluzione solamente una volta, evitando
+ricalcoli inutili e permettendo di ottenere la soluzione in modo efficiente.
+
+Una volta definite le regole del labirinto ho implementato la logica in Prolog per generarlo 
+automaticamente. Non essendoci requisiti specifici sulla difficoltà del labirinto e sulla sua 
+struttura, ho deciso di optare per un algoritmo semplice che si adattasse bene allo stile del
+Prolog. Per questo, ho implementato il Binary Tree Algorithm, come descritto da Jamis Buck\cite{buck2015mazes},
+che richiede una memoria minima e permette un buon livello di casualità e velocità di generazione.
+Sebbene non sia il più difficile da risolvere, con grandi dimensioni non diventa banale.
+Nello specifico, si tratta di un North-East Tree, e ha questo punto di entrata in Prolog:
+\begin{lstlisting}[language=Prolog]
+generate_ne_maze(Width, Height, Randoms, RemovedWalls) :-
+    Right is Width-1, Bottom is Height-1,
+    binary_tree_cells(0, Bottom, Right, Bottom, Randoms, Randoms, RemovedWalls).
+\end{lstlisting}
+I numeri random per decidere se muoversi a nord o est sono passati come parametro, in quanto
+l'algoritmo da me implementato è deterministico e non richiede un generatore di numeri casuali interno, 
+non disponibile nella versione di Prolog utilizzata; come valore aggiunto: maggiore è la lunghezza della 
+lista di numeri binari, maggiore sarà la difficoltà del labirinto generato.  
+
+
+
+
+

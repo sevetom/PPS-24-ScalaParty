@@ -31,5 +31,3 @@ metals.sbt
 .idea_modules
 /.worksheet/
 
-# Report
-report/

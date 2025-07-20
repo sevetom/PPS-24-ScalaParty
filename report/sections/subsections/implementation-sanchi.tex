@@ -1,0 +1,127 @@
+\subsection{Emanuele Sanchi} \label{sec:implementation-sanchi}
+Come gli altri membri del gruppo, ho lavorato su tutti e tre gli aspetti del sistema (Model View e Controller); in particolare ho
+lavorato su:
+\begin{itemize}
+    \item Logica dell'avversario
+    \item Modellazione del Dado
+    \item Modellazione del gioco inteso come entità che permette il tiro dei dadi e il movimento dei giocatori sulla scacchiera
+    \item Minigioco memory per intero
+\end{itemize}
+\subsubsection{Logica dell'avversario}
+La logica dell'avversario è stata implementata in modo tale che l'avversario si potesse muovere in modo completamente autonomo,
+senza necessità di input esterni ed in modo coerente allo stato del gioco. Per fare ciò ho implementato un algoritmo in prolog
+che utilizza come fatti la posizione dell'avversario, le monadi che ha a disposizione, il numero di monadi necessarie per conquistare
+un rung e tutte le posizioni delle celle espresse come tupla di coordinate e contenuto della cella (monade, rung o vuota).
+Successivamente, tramite le regole, vengono definite le azioni con cui viene scelto il percorso migliore. L'algoritmo valuta
+innanzitutto quale sia l'oggetto collezionabile più vicino all'avversario tramite il metodo di manhattan e successivamente calcola
+il percorso migliore per raggiungerlo. Ciò avviene tramite un algoritmo di ricerca bfs (breadth-first search). Durante la ricerca,
+l'algoritmo tiene conto solo delle celle valide (ovvero quelle definite nei fatti) sapendo di poter costruire un percorso solo con
+esse e passando su celle tra loro adiacenti. Infine l'algoritmo restituisce la lista di celle da percorrere per raggiungere l'oggetto
+collezionabile.
+
+Sotto viene presentato un frammento di codice significativo in prolog:
+\begin{lstlisting}[language=Prolog]
+
+valid_position({Pos}) :- cell({Pos}, _).
+
+adjacent(({X},{Y}), ({X2},{Y})) :-
+    {X2} is {X} + 1,
+    valid_position(({X2},{Y})).
+adjacent(({X},{Y}), ({X2},{Y})) :-
+    {X2} is {X} - 1,
+    valid_position(({X2},{Y})).
+adjacent(({X},{Y}), ({X},{Y2})) :-
+    {Y2} is {Y} + 1,
+    valid_position(({X},{Y2})).
+adjacent(({X},{Y}), ({X},{Y2})) :-
+    {Y2} is {Y} - 1,
+    valid_position(({X},{Y2})).
+
+manhattan(({X1},{Y1}), ({{X2}},{Y2}), {D}) :-
+    {DX} is abs({X1} - {X2}),
+    {DY} is abs({Y1} - {Y2}),
+    {D} is {DX} + {DY}.
+
+closest_monad({Start}, {Target}) :-
+	findall(({D}, {Pos}), (
+		cell({Pos}, {monad}),
+		manhattan({Start}, {Pos}, {D})
+	), Distances),
+	Distances \= [],
+	sort(Distances, [(_, {Target})|_]).
+
+closest_rung({Start}, {Target}, {Monads}, {RC}) :-
+	{Monads} >= {RC},
+	findall(({D}, {Pos}), (
+		cell({Pos}, rung),
+		manhattan({Start}, {Pos}, {D})
+	), Distances),
+	Distances \= [],
+	sort(Distances, [(_, {Target})|_]).
+
+closest_collectable({Start}, {Target}) :-
+    monads_owned(N),
+    rung_cost({RC}),
+    ( N >= {RC} ->
+        closest_rung({Start}, {Target}, N, {RC})
+    ; closest_monad({Start}, {Target})
+    ).
+
+path_bfs({Start}, {Goal}, {Path}) :-
+    bfs_queue([[{Start}]], {Goal}, FinalPath),
+    reverse(FinalPath, {Path}).
+
+bfs_queue([[{Goal}|{PathTail}] | _], {Goal}, [{Goal}|{PathTail}]).
+bfs_queue([[{Current}|{PathTail}] | QueueTail], {Goal}, {Path}) :-
+    findall(
+        [{Next}, {Current} | {PathTail}],
+        (adjacent({Current}, {Next}), \+ member({Next}, [{Current}|{PathTail}])),
+        NewPaths
+    ),
+    append(QueueTail, NewPaths, UpdatedQueue),
+    bfs_queue(UpdatedQueue, {Goal}, {Path}).
+
+best_path({Path}) :-
+    opponent_pos({Start}),
+    monads_owned(N),
+    closest_collectable({Start}, {Target}),
+    path_bfs({Start}, {Target}, {Path}).
+
+\end{lstlisting}
+
+Oltre a questo, ho implementato tre semplici regole che mi permettono di ordinare e di inserire in una lista ordinata i dati
+ottenuti che, nel mio caso, sono triple del tipo (d, x, y) dove d è la distanza manhattan tra l'avversario e l'oggetto collezionabile e
+x e y sono le coordinate della cella che contiene l'oggetto collezionabile. 
+
+Il goal prolog viene invocato dal controller tante volte quanti sono i passi possibili da fare in base al risultato del dado; in 
+questo modo l'avversario si muove sempre considerando una versione aggiornata dello stato del gioco. Il risultato del goal viene
+poi convertito in una direzione (nord, sud, est, ovest) che viene passata al controller per essere eseguita.
+
+\subsubsection{Modellazione del Dado}
+Il dado è stato modellato tramite una type class CanRoll[T] che permette di separare il comportamento di lancio del dado dalla
+logica del gioco. Inoltre, tramite using e given, il nuovo stato del dado viene passato implicitamente nel PartyGame così da non
+dover passare il dado come parametro ad ogni metodo che lo utilizza. Il dado è inoltre immutabile perché ogni volta che viene
+lanciato, viene restituito un nuovo dado con il nuovo stato senza modificare quello precedente.
+
+\subsubsection{Modellazione del gioco}
+La modellazione del gioco è stata effettuata da tutti e tre i membri del gruppo, ma in particolare ho lavorato sulla gestione
+dei movimenti dei giocatori sulla scacchiera e sul tiro dei dadi. Per quanto riguarda il tiro dei dati, non c'è molto di più
+da dire rispetto a quanto già detto nella sezione precedente.
+
+Per quanto riguarda i movimenti dei giocatori, viene gestito tramite una funzione chiamata movePlayer, che consente a un giocatore
+di eseguire un certo numero di passi nella direzione specificata.
+L'intera funzione è scritta in stile funzionale, senza modificare direttamente lo stato del gioco; quindi ad ogni passo:
+\textbf{calcolo la posizione successiva}, \textbf{controllo se è valida}, \textbf{eseguo il movimento} tramite la funzione movePawn,
+che è estesa con una given extension su PartyGame. Anche movePawn è immutabile: costruisce una nuova board con la nuova posizione e
+restituisce un nuovo PartyGame. Se un oggetto viene raccolto (come una monade o una rung), il sistema rileva il cambiamento
+comparando le tasche del giocatore prima e dopo lo spostamento. Questo approccio sfrutta pattern come Option, Try, foldLeft e match
+anziché strutture imperative.
+
+\subsubsection{Minigioco Memory}
+Come spiegato precedentemente, ogni membro del gruppo ha lavorato su un minigioco. Io ho lavorato sul minigioco memory utilizzando
+la struttura MVC come per il resto del progetto. Questo minigioco non sfrutta le potenzialità di prolog (ad esempio per generare
+le coppie di carte), ma è stato implementato in modo da essere facilmente estendibile e modificabile. Come il resto del progetto,
+è sviluppato in stile funzionale e immutabile. Un aspetto interessante dell'implementazione è che la scacchiera del memory è 
+concettualmente una mappa da figura a coppia di MemoryBox, ovvero (similmente a BoardBox del PartyGame) una box che permette di 
+salvare non solo la posizione x e y della cella, ma anche il suo stato (aperta o chiusa) e per fare ciò ho utilizzato un sealed
+trait piuttosto che una case class normale o un trait normale.

@@ -1,0 +1,39 @@
+\section{Processo di sviluppo adottato} \label{sec:development-process}
+
+\subsection{Metodologia} \label{sec:development-process-methodology}
+Il processo di sviluppo che abbiamo scelto di adottare è stato di tipo \textit{Agile} in particolare abbiamo seguito un approccio 
+\textit{SCRUM-Like} in modo tale da poter avere un processo di sviluppo iterativo e incrementale che ci permetta di raggiungere obiettivi tangibili
+in tempi brevi, sui quali poi costruire le iterazioni successive. Grazie a questo approccio contiamo di agevolare la collaborazione tra i membri
+del team, raccogliendo feedback continui sul lavoro svolto e migliorando la qualità del prodotto finale.
+
+Lo sviluppo si svolgerà in sprint della durata di circa una settimana, prima di ogni sprint si svolgerà una riunione di pianificazione
+in cui si identificheranno gli obiettivi da raggiungere e le attività da svolgere, dividendo ciascuna di esse in task più piccoli da assegnare 
+ai membri del team con il relativo monte ore previsto per lo sviluppo. Durante lo sprint ciascun membro terrà traccia del tempo realmente impiegato
+per lo sviluppo di ciascun task, in modo tale da calibrare il lavoro futuro e tenere sotto controllo i tempi di sviluppo. Alla fine
+dello sprint si svolgerà una riunione di revisione in cui si presenterà il lavoro svolto da ciascun membro e si raccoglieranno le considerazioni
+su cui basare le iterazioni successive.
+
+\subsubsection{Ruoli e responsabilità} \label{sec:development-process-roles}
+Seguendo lo sviluppo SCRUM-Like abbiamo definito i seguenti ruoli e responsabilità all'interno del team:
+\begin{itemize}
+    \item \textbf{Esperto del dominio} \par
+    Francesco Buda è stato designato come esperto del dominio, essendo colui che ha proposto l'idea del progetto.
+    \item \textbf{Product Owner} \par
+    Tommaso Severi è stato designato come Product Owner, essendo il membro del team con maggiori doti di coordinamento e organizzazione.
+    \item \textbf{Sviluppatori} \par
+    Ciascun membro del team ha avuto anche il ruolo di sviluppatore.
+\end{itemize}
+
+\subsection{Strumenti di sviluppo} \label{sec:development-process-tools}
+Per lo sviluppo del progetto sono stati utilizzati i seguenti strumenti:
+\begin{itemize}
+    \item \textbf{GitFlow} \par
+    Per la gestione del codice sorgente e delle versioni del progetto è stato scelto il modello GitFlow, che prevede l'utilizzo di rami
+    \texttt{main} e \texttt{develop} rispettivamente per il codice di produzione e sviluppo, oltre che il ramo \texttt{release} per 
+    le versioni di rilascio.
+    \item \textbf{SBT} \par
+    SBT (Scala Build Tool) è stato scelto per la gestione delle dipendenze e la compilazione del progetto Scala.
+    \item \textbf{IntelliJ IDEA} \par
+    Per lo sviluppo del codice sorgente è stato scelto l'IDE IntelliJ IDEA, che offre un supporto completo per Scala e SBT, oltre a funzionalità 
+    utili per un approccio di sviluppo test driven.
+\end{itemize}

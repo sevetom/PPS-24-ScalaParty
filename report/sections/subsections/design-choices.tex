@@ -1,0 +1,82 @@
+\subsection{Scelte di Design} \label{sec:design-choices}
+
+\subsubsection{Casi d'uso} \label{sec:design-choices:use-cases}
+I casi d'uso espongono l'applicazione da un punto di vista strettamente funzionale,
+specificando le azioni che l'utente può compiere durante le varie fasi del gioco.
+
+In figura \ref{fig:use-cases} sono riportati i casi d'uso dell'applicazione Scala Party.
+Sono suddivisi nelle schermate principali del gioco:
+\begin{itemize}
+    \item \textbf{Start Screen}: è la schermata iniziale del gioco, in cui l'utente
+    può scegliere di iniziare una nuova partita o di visualizzare le regole del gioco.
+    \item \textbf{Party Game}: è la schermata principale del gioco, in cui il giocatore
+    può lanciare i dadi, muovere il proprio personaggio e ottenere gli oggetti collezionabili.
+    \item \textbf{Minigame}: è la schermata in cui viene mostrato il minigioco
+    attivo, in cui l'utente può visualizzare le regole e interagire con il minigioco.
+\end{itemize}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{figures/use-cases.png}
+    \caption{Casi d'uso dell'applicazione}
+    \label{fig:use-cases}
+\end{figure}
+
+\subsubsection{Diagramma degli stati} \label{sec:design-choices:state-diagram}
+Il diagramma degli stati in figura \ref{fig:game-state-diagram} rappresenta le varie fasi e le transizioni che regolano il flusso del gioco.
+Come descritto nelle regole, all'inizio c'è la fase nella quale si tira un dado per determinare l'ordine dei turni, successivamente si entra
+nella fase di gioco vera e propria, in cui per ogni ciclo si alternano i turni dei giocatori e un minigioco. Nella fase corrispondente al proprio
+turno il giocatore per prima cosa lancia i dadi e successivamente entrerà nello stato di movimento il quale si concluderà quando il giocatore
+avrà terminato i suoi spostamenti. Alla fine di ogni turno, prima di passare al successivo o al minigioco, si verifica la condizione di vittoria,
+in caso sia verificata la partita termina.
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{figures/game-state-diagram.png}
+    \caption{Diagramma degli stati del gioco}
+    \label{fig:game-state-diagram}
+\end{figure}
+
+\subsubsection{Diagramma delle classi} \label{sec:design-choices:class-diagram}
+Il diagramma delle classi presentato in figura \ref{fig:class-diagram} cerca di essere una visione
+generale dei componenti principali del progetto e delle loro relazioni. Il Controller si pone al
+centro dell'architettura e ha la funzione di intermediario tra l'Input che giunge dai giocatori e 
+le varie logiche di gioco. Infatti, l'implementazione effettiva del gioco principale 
+e dei minigiochi è suddivisa equamente tra: Model, Controller, Input e Output. 
+Questa scelta di design è mirata verso una possibile completa, o quasi, modularità dell'intera 
+applicazione in modo che si possano facilmente aggiungere in futuro nuovi minigiochi o modificare 
+le regole del gioco principale senza dover riscrivere l'intero progetto.
+
+La modularità è al centro dell'intero design in quanto il Controller si avvale anche del pattern 
+Pub-Sub per comunicare gli aggiornamenti ricavati dal Model. Questo permette al Controller di 
+non conoscere le fonti di Input e facilmente accostare, allo stesso livello, la View del giocatore 
+reale e l'Input pilotato dal computer in base allo stato del gioco. In questo modo si avrà la
+possibilità in futuro di aggiungere anche più giocatori pilotati dal computer o anche reali 
+senza dover modificare l'architettura già esistente.
+
+Gli Input vengono rappresentati dalle possibili mosse che un giocatore può compiere, come 
+rappresentato dal diagramma dei casi d'uso, e vengono definiti chiaramente all'interno del diagramma.
+Le classi utilizzate per l'Output del Model invece non hanno un implementazione diretta, ma sono
+rappresentate da classi vuote in quanto sarà poi compito del design di ogni gioco andare a definire
+quali siano le informazioni da mostrare al giocatore. In questo modo si ha la possibilità di
+avere un Output personalizzato per ogni gioco.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{figures/class-diagram.png}
+    \caption{Diagramma delle classi generale}
+    \label{fig:class-diagram}
+\end{figure}
+
+Nella figura \ref{fig:party-class-diagram} è presentato il design del gioco Party in quanto più
+complesso e alla base di qualsiasi altro minigioco, per questo richiede un design più accurato.
+Inoltre può essere facilmente utilizzato come spunto per ogni gioco che si serve di una struttura 
+a scacchiera, come nel caso dei minigiochi. Nel diagramma si possono 
+riconoscere tutti i componenti già citati nella descrizione del gioco e sono stati pensati per
+avvicinarsi il quanto più possibile a quelli della realtà.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\textwidth]{figures/party-class-diagram.png}
+    \caption{Diagramma delle classi Party}
+    \label{fig:party-class-diagram}
+\end{figure}

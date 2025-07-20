@@ -1,0 +1,134 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[italian]{babel}
+
+\lstdefinelanguage{Scala}{
+  morekeywords={
+    abstract,case,catch,class,def,do,else,extends,false,final,
+    finally,for,if,implicit,import,match,new,null,object,override,
+    package,private,protected,return,sealed,super,this,throw,trait,
+    true,try,type,val,var,while,with,yield
+  },
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[n]{/*}{*/},
+  morestring=[b]",
+}
+
+\lstset{
+  language=Scala,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{red},
+  numbers=left,
+  numberstyle=\tiny,
+  stepnumber=1,
+  numbersep=5pt,
+  backgroundcolor=\color{white},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  frame=single,
+  tabsize=2,
+  captionpos=b,
+  breaklines=true,
+  breakatwhitespace=false
+}
+
+\lstdefinelanguage{Prolog}{
+  morekeywords={
+    :-,not,mod,div,fail,repeat,true,false,retract,asserta,
+    assertz,clause,consult,dynamic,static,multifile,discontiguous
+  },
+  sensitive=true,
+  alsoother={_},
+  morecomment=[l]{\%},
+  morestring=[b]',
+  moredelim=[is][\color{blue}\bfseries]{\{}{\}},
+}
+
+\lstset{
+  language=Prolog,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{red},
+  identifierstyle=\color{black},
+  numbers=left,
+  numberstyle=\tiny,
+  stepnumber=1,
+  numbersep=5pt,
+  backgroundcolor=\color{white},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  frame=single,
+  tabsize=2,
+  captionpos=b,
+  breaklines=true,
+  breakatwhitespace=false
+}
+
+
+\newcommand{\emailaddr}[1]{\href{mailto:#1}{\texttt{#1}}}
+
+\title{\LARGE Scala Party}
+
+\author{
+    Francesco Buda \\ \emailaddr{francesco.buda3@studio.unibo.it}
+    \and
+    Emanuele Sanchi \\ \emailaddr{emanuele.sanchi@studio.unibo.it}
+    \and
+    Tommaso Severi \\ \emailaddr{tommaso.severi2@studio.unibo.it}
+}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+  Questo progetto ha come obiettivo la realizzazione di un gioco a turni single-player ispirato alla serie di videogiochi
+  \href{https://it.wikipedia.org/wiki/Mario_Party_(serie)}{Mario Party} chiamato \textit{Scala Party}. Il gioco si svolge su
+  un tabellone composto da caselle, in cui il giocatore può muoversi lanciando un dado, per raccogliere oggetti collezionabili 
+  e ottenere punti, il giocatore dovrà inoltre affrontare diversi minigiochi per avere un vantaggio nel turno successivo.
+  Il gioco è sviluppato in Scala come progetto per il corso di Paradigmi di Programmazione e Sviluppo. In questa relazione 
+  vengono presentati i requisiti e il design architetturale ai fini dell'implementazione oltre che le scelte progettuali e 
+  le tecniche di testing utilizzate.
+\end{abstract}
+
+\clearpage
+
+\tableofcontents
+
+\clearpage
+
+\input{./sections/development-process.tex}
+\newpage
+
+\input{sections/requirement-specification.tex}
+\newpage
+
+\input{sections/architectural-design.tex}
+\newpage
+
+\input{sections/detailed-design.tex}
+\newpage
+
+\input{sections/implementation.tex}
+\newpage
+
+\input{sections/testing.tex}
+\newpage
+
+\input{sections/retrospective.tex}
+\newpage
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}

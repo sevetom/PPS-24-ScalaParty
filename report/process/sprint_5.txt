@@ -1,0 +1,17 @@
++------------------------------+------------------------+--------------------+----------------------------+-----+-----+-----+-----+-----+-----+
+|     Product Backlog Item     |      Sprint Task       |     Volunteer      | Initial Estimate of Effort |  1  |  2  |  3  |  4  |  5  |  6  |
++------------------------------+------------------------+--------------------+----------------------------+-----+-----+-----+-----+-----+-----+
+| Code Cleaning                | Refactor code          | Buda Francesco     | 1                          | 1.5 |  0  |  0  |  0  |  0  |  0  |
+|                              | Refactor code          | Sanchi Emanuele    | 1                          |  1  | 0.5 |  0  |  0  |  0  |  0  |
+|                              | Refactor code          | Severi Tommaso     | 1                          |  1  |  0  |  0  |  0  |  0  |  2  |
+|                              | Scala docs             | Buda Francesco     | 1                          |  1  |  0  |  0  |  0  |  0  |  0  |
+|                              | Scala docs             | Sanchi Emanuele    | 1                          |  1  |  0  |  0  |  0  |  0  |  0  |
+|                              | Scala docs             | Severi Tommaso     | 1                          |  1  |  0  |  0  |  0  |  0  |  0  |
++------------------------------+------------------------+--------------------+----------------------------+-----+-----+-----+-----+-----+-----+
+| Implementation report        | Detailed Design        | Severi Tommaso     | 2                          |  0  |  2  |  0  |  0  |  0  |  0  |
+|                              | Implementation         | Buda Francesco     | 1                          |  0  |  0  |  1  |  0  |  0  |  0  |
+|                              | Implementation         | Sanchi Emanuele    | 1                          |  0  |  1  | 0.5 |  0  |  0  |  0  |
+|                              | Implementation         | Severi Tommaso     | 1                          |  0  |  0  |  0  |  0  |  0  |  0  |
+|                              | Testing                | Sanchi Emanuele    | 2                          |  0  |  0  | 1.5 |  0  |  0  |  0  |
+|                              | Retrospective          | Buda Francesco     | 2                          |  0  |  0  |  0  |  2  |  0  |  2  |
++------------------------------+------------------------+--------------------+----------------------------+-----+-----+-----+-----+-----+-----+
