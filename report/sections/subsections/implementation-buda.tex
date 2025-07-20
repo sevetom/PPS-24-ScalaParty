@@ -22,6 +22,7 @@ le pedine dei giocatori indicizzate dal loro ID. Di seguito elenco gli aspetti p
     per la costruzione del tabellone di gioco nell'applicazione e nei test si è pensato di implementare un DSL
     sfruttando le funzionalità di Scala, in particolare la possibilità di scrivere metodi in notazione postfissa.
     Questo ha permesso di scrivere il codice in modo molto simile alla rappresentazione grafica del tabellone:
+    \newpage
     \begin{lstlisting}[language=Scala]
     \| | O | O | O | O | O | O | 5 | O |
     -> | O | * | * | * | O | * | * | M |
@@ -54,7 +55,7 @@ le pedine dei giocatori indicizzate dal loro ID. Di seguito elenco gli aspetti p
 Il componente del controller funge da punto di snodo tra gli agenti dei giocatori (sia che essi siano umani, quindi comandati tramite interfaccia grafica
 sia che siano automatizzati) e il resto del sistema. Un aspetto importante da notare è che il controller è l'unico componente dell'architettura principale
 a fare uso di mutabilità, tutti gli altri componenti infatti sono oggetti immutabili che vengono aggiornati tramite la creazione di nuove istanze. Ciascuna
-tipologia di mossa che sia essa una mossa di ScalaParty o una mossa di un minigioco, è stata modellata come ADT in cui ciascun sottotipo rappresentate
+tipologia di mossa che sia essa una mossa di ScalaParty o una mossa di un minigioco, è stata modellata come ADT in cui ciascun sottotipo rappresenta
 una mossa e contiene i dati necessari per eseguire la mossa stessa.
     \begin{lstlisting}[language=Scala]
     enum PartyMove extends Move:
@@ -94,7 +95,7 @@ Gli aspetti imlementativi più importanti per quanto riguarda il minigioco Puzzl
     \begin{enumerate}
         \item \textbf{Ciascun insieme della partizione rappresenta un pezzo valido}\par
         ovvero ciascun elemento deve essere adiacente ad almeno un altro elemento dell'insieme
-        \begin{lstlisting}
+        \begin{lstlisting}[language=Prolog]
     contains_valid_pieces([]).
     contains_valid_pieces([H|T]) :-
 	    piece_is_valid(H),

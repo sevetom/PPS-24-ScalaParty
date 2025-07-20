@@ -1,7 +1,7 @@
 \section{Testing} \label{sec:testing}
 
 \subsection{Tecnologie usate} \label{subsec:testing-technologies}
-Le tecnologie utilizzata per il testing del progetto è \verb|org.scalatest| insieme a \verb|AnyFlatSpec| che permette di scrivere
+La tecnologia utilizzata per il testing del progetto è \verb|org.scalatest| insieme a \verb|AnyFlatSpec| che permette di scrivere
 test in modo semplice e  chiaro in modo che i test siano facilmente comprensibili. La libreria è inoltre supportata da IntelliJ
 e permette di eseguire i test direttamente dall'IDE, rendendo il processo di testing più veloce.
 
@@ -28,4 +28,15 @@ mentre le classi di controller hanno seguito un approccio più classico, scriven
 \subsection{Esempi rilevanti} \label{subsec:testing-examples}
 Un esempio rilevante di test è quello del \verb|MazeBuilderTest| che utilizza tecniche di DSL per testare la costruizione di un 
 labirinto per il minigioco maze.
-\subsection{Altri elementi utili} \label{subsec:testing-other-elements}
+
+\begin{lstlisting}[language=Scala]
+    it should "not allow a maze that is not solvable" in:
+    val builder: MazeBuilder = MazeBuilder.construct(mazeDimensions._1, mazeDimensions._2):
+      W | W | E | W | W
+      W | * | * | * | W
+      W | * | W | W | W
+      W | * | W | W | W
+      W | W | X | W | W
+    an[IllegalArgumentException] should be thrownBy builder.build()
+\end{lstlisting}
+

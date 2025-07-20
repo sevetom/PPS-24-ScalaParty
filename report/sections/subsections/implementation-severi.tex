@@ -18,7 +18,7 @@ discostano maggiormente dal design iniziale, sfruttando le potenzialità di Scal
 \subsubsection{Point2D Generico}
 Sebbene non sia un aspetto principale è sicuramente un interessante esempio di come si possano
 sfruttare le potenzialità del linguaggio. Si serve di due costrutti principali in modo da rimanere
-il quanto più vago possibile rispetto alla rappresentazione interna:
+il quanto più generico possibile rispetto alla rappresentazione interna:
 \begin{lstlisting}[language=Scala]
 trait Point2D[N](using num: Numeric[N]):
     def x: N
@@ -33,7 +33,7 @@ utilizzare qualsiasi tipo numerico per rappresentare le coordinate, non dovendo 
 il codice per ogni tipo. Inoltre, grazie all'uso di using, si possono utilizzare le operazioni 
 aritmetiche sui numeri senza dover specificare il tipo numerico ogni volta.
 Sfruttando, infine, la conversione implicita, un Point2D può essere facilmente convertito in una 
-tupla non usando di cast espliciti:
+tupla e viceversa senza usare cast espliciti:
 \begin{lstlisting}[language=Scala]
 given [N](using num: Numeric[N]): Conversion[(N, N), Point2D[N]] with
     def apply(t: (N, N)): Point2D[N] =
@@ -96,16 +96,16 @@ trait Pocket:
 Parte estensiva del mio lavoro è stata dedicata alla generazione e risoluzione del labirinto,
 integrando nel modo più naturale la logica Prolog con Scala.
 
-Il primo aspetto è stato quello di costruire un costruttore di Maze che potesse assicurare la
+Il primo aspetto è stato quello di realizzare un costruttore di Maze che potesse assicurare la
 corretta generazione del labirinto, soddisfacendo dei requisiti specifici da me imposti.
-Infatti, ho reputato che un labirinto potesse essere definito tale se:
+Infatti, ho reputato che un labirinto potesse essere definito tale solo se:
 \begin{itemize}
     \item Il labirinto ha esattamente un ingresso e un'uscita.
     \item L'ingresso e l'uscita sono posti sui bordi del labirinto.
     \item Il labirinto è risolvibile.
 \end{itemize}
 Per motivi di testing e semplificazione della costruzione di labirinti leggibili, ho deciso di 
-prendere esempio da il progetto di Jahrim Gabriele Cesario\cite{pps22chess}, che ha implementato un generatore di
+prendere esempio dal progetto di Jahrim Gabriele Cesario\cite{pps22chess}, che ha implementato un generatore di
 scacchiere. Il mio codice adattato per la DSL (Domain Specific Language) del labirinto è il seguente:
 \begin{lstlisting}[language=Scala]
 object DSL:
@@ -118,6 +118,7 @@ object DSL:
       def |(b: MazeBuilder): MazeBuilder = b
 \end{lstlisting}
 Un esempio di utilizzo della DSL:
+\newpage
 \begin{lstlisting}[language=Scala]
 val standard: Maze = Maze(10, 11):
     W | W | W | W | E | W | W | W | W | W
@@ -136,7 +137,7 @@ val standard: Maze = Maze(10, 11):
 Per la risoluzione del labirinto ho fatto un primo utilizzo di Prolog, sfruttando un semplice 
 algoritmo di BFS (Breadth-First Search) per trovare il percorso più breve tra l'ingresso e l'uscita.
 Ogni coordinata del labirinto è caricata come fatto, in modo che l'algoritmo possa
-riconoscere facilmente in quale direzione potesse muoversi.
+riconoscere facilmente in quale direzione può muoversi.
 \begin{lstlisting}[language=Prolog]
 lazy val solution: Option[List[MazePosition]] = computeSolution()
 
@@ -150,7 +151,7 @@ private def computeSolution(): Option[List[MazePosition]] =
   ).mkString("\n")
   ...
 \end{lstlisting}
-Inoltre, il costrutto Scala di "lazy" permette di calcolare la soluzione solamente una volta, evitando
+Inoltre, il costrutto di Scala "lazy" permette di calcolare la soluzione solamente una volta, evitando
 ricalcoli inutili e permettendo di ottenere la soluzione in modo efficiente.
 
 Una volta definite le regole del labirinto ho implementato la logica in Prolog per generarlo 
@@ -166,9 +167,9 @@ generate_ne_maze(Width, Height, Randoms, RemovedWalls) :-
     binary_tree_cells(0, Bottom, Right, Bottom, Randoms, Randoms, RemovedWalls).
 \end{lstlisting}
 I numeri random per decidere se muoversi a nord o est sono passati come parametro, in quanto
-l'algoritmo è deterministico e non richiede un generatore di numeri casuali interno, non disponibile
-nella versione di Prolog utilizzata; come valore aggiunto maggiore è la randomicità dei numeri 
-binari, maggiore sarà la difficoltà del labirinto generato.  
+l'algoritmo da me implementato è deterministico e non richiede un generatore di numeri casuali interno, 
+non disponibile nella versione di Prolog utilizzata; come valore aggiunto: maggiore è la lunghezza della 
+lista di numeri binari, maggiore sarà la difficoltà del labirinto generato.  
 
 
 

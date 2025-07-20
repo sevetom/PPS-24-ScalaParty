@@ -1,5 +1,6 @@
 \subsection{Modello di Dominio}
-Scala party è un videogioco single-player, ispirato a "Mario Party",
+Scala Party è un videogioco single-player, ispirato a 
+\href{https://it.wikipedia.org/wiki/Mario_Party_(serie)}{Mario Party},
 famoso videogioco della Nintendo. In questa versione, i personaggi 
 sono rappresentati da due pedine: una per il giocatore e l'altra per
 l'avversario (computer). Tirando i dadi, il giocatore e il computer 
@@ -16,7 +17,6 @@ in questa sezione approfondiremo i seguenti aspetti:
 \begin{enumerate}
     \item Le entità principali del dominio e le loro relazioni
     \item Le regole del gioco
-    \item Le regole dei minigiochi
     \item Le regole dei minigiochi
 \end{enumerate}
 \subsubsection{Entità del Dominio}
@@ -43,11 +43,11 @@ a figura \ref{fig:domain-class-diagram}.
     \item \textbf{Pocket}\par
     È il contenitore di oggetti collezionabili raccolti da una pedina.
     \item \textbf{Collectable}\par
-    Rappresenta un oggetto collezionabile che può essere raccolto o
-    "comprato" scambiandolo con altri oggetti collezionabili.
-    \item \textbf{MonadCoin}\par
+    Rappresenta un oggetto collezionabile che può essere raccolto o 
+    scambiato con altri oggetti collezionabili.
+    \item \textbf{Monad}\par
     È un oggetto collezionabile che può essere usato come moneta di scambio.
-    \item \textbf{Rung (Piolo)}\par
+    \item \textbf{Rung}\par
     È un oggetto collezionabile che può essere usato per vincere il gioco.
 \end{itemize}
 \subsubsection{Regole del Gioco}
@@ -76,7 +76,7 @@ A questo punto, la partita può iniziare e si svolgerà seguendo le seguenti fas
     il numero più alto sarà il primo a giocare in ogni ciclo di turni della partita.
     \begin{itemize}
         \item Il dado è un dado standard a 6 facce.
-        \item In caso di pareggio tra i due giocatori, il lancio viene ripetuto
+        \item In caso di pareggio, il lancio viene ripetuto.
     \end{itemize}
     \item \textbf{Turni di gioco}\par
     Ciascun ciclo di turni è composto dal turno del giocatore e da quello dell'avversario.
@@ -115,10 +115,9 @@ A questo punto, la partita può iniziare e si svolgerà seguendo le seguenti fas
     Alla fine di ogni ciclo di turni, il computer proporrà una sfida al giocatore.
     La sfida consiste in un \textbf{Minigioco} che il giocatore dovrà affrontare.
     Se il giocatore vince, potrà lanciare due dadi nel turno successivo, 
-    se invece perde, sarà l'avversario a lanciare due dadi. Durante la partita,
-    con l'avanzare dei turni, la difficoltà dei minigiochi aumenterà.
+    se invece perde, sarà l'avversario a lanciare due dadi.
     \item \textbf{Fine della partita}\par
-    La partita termina quando uno dei due giocatori raccoglie 4 pioli,
+    La partita termina quando uno dei due giocatori raccoglie 5 pioli,
     e verrà dichiarato vincitore.
 \end{enumerate}
 
@@ -156,10 +155,8 @@ A questo punto, la partita può iniziare e si svolgerà seguendo le seguenti fas
     giocatore può selezionare due caselle alla volta per cercare di trovare una coppia 
     di forme identiche. Se il giocatore trova una coppia, le forme rimangono visibili e 
     il giocatore guadagna un punto; altrimenti le forme vengono coperte di nuovo e il 
-    giocatore perde un tentativo. Il minigioco termina quando il giocatore trova tutte 
-    le coppie o esaurisce i tentativi disponibili. Il minigioco viene vinto se il 
-    giocatore trova tutte le coppie entro il numero massimo di tentativi consentiti. 
-    I tentativi sono limitati a 5.
+    giocatore perde un tentativo. Il minigioco viene vinto se il 
+    giocatore trova tutte le coppie entro il tempo limite. 
 
     \begin{figure}[ht!]
         \centering
