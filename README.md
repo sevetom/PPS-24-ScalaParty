@@ -7,9 +7,11 @@ where the user will compete against a computer-controlled opponent, to collect t
 around a board and playing mini-games.
 
 ## How to run
-
-## Technologies used
-- [Scala](https://www.scala-lang.org/)
+Check the release section for the jar file that can be directly executed either via double-click or by using the command:
+```
+java -jar PPS-24-ScalaParty-fatjar.jar
+```
+Or directly build the source files on your own with SBT.
 
 ## Authors
 
