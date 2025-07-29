@@ -5,7 +5,7 @@ import scalafx.scene.layout.{Pane, StackPane, VBox}
 import scala.io.Source
 import play.api.libs.json.*
 import scalafx.geometry.{Insets, Pos}
-import scalafx.scene.control.{Button, Label, ScrollPane}
+import scalafx.scene.control.{Button, ScrollPane}
 import scalafx.scene.paint.Color
 import scalafx.scene.text.{Font, Text}
 
@@ -17,8 +17,8 @@ object RulesPane:
    */
   def apply(jsonPath: String, onClose: () => Unit): Pane =
     val rulesData: Map[String, (String, String)] =
-      val source = Source.fromFile(jsonPath)
-      val jsonString = try source.mkString finally source.close()
+      val stream = getClass.getResourceAsStream(jsonPath)
+      val jsonString = try Source.fromInputStream(stream).mkString finally stream.close()
       val json = Json.parse(jsonString)
       json.as[Map[String, JsValue]].map:
         case (key, value) =>

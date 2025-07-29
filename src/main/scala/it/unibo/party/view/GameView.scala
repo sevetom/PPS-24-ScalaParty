@@ -29,7 +29,7 @@ class GameView(playingAgent: PlayingAgent) extends Subscriber[State]:
   private def showRules(): Unit =
     var rulesPane: Pane = Pane()
     rulesPane =
-      RulesPane("src/main/resources/rules.json", onClose = () => container.children.remove(rulesPane))
+      RulesPane("/rules.json", onClose = () => container.children.remove(rulesPane))
     container.children.add(rulesPane)
 
   private val commonStyleSheet = getClass.getResource("/style/commonStyle.css").toExternalForm
